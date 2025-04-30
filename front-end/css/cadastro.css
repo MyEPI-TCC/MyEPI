@@ -1,0 +1,13 @@
+/* Hero Section - Imagem de fundo */
+.hero {
+    background-image: url('midia/inicio.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; /* Faz a seção ocupar toda a altura da tela */
+}
+
+/* Opcional: Texto branco e sombra no texto para contraste */
+.hero h1, .hero p {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+}
