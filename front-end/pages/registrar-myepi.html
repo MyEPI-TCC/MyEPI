@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Registrar EPI</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #12191b;
+      color: white;
+    }
+
+    .top-navbar {
+      background-color: rgb(160, 56, 0);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1001;
+    }
+
+    .navbar-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .sidebar {
+      height: 100vh;
+      width: 250px;
+      background-color: #162225;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      padding-top: 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar .nav-link {
+      color: white;
+      padding: 15px 20px;
+      transition: all 0.3s;
+    }
+
+    .sidebar .nav-link:hover {
+      background-color: #1e2d31;
+      border-left: 5px solid rgb(255, 102, 0);
+    }
+
+    .nav-link.active {
+      color: orange !important;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 90px 30px 30px 30px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .form-container {
+      background-color: #1e2d31;
+      padding: 30px;
+      border-radius: 12px;
+      width: 600px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+
+    .form-container h4 {
+      margin-bottom: 20px;
+    }
+
+    .form-control {
+      background-color: #f0f0f0;
+      border: none;
+      color: black;
+    }
+
+    .btn-custom {
+      background-color: #d9d9d9;
+      color: black;
+      font-weight: bold;
+      border-radius: 8px;
+      padding: 8px 20px;
+      margin-top: 15px;
+    }
+
+    .btn-custom:hover {
+      background-color: #c0c0c0;
+    }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR SUPERIOR -->
+  <div class="top-navbar">
+    <div class="navbar-title">FUSIONSTEC ENGENHARIA</div>
+  </div>
+
+  <!-- SIDEBAR VERTICAL -->
+  <div class="sidebar">
+    <div class="text-center mb-5">
+      <img src="../assets/images/logo.png" alt="Logo" width="120" />
+    </div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="./dashboard.html">Dashboard</a>
+      <a class="nav-link" href="./estoque.html">Depósito</a>
+      <a class="nav-link active" href="#">My EPI</a>
+      <a class="nav-link" href="#">Funcionário</a>
+      <a class="nav-link" href="#">Entregas</a>
+    </nav>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-content">
+    <div class="form-container">
+      <h4 class="text-center">Registrar EPI</h4>
+      <form>
+        <div class="row mb-3">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Nome do EPI">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Categoria do EPI">
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <input type="text" class="form-control" placeholder="CA">
+          </div>
+          <div class="col">
+            <input type="text" class="form-control" placeholder="Marca">
+          </div>
+        </div>
+        <div class="mb-3">
+          <textarea class="form-control" rows="3" placeholder="Descrição"></textarea>
+        </div>
+        <div class="mb-3">
+          <input type="date" class="form-control" placeholder="Validade">
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-custom">Adicionar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

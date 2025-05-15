@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Depósito</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS personalizado -->
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #12191b;
+      color: white;
+    }
+
+    .top-navbar {
+      background-color: rgb(160, 56, 0);
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1001;
+    }
+
+    .navbar-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: white;
+    }
+
+    .sidebar {
+      height: 100vh;
+      width: 250px;
+      background-color: #162225;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      padding-top: 40px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sidebar .nav-link {
+      color: white;
+      padding: 15px 20px;
+      transition: all 0.3s;
+    }
+
+    .sidebar .nav-link:hover {
+      background-color: #1e2d31;
+      border-left: 5px solid rgb(255, 102, 0);
+    }
+
+    .nav-link.active {
+      color: orange !important;
+    }
+
+    .main-content {
+      margin-left: 250px;
+      padding: 90px 30px 30px 30px;
+    }
+
+    .status-legend {
+      display: flex;
+      gap: 15px;
+      justify-content: flex-start;
+      margin-bottom: 20px;
+    }
+
+    .status-legend div {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.9rem;
+    }
+
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .dot-adequada { background-color: green; }
+    .dot-moderada { background-color: yellow; }
+    .dot-minima { background-color: red; }
+
+    .estoque-table {
+      background-color: #1c2b2e;
+      border-radius: 15px;
+      padding: 20px;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      color: white;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+    }
+
+    th {
+      color: #cccccc;
+    }
+
+    input.form-control {
+      background-color: #263739;
+      color: white;
+      border: none;
+    }
+
+    input.form-control:focus {
+      background-color: #2e4547;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- NAVBAR SUPERIOR -->
+  <div class="top-navbar">
+    <div class="navbar-title">FUSIONSTEC ENGENHARIA</div>
+  </div>
+
+  <!-- SIDEBAR VERTICAL -->
+  <div class="sidebar">
+    <div class="text-center mb-5">
+      <img src="../assets/images/logo.png" alt="Logo" width="120" />
+    </div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="./dashboard.html">Dashboard</a>
+      <a class="nav-link active" href="./estoque.html">Depósito</a>
+      <a class="nav-link" href="#">My EPI</a>
+      <a class="nav-link" href="#">Funcionário</a>
+      <a class="nav-link" href="#">Entregas</a>
+    </nav>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-content">
+    <h2>Depósito</h2>
+
+    <div class="status-legend">
+      <div><span class="status-dot dot-adequada"></span> Qt. Adequada</div>
+      <div><span class="status-dot dot-moderada"></span> Qt. Moderada</div>
+      <div><span class="status-dot dot-minima"></span> Qt. Mínima</div>
+    </div>
+
+    <div class="estoque-table">
+      <form>
+        <table class="table table-borderless">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Quantidade</th>
+              <th>Data de entrega</th>
+              <th>Validade</th>
+              <th>CA</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><input type="text" class="form-control" name="nome" placeholder="Nome"></td>
+              <td><input type="number" class="form-control" name="quantidade" placeholder="Quantidade"></td>
+              <td><input type="date" class="form-control" name="data_entrega"></td>
+              <td><input type="date" class="form-control" name="validade"></td>
+              <td><input type="text" class="form-control" name="ca" placeholder="CA"></td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="text-end">
+          <button type="submit" class="btn btn-success">Salvar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>
