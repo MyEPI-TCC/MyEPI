@@ -1,0 +1,130 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #12191b;
+    color: white;
+  }
+
+  .top-navbar {
+    background-color: rgb(160, 56, 0);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1001;
+  }
+
+  .navbar-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+  }
+
+  .top-navbar button {
+    background-color: #ffffff;
+    color: rgb(160, 56, 0);
+    border: none;
+    font-weight: bold;
+    position: absolute;
+    right: 20px;
+    transition: background 0.3s;
+  }
+
+  .top-navbar button:hover {
+    background-color: #f0f0f0;
+  }
+
+  .sidebar {
+    height: 100vh;
+    width: 250px;
+    background-color: #162225;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar .nav-link {
+    color: white;
+    padding: 15px 20px;
+    transition: all 0.3s;
+  }
+
+  .sidebar .nav-link:hover {
+    background-color: #1e2d31;
+    border-left: 5px solid rgb(255, 102, 0);
+  }
+
+  .nav-link.active {
+    color: orange !important;
+  }
+
+  .main-content {
+    margin-left: 250px;
+    padding: 90px 30px 30px 30px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .form-box {
+    background-color: #1f2a2d;
+    padding: 30px;
+    border-radius: 15px;
+    width: 100%;
+    max-width: 600px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  }
+
+  .form-box h4 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .form-control {
+    background-color: #d9d9d9;
+    color: #12191b;
+    font-weight: bold;
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+  }
+
+  .btn {
+    background-color: #d9d9d9;
+    color: #12191b;
+    font-weight: bold;
+    border-radius: 20px;
+    padding: 5px 20px;
+  }
+  .btn-sm {
+      border-radius: 5px;
+      padding: 7px;
+  }
+  .btn-sm a{
+    text-decoration: none;
+    color: black;
+  }
+
+  .btn:hover {
+    background-color: #bbbbbb;
+  }
+
+  .invalid-feedback {
+    display: none;
+    color: #ff6961;
+  }
+
+  .form-control.is-invalid + .invalid-feedback {
+    display: block;
+  }
