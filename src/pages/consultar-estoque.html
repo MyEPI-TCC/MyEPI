@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Depósito</title>
+
+    <!-- Bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- CSS puro -->
+    <link rel="stylesheet" href="/src/assets/css/consulta-estoque.css">
+</head>
+
+<body>
+    <!-- NAVBAR SUPERIOR -->
+    <div class="top-navbar">
+        <div class="navbar-title">FUSIONSTEC ENGENHARIA</div>
+    </div>
+
+    <!-- SIDEBAR VERTICAL -->
+    <div class="sidebar">
+        <div class="text-center mb-5">
+            <img src="../assets/images/logo.png" alt="Logo" width="120" />
+        </div>
+        <nav class="nav flex-column">
+            <a class="nav-link" href="./dashboard.html">Dashboard</a>
+            <a class="nav-link active" href="./estoque.html">Estoque</a>
+            <a class="nav-link" href="./myepi.html">EPI</a>
+            <a class="nav-link" href="#">Funcionário</a>
+            <a class="nav-link" href="#">Entregas</a>
+        </nav>
+    </div>
+
+    <!-- CONTEÚDO PRINCIPAL -->
+    <div class="main-content">
+        <h2>Depósito</h2>
+
+        <div class="status-legend">
+            <div><span class="status-dot dot-adequada"></span> Qt. Adequada</div>
+            <div><span class="status-dot dot-moderada"></span> Qt. Moderada</div>
+            <div><span class="status-dot dot-minima"></span> Qt. Mínima</div>
+        </div>
+
+        <div class="estoque-table">
+            <form>
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Quantidade</th>
+                            <th>Data de entrega</th>
+                            <th>Validade</th>
+                            <th>CA</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="text" class="form-control" name="nome" placeholder="Nome"></td>
+                            <td><input type="number" class="form-control" name="quantidade" placeholder="Quantidade"></td>
+                            <td><input type="date" class="form-control" name="data_entrega"></td>
+                            <td><input type="date" class="form-control" name="validade"></td>
+                            <td><input type="text" class="form-control" name="ca" placeholder="CA"></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

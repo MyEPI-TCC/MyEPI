@@ -1,72 +1,69 @@
-html, body {
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
-  }
-  
-  /* Altura total da tela */
-  .full-height {
-    height: 100vh;
-  }
-  
-  .row-full-height {
-    height: 100%;
-  }
-  
-  /* Imagem à esquerda */
-  .cadastro-image {
-    background: url('../assets/images/foto-verificacao2.png') no-repeat center center;
-    background-size: cover;
-  }
-  
+}
 
-  .form-container {
+
+/*body {
+  padding-top: 60px; /* ajuste conforme a nova altura da navbar 
+}/*
+
+
+/* Altura total da tela */
+
+.full-height {
+    height: 100vh;
+}
+
+
+/* Imagem à esquerda */
+
+.cadastro-image {
+    background: url('../images/foto-cadastro.png') no-repeat center center;
+    background-size: cover;
+}
+
+
+/* Formulário */
+
+.form-container {
     max-width: 350px;
     width: 100%;
     padding: 2rem;
-  }
-  
-  
-  .form-container h2 {
-    margin-bottom: 1.5rem;
-  }
-  
-  .form-container p {
-    margin-bottom: 2rem;
-  }
-  
- 
-  #login-dark {
+}
+
+
+/* Fundo escuro para o lado direito */
+
+#login-dark {
     background-color: #212529;
-  }
-  
- 
-  .custom-btn {
+}
+
+
+/* Botão */
+
+.custom-btn {
     background-color: rgb(160, 56, 0);
     color: white;
-    border: none !important;
-    box-shadow: none !important;
-    outline: none;
-  }
-  .custom-btn a{
+    border: none;
+}
+
+.custom-btn a {
     text-decoration: none;
     color: white;
-  }
-  
-  .custom-btn:hover {
+}
+
+.custom-btn:hover {
     background-color: rgb(130, 46, 0);
     color: white;
-  }
-  
-  .custom-btn:focus,
-  .custom-btn:active {
-    outline: none !important;
-    box-shadow: none !important;
-    border: none ;
-  }
-  
+}
 
-  .custom-navbar {
+
+/* Navbar com cor personalizada */
+
+.custom-navbar {
     background-color: rgb(160, 56, 0);
     position: fixed;
     top: 0;
@@ -74,34 +71,46 @@ html, body {
     max-height: 100px;
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  
-  body {
+}
+
+
+/* Espaço superior para compensar navbar fixa */
+
+body {
     padding-top: 80px;
-  }
-  
-  
-  .navbar-nav {
+}
+
+
+/* Alinhamento dos itens da navbar */
+
+.navbar-nav {
     align-items: center;
-  }
-  
-  .nav-item {
+}
+
+
+/* Espaçamento entre os itens da navbar */
+
+.nav-item {
     margin: 0 50px;
-  }
-  
-  .nav-link {
+}
+
+
+/* Estilo dos links da navbar */
+
+.nav-link {
     transition: all 0.3s ease;
     padding: 10px 20px;
     border-radius: 8px;
     border: 2px solid transparent;
     color: white;
-  }
-  
-  .nav-link:hover {
+}
+
+
+/* Gradiente no hover dos links da navbar */
+
+.nav-link:hover {
     background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
     border: 2px solid rgb(180, 84, 23);
     border-radius: 10px;
     color: white;
-  }
-  
+}
