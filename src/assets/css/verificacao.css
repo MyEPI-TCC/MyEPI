@@ -15,7 +15,7 @@ html, body {
   
   /* Imagem à esquerda */
   .cadastro-image {
-    background: url('../assets/images/foto-verificacao1.png') no-repeat center center;
+    background: url('../images/foto-verificacao1.png') no-repeat center center;
     background-size: cover;
   }
   
