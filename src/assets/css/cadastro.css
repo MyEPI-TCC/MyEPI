@@ -6,13 +6,6 @@ body {
 }
 
 
-/*body {
-  padding-top: 60px; /* ajuste conforme a nova altura da navbar 
-}/*
-
-
-/* Altura total da tela */
-
 .full-height {
     height: 100vh;
 }
@@ -35,7 +28,7 @@ body {
 }
 
 
-/* Fundo escuro para o lado direito */
+
 
 #login-dark {
     background-color: #212529;
@@ -61,7 +54,7 @@ body {
 }
 
 
-/* Navbar com cor personalizada */
+/* Navbar */
 
 .custom-navbar {
     background-color: rgb(160, 56, 0);
@@ -74,28 +67,28 @@ body {
 }
 
 
-/* Espaço superior para compensar navbar fixa */
+
 
 body {
     padding-top: 80px;
 }
 
 
-/* Alinhamento dos itens da navbar */
+
 
 .navbar-nav {
     align-items: center;
 }
 
 
-/* Espaçamento entre os itens da navbar */
+
 
 .nav-item {
     margin: 0 50px;
 }
 
 
-/* Estilo dos links da navbar */
+
 
 .nav-link {
     transition: all 0.3s ease;
@@ -106,7 +99,7 @@ body {
 }
 
 
-/* Gradiente no hover dos links da navbar */
+/* Gradiente no  dos links da navbar */
 
 .nav-link:hover {
     background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
