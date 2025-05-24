@@ -3,27 +3,7 @@ body {
     height: 100%;
     margin: 0;
     padding: 0;
-<<<<<<< HEAD
 }
-=======
-  }
-  
-  /* Altura total da tela */
-  .full-height {
-    height: 100vh;
-  }
-  
-  .row-full-height {
-    height: 100%;
-  }
-  
-  /* Imagem à esquerda */
-  .cadastro-image {
-    background: url('../images/foto-verificacao2.png') no-repeat center center;
-    background-size: cover;
-  }
-  
->>>>>>> origin
 
 
 /* Altura total da tela */
