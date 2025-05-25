@@ -1,0 +1,24 @@
+{
+  "name": "myepi",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/assets/js/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MyEPI-TCC/MyEPI.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/MyEPI-TCC/MyEPI/issues"
+  },
+  "homepage": "https://github.com/MyEPI-TCC/MyEPI#readme",
+  "description": "",
+  "dependencies": {
+    "axios": "^1.9.0"
+  }
+}

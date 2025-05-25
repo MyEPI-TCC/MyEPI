@@ -2,23 +2,23 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Depósito</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Consulta de Estoque</title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
 
-  <!-- CSS puro -->
-   <link rel="stylesheet" href="/src/assets/css/consulta-estoque.css">
+  <!-- CSS -->
+  <link rel="stylesheet" href="/src/assets/css/consulta-estoque.css">
 </head>
-
 <body>
-  <!-- NAVBAR SUPERIOR -->
+
+  <!-- NAVBAR -->
   <div class="top-navbar">
     <div class="navbar-title">FUSIONSTEC ENGENHARIA</div>
   </div>
 
-  <!-- SIDEBAR VERTICAL -->
+  <!-- SIDEBAR -->
   <div class="sidebar">
     <div class="text-center mb-5">
       <img src="../assets/images/logo.png" alt="Logo" width="120" />
@@ -34,41 +34,44 @@
 
   <!-- CONTEÚDO PRINCIPAL -->
   <div class="main-content">
-    <h2>Depósito</h2>
+    <h2>Consulta de Estoque</h2>
 
-    <div class="status-legend">
+    <!-- LEGENDA -->
+    <div class="status-legend mb-4">
       <div><span class="status-dot dot-adequada"></span> Qt. Adequada</div>
       <div><span class="status-dot dot-moderada"></span> Qt. Moderada</div>
       <div><span class="status-dot dot-minima"></span> Qt. Mínima</div>
     </div>
 
+    <!-- TABELA -->
     <div class="estoque-table">
-      <form>
-        <table class="table table-borderless">
-          <thead>
-            <tr>
-              <th>Nome</th>
-              <th>Quantidade</th>
-              <th>Data de entrega</th>
-              <th>Validade</th>
-              <th>CA</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td><input type="text" class="form-control" name="nome" placeholder="Nome"></td>
-              <td><input type="number" class="form-control" name="quantidade" placeholder="Quantidade"></td>
-              <td><input type="date" class="form-control" name="data_entrega"></td>
-              <td><input type="date" class="form-control" name="validade"></td>
-              <td><input type="text" class="form-control" name="ca" placeholder="CA"></td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="text-end">
-          <button type="submit" class="btn btn-success">Salvar</button>
-        </div>
-      </form>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Nome EPI</th>
+            <th>Quantidade</th>
+            <th>Data Entrega</th>
+            <th>Validade</th>
+            <th>Código Lote</th>
+            <th>Nota Fiscal</th>
+            <th>Fornecedor</th>
+            <th>CA</th>
+            <th>Observações</th>
+          </tr>
+        </thead>
+        <tbody id="tabela-estoque">
+          <!-- Dados carregados aqui -->
+        </tbody>
+      </table>
     </div>
   </div>
+
+  <!-- BOOTSTRAP JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- AXIOS -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- SCRIPT -->
+  <script type="module" src="../assets/js/consultar-estoque.js"></script>
+
 </body>
 </html>
