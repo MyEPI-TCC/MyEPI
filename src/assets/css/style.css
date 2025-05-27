@@ -1,32 +1,170 @@
-   * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+@import url(https://fonts.googleapis.com/css?family=Poppins:100,100italic,200,200italic,300,300italic,regular,italic,500,500italic,600,600italic,700,700italic,800,800italic,900,900italic);
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: 200;
+    line-height: 1.6;
+    background: #0D1517;
+    color: aliceblue;
+    overflow-x: hidden;
+}
+
+.logo {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.logo img {
+    margin-top: -100px;
+    position: relative;
+    top: 60px;
+}
+
+.nav-bar {
+    background: linear-gradient(120deg, #5D2100, #C34400);
+    padding: 10px 20px;
+    text-align: center;
+    height: 70px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.nav-list {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: -35px;
+    gap: 20px;
+}
+
+.nav-list li {
+    margin: 10px 15px;
+}
+
+.nav-list li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16.5px;
+    transition: color 0.3s, border 0.3s;
+    padding: 10px 20px;
+    display: inline-block;
+    border-radius: 20px;
+}
+
+.nav-list li a:hover {
+    color: #ff8800;
+}
+
+.nav-list li a.login:hover,
+.nav-list li a.cadastro:hover {
+    background-color: rgb(255, 123, 0);
+    /* Preenchimento da borda */
+    color: #0D1517;
+    /* Texto escuro para contraste */
+    box-shadow: 0 4px 15px rgba(255, 123, 0, 0.4);
+    /* Opcional: sombra suave */
+}
+
+/* Estilo especial para login e cadastro */
+.nav-list li a.login,
+.nav-list li a.cadastro {
+    border: 1px solid rgb(255, 123, 0);
+}
+
+/* Efeito ao clicar */
+.nav-list li a.login:active,
+.nav-list li a.cadastro:active {
+    box-shadow: 0 0 10px #006eff, 0 0 20px #006eff, 0 0 30px #006eff;
+    background-color: #004f91;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #006eff;
+}
+
+section {
+    padding: 100px 20px 50px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+section h2 {
+    color: #ff7300;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+section p {
+    font-size: 16px;
+    color: aliceblue;
+    text-align: left;
+}
+
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 0 20px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.imgi {
+    text-align: center;
+    padding-top: 100px;
+    position: relative;
+    left: -20px;
+}
+
+.imgi img {
+    max-width: 150%;
+    border-radius: 20px;
+    object-fit: cover;
+    margin-top: -100px;
+
+}
+
+.logoii {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 160px;
+}
+
+.logoi {
+    max-width: 20%;
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column;
     }
 
-    body {
-      background-image: url('../images/inicio.png');
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      min-height: 150vh;
-      font-family: Arial, sans-serif;
-      color: white;
+    .nav-list li {
+        padding: 10px 0;
     }
 
-    .navbar {
-      background-color: rgba(0, 0, 0, 0.8) !important;
+    .container {
+        flex-direction: column;
+        text-align: center;
     }
 
-    .nav-link {
-      transition: all 0.3s ease;
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: 2px solid transparent;
+    .imgi,
+    .logoi {
+        padding: 10px 0;
+        position: static;
     }
-
-    .nav-link:hover {
-      background-color: #f2842a;
-      border: 2px solid white;
-      color: white;
-    }
+}
