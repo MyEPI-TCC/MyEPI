@@ -1,16 +1,14 @@
-  // Função para buscar os dados da API e atualizar a tabela
-  async function carregarEPIs() {
+async function carregarEPIs() {
     try {
-      // Troque a URL abaixo pela URL correta da API do backend do seu colega
-      const response = await fetch('http://localhost:3000/api/epis');
+      const response = await fetch('http://localhost:3000/api/epis'); // Troque pela sua API real
       if (!response.ok) {
         throw new Error('Erro ao buscar os dados: ' + response.status);
       }
       const epis = await response.json();
-
+  
       const tbody = document.querySelector('table tbody');
-      tbody.innerHTML = ''; // limpa tabela antes de preencher
-
+      tbody.innerHTML = ''; // limpa tabela
+  
       epis.forEach(epi => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
@@ -22,12 +20,10 @@
         `;
         tbody.appendChild(tr);
       });
-
     } catch (error) {
       console.error('Erro:', error);
     }
   }
-
-  // Chama a função quando a página carregar
+  
   window.addEventListener('DOMContentLoaded', carregarEPIs);
-
+  

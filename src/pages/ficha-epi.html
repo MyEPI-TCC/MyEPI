@@ -37,42 +37,26 @@
     <div class="table-box position-relative">
       <div class="d-flex justify-content-between align-items-center mb-3">
         <h5 class="mb-0">EPI’S Cadastrados</h5>
-        <span class="close-button" onclick="window.location.href='./dashboard.html'">&times;</span>
+        <span class="close-button" onclick="window.location.href='./myepi.html'">&times;</span>
       </div>
-      <table class="table table-dark table-striped table-bordered">
-        <thead>
-          <tr>
-            <th>Nome do EPI</th>
-            <th>Categoria do EPI</th>
-            <th>Marca</th>
-            <th>CA</th>
-            <th>Validade</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Óculos de proteção</td>
-            <td>Geral</td>
-            <td>Delta Plus</td>
-            <td>22.222</td>
-            <td>18 / 03 / 2027</td>
-          </tr>
-          <tr>
-            <td>Protetor Auricular</td>
-            <td>Geral</td>
-            <td>Axure</td>
-            <td>20.235</td>
-            <td>27 / 03 / 2026</td>
-          </tr>
-          <tr>
-            <td>Luva descartável</td>
-            <td>Saúde</td>
-            <td>Medix</td>
-            <td>62.827</td>
-            <td>05 / 03 / 2027</td>
-          </tr>
-        </tbody>
-      </table>
+
+      <!-- TABELA RESPONSIVA -->
+      <div class="table-responsive">
+        <table class="table table-dark table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Nome do EPI</th>
+              <th>Categoria do EPI</th>
+              <th>Marca</th>
+              <th>CA</th>
+              <th>Validade</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Vai ser preenchido dinamicamente pelo JS -->
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
 
