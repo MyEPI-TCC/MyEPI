@@ -1,32 +1,270 @@
-   * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 200;
+    line-height: 1.6;
+    background: #0D1517;
+    color: aliceblue;
+    overflow-x: hidden;
+}
+
+.logo {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.logo img {
+    margin-top: -100px;
+    position: relative;
+    top: 60px;
+}
+
+.nav-bar {
+    background: linear-gradient(120deg, #5D2100, #C34400);
+    padding: 10px 20px;
+    text-align: center;
+    height: 70px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.nav-list {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: -35px;
+    gap: 20px;
+}
+
+.nav-list li {
+    margin: 10px 15px;
+}
+
+.nav-list li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 16.5px;
+    transition: color 0.3s, border 0.3s;
+    padding: 10px 20px;
+    display: inline-block;
+    border-radius: 20px;
+}
+
+.nav-list li a:hover {
+    color: #ff8800;
+}
+
+.nav-list li a.login:hover,
+.nav-list li a.cadastro:hover {
+    background-color: rgb(255, 123, 0);
+    color: #0D1517;
+    box-shadow: 0 4px 15px rgba(255, 123, 0, 0.4);
+}
+
+.nav-list li a.login,
+.nav-list li a.cadastro {
+    border: 1px solid rgb(255, 123, 0);
+}
+
+.nav-list li a.login:active,
+.nav-list li a.cadastro:active {
+    box-shadow: 0 0 10px #006eff, 0 0 20px #006eff, 0 0 30px #006eff;
+    background-color: #004f91;
+    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #006eff;
+}
+
+section {
+    padding: 40px 10px 10px;
+    margin: 20px auto;
+    max-width: 1200px;
+}
+
+section h2 {
+    color: #ffffff;
+    margin-bottom: 50px;
+    text-align: center;
+}
+
+section p {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-bottom: 100px;
+}
+
+/* --- WRAPPER --- */
+.wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.text,
+.text2 {
+    flex: 1 1 45%;
+    min-width: 300px;
+}
+
+.text h2 {
+    text-align: left;
+    color: #C34400;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.text p,
+.text2 p,
+.text3 {
+    text-align: justify;
+    font-size: 20px;
+    color: #ffffff;
+    line-height: 1.5;
+}
+
+.text2 {
+    background-color: #C34400;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.text2 h2 {
+    text-align: center;
+    color: #ffffff;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+.text3 {
+    background-color: #C34400;
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.text3 h2 {
+    text-align: center;
+    color: #ffffff;
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+
+/* IMAGEM RESPONSIVA */
+.element {
+    flex: 1 1 45%;
+    min-width: 300px;
+    text-align: center;
+}
+
+.element img {
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+    display: block;
+    padding-top: 30px;
+}
+
+/* CONTAINER INICIAL */
+.container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding: 0 20px;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.imgi {
+    text-align: center;
+    padding-top: 100px;
+    position: relative;
+    left: -30px;
+
+}
+
+.imgi img {
+    width: 105%;
+    height: auto;
+    object-fit: cover;
+    margin-top: -100px;
+}
+
+.logoii {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 40px;
+}
+
+.logoi {
+    max-width: 20%;
+    height: auto;
+}
+
+.info-box {
+    background: #C34400;
+
+}
+
+.info-box p {
+    text-align: center;
+    justify-content: center;
+    position: relative;
+}
+
+.info-box h2 {
+    text-align: center;
+    justify-content: center;
+}
+
+.rodape {
+    background: #000000;
+    width: 225vh;
+}
+
+.rodape h2 {
+   text-align: center;
+}
+
+/* MEDIA QUERY */
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column;
     }
 
-    body {
-      background-image: url('../images/inicio.png');
-      background-position: center;
-      background-size: cover;
-      background-repeat: no-repeat;
-      min-height: 150vh;
-      font-family: Arial, sans-serif;
-      color: white;
+    .nav-list li {
+        padding: 10px 0;
     }
 
-    .navbar {
-      background-color: rgba(0, 0, 0, 0.8) !important;
+    .container {
+        flex-direction: column;
+        text-align: center;
     }
 
-    .nav-link {
-      transition: all 0.3s ease;
-      padding: 10px 20px;
-      border-radius: 8px;
-      border: 2px solid transparent;
+    .imgi,
+    .logoi {
+        padding: 10px 0;
+        position: static
     }
-
-    .nav-link:hover {
-      background-color: #f2842a;
-      border: 2px solid white;
-      color: white;
-    }
+}

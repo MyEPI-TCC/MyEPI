@@ -1,96 +1,85 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My EPI</title>
-  <link rel="stylesheet" href="/src/assets/css/style.css" />
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My EPI</title>
+    <link rel="stylesheet" href="src/assets/css/style.css">
 </head>
 
 <body>
 
-  <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg navbar-dark px-4 bg-dark">
-    <a class="navbar-brand" href="#">
-      <img src="/src/assets/images/logo.png" alt="Logo" width="120" />
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-      <ul class="navbar-nav">
-        <li class="nav-item"><a class="nav-link" href="/index.html">Início</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Planos</a></li>
-        <li class="nav-item"><a class="nav-link" href="#">Suporte</a></li>
-        <li class="nav-item"><a class="nav-link" href="/src/pages/login.html">Login</a></li>
-        <li class="nav-item"><a class="nav-link" href="/src/pages/cadastro.html">Cadastre-se</a></li>
-      </ul>
-    </div>
-  </nav>
-
-    <!-- Conteúdo principal -->
-    <main>
-        <section class="container text-center text-white my-5 p-5 rounded-4" style="background-color: rgba(0, 0, 0, 0.7);">
-            <h1 class="display-4 mb-4">Bem-vindo ao My EPI</h1>
-            <p class="lead mb-4">
-                O My EPI é uma plataforma eficiente para o gerenciamento de estoque de Equipamentos de Proteção Individual (EPIs), oferecendo controle preciso por meio da leitura de códigos de barras. Proporciona segurança, rastreabilidade e organização no ambiente corporativo.
-            </p>
-
-            <!-- Vídeo com autoplay e muted -->
-            <div class="d-flex justify-content-center mt-4 mb-5">
-                <div class="w-100" style="max-width: 500px;">
-                    <div class="ratio ratio-16x9">
-                        <iframe src="https://www.youtube.com/embed/qfbhqPFs4iE?autoplay=1&mute=1" title="YouTube video" allow="autoplay; encrypted-media" allowfullscreen>
-            </iframe>
-                    </div>
-                </div>
-            </div>
-
-            <a href="cadastro.html" class="btn btn-warning btn-lg">Começar Agora</a>
-        </section>
-    </main>
-
-    <footer class="bg-dark text-white pt-4 pb-4 mt-5">
-        <div class="container">
-            <div class="row justify-content-center">
-                <!-- Coluna única com as informações de contato -->
-                <div class="col-md-8 text-center">
-                    <!-- Fale Conosco -->
-                    <h5 class="text-uppercase" style="color: #f2842a;">Fale Conosco</h5>
-                    <ul class="list-unstyled">
-                        <li><a href="tel:+5511999999999" class="text-white" style="text-decoration: none;">+55 11 99999-9999</a>
-                        </li>
-                        <li><a href="mailto:contato@myepi.com.br" class="text-white" style="text-decoration: none;">contato@myepi.com.br</a></li>
-                    </ul>
-
-                    <!-- Endereço -->
-                    <h5 class="text-uppercase" style="color: #f2842a;">Endereço</h5>
-                    <p>Rua Exemplo, 123 - Centro, São Paulo - SP</p>
-                    <p>CEP: 01234-567</p>
-                </div>
-            </div>
-
-            <!-- Linha de separação -->
-            <hr class="my-4" style="border-color: #f2842a;">
-
-            <!-- Rodapé inferior -->
-            <div class="text-center">
-                <p class="mb-0" style="font-size: 0.875rem;">&copy; 2025 My EPI - Todos os direitos reservados.</p>
-            </div>
+    <nav class="nav-bar">
+        <div class="logo">
+            <img src="src/assets/images/4.png" height="100px">
+            <ul class="nav-list">
+                <li><a href="#MyEPI">My EPI</a></li>
+                <li><a href="#Planos">Planos</a></li>
+                <li><a href="#Suporte">Suporte</a></li>
+                <li class="nav-item"><a href="src/pages/login.html" class="login">Login</a></li>
+                <li class="nav-item"><a href="src/pages/cadastro.html" class="cadastro">Cadastro</a></li>
+            </ul>
         </div>
-    </footer>
+    </nav>
+
+    <div class="container">
+        <div class="imgi">
+            <img src="src/assets/images/inicio.png" alt="Imagem de fundo">
+        </div>
+        <div class="logoii">
+            <img class="logoi" src="src/assets/images/3.png" alt="Logo adicional">
+        </div>
+    </div>
+
+    <div class="info-box">
+        <section id="MyEPI">
+            <h2>A proteção que inspira confiança!</h2>
+            <p>Nosso sistema de gerenciamento de estoque de EPIs foi desenvolvido para garantir não apenas a segurança
+                do seu time, mas também a eficiência no controle e rastreamento dos itens. Com a funcionalidade de
+                associação por código de barras, você pode facilmente vincular cada EPI ao funcionário, proporcionando
+                maior controle, agilidade e confiança na distribuição e no monitoramento dos equipamentos de segurança.
+            </p>
+        </section>
+    </div>
+
+    <div class="wrapper">
+        <section class="text">
+            <h2>Com o My EPI, tudo é mais simples!</h2>
+            <p>O My EPI é um sistema inovador desenvolvido para gerenciar o estoque de Equipamentos de Proteção
+                Individual (EPIs) de forma eficiente e prática. Seu principal objetivo é otimizar o controle e a
+                distribuição desses materiais essenciais para a segurança no ambiente de trabalho. A plataforma permite
+                o registro e acompanhamento de cada item por meio da leitura de códigos de barras, facilitando tanto o
+                processo de entrada quanto de saída de EPIs no estoque.</p>
+        </section>
+
+        <div class="element">
+            <img src="src/assets/images/a-cropped-photo-of-a-construction-worker-ud9f840nkmboshfu.jpg" alt="Ilustração My EPI">
+        </div>
+
+        <div class="text2">
+            <h2>Sua Segurança sempre em 1º lugar</h2>
+            <p>No ambiente de trabalho, a segurança deve sempre ser prioridade. O My EPI foi desenvolvido com esse
+                princípio em mente: garantir que cada colaborador tenha acesso rápido, controlado e seguro aos
+                Equipamentos de Proteção Individual (EPIs). Com recursos modernos de rastreamento, como a leitura por
+                código de barras, nosso sistema assegura que nenhum item seja entregue fora da validade ou sem o devido
+                registro.</p>
+        </div>
+
+        <div class="text3">
+            <h2>Gestão Ágil com Leitura por Código de Barras</h2>
+            <p>Com o My EPI, a gestão de Equipamentos de Proteção Individual se torna muito mais rápida e eficiente
+                graças à funcionalidade de leitura por código de barras. Por meio dessa tecnologia, é possível associar
+                automaticamente o EPI ao colaborador, garantindo total rastreabilidade e controle do uso dos
+                equipamentos.</p>
+        </div>
+    </div>
+
+    <div class="rodape">
+        <h2>Suporte</h2>
+    </div>
 
 
-
-
-
-
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js" integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous"></script>
 </body>
 
 </html>
