@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>My EPI</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/src/assets/css/ficha-epi.css">
+  <title>Histórico de Entregas</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/assets/css/historico-movimentacoes.css" />
 </head>
-
 <body>
 
   <!-- NAVBAR SUPERIOR -->
@@ -25,42 +23,49 @@
     <nav class="nav flex-column">
       <a class="nav-link" href="./dashboard.html">Dashboard</a>
       <a class="nav-link" href="./estoque.html">Estoque</a>
-      <a class="nav-link active" href="./myepi.html">EPI</a>
+      <a class="nav-link" href="./myepi.html">My EPI</a>
       <a class="nav-link" href="#">Funcionário</a>
-      <a class="nav-link" href="./movimentacoes.html">Movimentações</a>
+      <a class="nav-link active" href="./movimentacoes.html">Movimentações</a>
     </nav>
   </div>
 
   <!-- CONTEÚDO PRINCIPAL -->
   <div class="main-content">
-    <h4 class="mb-4">My EPI</h4>
-    <div class="table-box position-relative">
+    <h4 class="mb-4">Entregas</h4>
+
+    <div class="content-box p-4 rounded-3">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h5 class="mb-0">EPI’S Cadastrados</h5>
-        <span class="close-button" onclick="window.location.href='./myepi.html'">&times;</span>
+        <div>
+          <h5 class="fw-bold">Histórico</h5>
+          <p class="m-0">Robson Andrade dos Santos</p> <!-- Substituir dinamicamente depois -->
+        </div>
+        <div class="d-flex align-items-center gap-3">
+          <input type="text" class="form-control" placeholder="Digite o EPI" />
+          <button class="btn btn-outline-light">🔍</button>
+          <button class="btn btn-light fw-bold fs-4" onclick="window.location.href='movimentacoes.html'">✕</button>
+        </div>
       </div>
 
-      <!-- TABELA RESPONSIVA -->
       <div class="table-responsive">
-        <table class="table table-dark table-striped table-bordered">
+        <table class="table table-dark table-striped table-hover align-middle text-center">
           <thead>
             <tr>
               <th>Nome do EPI</th>
               <th>Categoria do EPI</th>
-              <th>Marca</th>
+              <th>Status</th>
+              <th>Estado</th>
               <th>CA</th>
-              <th>Validade</th>
+              <th>Hora</th>
+              <th>Data</th>
             </tr>
           </thead>
-          <tbody>
-            <!-- Vai ser preenchido dinamicamente pelo JS -->
+          <tbody id="historico-tbody">
+            <!-- Conteúdo será inserido pelo back-end -->
           </tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <script src="../assets/js/ficha-epi.js"></script>
 </body>
-
 </html>
