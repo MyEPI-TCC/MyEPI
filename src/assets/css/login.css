@@ -1,6 +1,10 @@
-html, body {
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap');
+
+html,
+body {
   height: 100%;
   margin: 0;
+  font-family: 'Poppins', sans-serif;
 }
 
 .full-height {
@@ -35,13 +39,14 @@ html, body {
 }
 
 .custom-navbar {
-  background-color: rgb(160, 56, 0);
+  background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
   position: fixed;
   top: 0;
   width: 100%;
   max-height: 100px;
   z-index: 1000;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
 }
 
 body {

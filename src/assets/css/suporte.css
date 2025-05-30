@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    font-weight: 200;
+    line-height: 1.6;
+    background: #0D1517;
+    color: aliceblue;
+    overflow-x: hidden;
+}
+
+.logo {
+    text-align: left;
+    padding-left: 20px;
+}
+
+.logo img {
+    margin-top: -100px;
+    position: relative;
+    top: 75px;
+    width: 125px;
+    height: auto;
+    margin-left: -20px;
+}
+
+.nav-bar {
+    background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
+    padding: 10px 20px;
+    text-align: center;
+    height: 100px;
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+}
+
+.nav-list {
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: -35px;
+    gap: 45px;
+    margin-top: -26px;
+    margin-left: 72px;
+}
+
+.nav-list li {
+    margin: 10px 15px;
+}
+
+.nav-list li a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 16.5px;
+    transition: color 0.3s, border 0.3s;
+    padding: 10px 20px;
+    display: inline-block;
+    border-radius: 20px;
+}
+
+.nav-list li a:hover {
+    background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
+    border: 2px solid rgb(180, 84, 23);
+    border-radius: 10px;
+    color: white;
+}
+
+.caixa-arredondada {
+    background-color: #C34400;
+    color: white;
+    padding: 60px 40px;          /* mais espaço interno (vertical e horizontal) */
+    margin: 60px auto;           /* mais afastada do topo e centralizada */
+    max-width: 900px;            /* largura máxima maior */
+    border-radius: 30px;         /* cantos ainda mais arredondados */
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3); /* sombra mais intensa */
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    font-size: 20px;             /* texto maior */
+    margin-top: 400px;
+}
