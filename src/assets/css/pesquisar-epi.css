@@ -1,0 +1,145 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    background-color: #12191b;
+    color: white;
+    font-family: Arial, sans-serif;
+  }
+
+  .top-navbar {
+    background-color: rgb(160, 56, 0);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+  }
+
+  .navbar-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .btn-sair {
+    background-color: white;
+    color: red;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: 20px;
+    transition: background-color 0.3s ease;
+  }
+
+  .btn-sair:hover {
+    background-color: #f2f2f2;
+  }
+
+  .sidebar {
+    height: 100vh;
+    width: 250px;
+    background-color: #162225;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar .nav-link {
+    color: white;
+    padding: 15px 20px;
+    transition: all 0.3s;
+  }
+
+  .sidebar .nav-link:hover {
+    background-color: #1e2d31;
+    border-left: 5px solid rgb(255, 102, 0);
+  }
+
+  .nav-link.active {
+    color: orange !important;
+  }
+
+  .main-content {
+    margin-left: 250px;
+    padding: 100px 30px 30px;
+  }
+
+  .search-box {
+    background-color: #1f2b30;
+    padding: 30px;
+    border-radius: 15px;
+    width: 600px;
+    margin: auto;
+    position: relative;
+  }
+
+  .search-box h4 {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .form-control {
+    background-color: #d9d9d9;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 10px;
+  }
+
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .results-box {
+    background-color: #0e1618;
+    border-radius: 10px;
+    padding: 10px;
+    height: 120px;
+    overflow-y: auto;
+    margin-bottom: 15px;
+    font-size: 0.9rem;
+  }
+
+  .btn-pesquisar {
+    background-color: white;
+    color: black;
+    border: none;
+    border-radius: 10px;
+    padding: 8px 20px;
+    font-weight: bold;
+  }
+
+  .btn-pesquisar:hover {
+    background-color: #e0e0e0;
+  }
+
+  .close-button {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 22px;
+    color: white;
+    text-decoration: none;
+  }
+
+  .close-button:hover {
+    color: #ffcccc;
+  }
+
+  @media (max-width: 700px) {
+    .search-box {
+      width: 90%;
+    }
+  }
