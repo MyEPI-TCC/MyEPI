@@ -27,7 +27,7 @@ body {
 }
 
 .nav-bar {
-    background: linear-gradient(120deg, #5D2100, #C34400);
+  background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
     padding: 10px 20px;
     text-align: center;
     height: 70px;
@@ -64,25 +64,6 @@ body {
 
 .nav-list li a:hover {
     color: #ff8800;
-}
-
-.nav-list li a.login:hover,
-.nav-list li a.cadastro:hover {
-    background-color: rgb(255, 123, 0);
-    color: #0D1517;
-    box-shadow: 0 4px 15px rgba(255, 123, 0, 0.4);
-}
-
-.nav-list li a.login,
-.nav-list li a.cadastro {
-    border: 1px solid rgb(255, 123, 0);
-}
-
-.nav-list li a.login:active,
-.nav-list li a.cadastro:active {
-    box-shadow: 0 0 10px #006eff, 0 0 20px #006eff, 0 0 30px #006eff;
-    background-color: #004f91;
-    text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px #006eff;
 }
 
 section {
@@ -184,29 +165,21 @@ section p {
 /* CONTAINER INICIAL */
 .container {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding: 0 20px;
-    max-width: 1400px;
-    margin-left: auto;
-    margin-right: auto;
+    flex-direction: column;
+    align-items: center; 
+    margin-top: 70px;
+
 }
 
 .imgi {
-    text-align: center;
-    padding-top: 100px;
-    position: relative;
-    left: -30px;
-
+    width: 100%;
+    height: 100%;
 }
 
 .imgi img {
-    width: 105%;
-    height: auto;
-    object-fit: cover;
-    margin-top: -100px;
+    width: 100%;
+    height: 100%;    
+    margin-top: -250px;
 }
 
 .logoii {
@@ -214,7 +187,13 @@ section p {
     justify-content: center;
     align-items: center;
     width: 100%;
-    margin-top: 40px;
+    height: 400px;
+    margin-bottom: 40px;
+}
+.logoii img {
+    width: 100%;
+    height: 100%;
+
 }
 
 .logoi {
@@ -224,7 +203,9 @@ section p {
 
 .info-box {
     background: #C34400;
-
+    height: 400px;
+    display: flex;
+    align-items: center;
 }
 
 .info-box p {
@@ -241,9 +222,11 @@ section p {
 .rodape {
     background: #000000;
     width: 225vh;
+       margin-top: 50px;
 }
 
 .rodape h2 {
+ 
    text-align: center;
 }
 
