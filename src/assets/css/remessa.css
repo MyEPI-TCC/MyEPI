@@ -1,309 +1,354 @@
-html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background-color: #12191b;
-    }
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #12191b;
+}
 
-    .top-navbar {
-      background-color: rgb(160, 56, 0);
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1001;
-    }
+.top-navbar {
+  background-color: rgb(160, 56, 0);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1001;
+}
 
-    .navbar-title {
-      font-weight: bold;
-      font-size: 1.2rem;
-      color: white;
-    }
+.navbar-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+}
 
-    .top-navbar button {
-      background-color: #ffffff;
-      color: rgb(160, 56, 0);
-      border: none;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
+.top-navbar button {
+  background-color: #ffffff;
+  color: rgb(160, 56, 0);
+  border: none;
+  font-weight: bold;
+  transition: background 0.3s;
+}
 
-    .top-navbar button:hover {
-      background-color: #f0f0f0;
-    }
+.top-navbar button:hover {
+  background-color: #f0f0f0;
+}
 
-    .sidebar {
-      height: 100vh;
-      width: 250px;
-      background-color: #162225;
-      position: fixed;
-      top: 60px;
-      left: 0;
-      padding-top: 40px;
-      display: flex;
-      flex-direction: column;
-      color: white;
-      z-index: 1000;
-    }
+.sidebar {
+  height: 100vh;
+  width: 250px;
+  background-color: #162225;
+  position: fixed;
+  top: 60px;
+  left: 0;
+  padding-top: 40px;
+  display: flex;
+  flex-direction: column;
+  color: white;
+  z-index: 1000;
+}
 
-    .sidebar .nav-link {
-      color: white;
-      padding: 15px 20px;
-      transition: all 0.3s;
-    }
+.sidebar .nav-link {
+  color: white;
+  padding: 15px 20px;
+  transition: all 0.3s;
+}
 
-    .sidebar .nav-link:hover {
-      background-color: #1e2d31;
-      border-left: 5px solid rgb(255, 102, 0);
-      color: white;
-    }
+.sidebar .nav-link:hover {
+  background-color: #1e2d31;
+  border-left: 5px solid rgb(255, 102, 0);
+  color: white;
+}
 
-    .main-content {
-      margin-left: 250px;
-      padding: 90px 30px 30px 30px;
-      color: white;
-      min-height: 100vh;
-    }
+.main-content {
+  margin-left: 250px;
+  padding: 90px 30px 30px 30px;
+  color: white;
+  min-height: 100vh;
+}
 
-    .form-container {
-      background-color: #1f2a2d;
-      padding: 30px;
-      border-radius: 15px;
-      max-width: 600px;
-      margin: 0 auto;
-      position: relative;
-    }
+.form-container {
+  background-color: #1f2a2d;
+  padding: 30px;
+  border-radius: 15px;
+  max-width: 600px;
+  margin: 0 auto;
+  position: relative;
+}
 
-    .form-container h4 {
-      text-align: center;
-      margin-bottom: 30px;
-    }
+.form-container h4 {
+  text-align: center;
+  margin-bottom: 30px;
+}
 
-    .form-control {
-      border-radius: 20px;
-      background-color: white;
-      border: none;
-      color: black;
-    }
+.form-control {
+  border-radius: 20px;
+  background-color: white;
+  border: none;
+  color: black;
+}
 
-    .btn-submit {
-      border-radius: 20px;
-      background-color: #d9d9d9;
-      border: none;
-      color: black;
-      font-weight: bold;
-      padding: 10px 30px;
-    }
-    .btn-submit a{
-      text-decoration: none;
-      color: black;
-    }
+.btn-submit {
+  border-radius: 20px;
+  background-color: #d9d9d9;
+  border: none;
+  color: black;
+  font-weight: bold;
+  padding: 10px 30px;
+}
 
-    .close-button {
-      position: absolute;
-      top: 15px;
-      right: 20px;
-      font-size: 24px;
-      color: white;
-      cursor: pointer;
-    }
+.btn-submit a {
+  text-decoration: none;
+  color: black;
+}
 
-    .form-label {
-      color: white;
-      font-size: 14px;
-    }
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+}
 
-/* --- Estilos Gerais e Layout (mantidos) --- */
+.form-label {
+  color: white;
+  font-size: 14px;
+}
+
 .barcode-input-container {
   position: relative;
 }
+
 .select2-container {
   width: 100% !important;
 }
+
 .select2-container--bootstrap-5 .select2-selection {
   border: 1px solid #ced4da;
   border-radius: 0.375rem;
-  min-height: 38px; /* Altura padrão do Bootstrap */
-  display: flex; /* Para alinhar o botão de scan verticalmente */
+  min-height: 38px;
+  display: flex;
   align-items: center;
 }
+
 .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
   padding-left: 12px;
-  /* Ajuste padding-right para acomodar botão de scan e clear */
   padding-right: 75px; 
-  line-height: normal; /* Remover line-height fixo */
+  line-height: normal;
 }
+
 .loading-indicator {
   display: none;
   position: absolute;
-  right: 45px; /* Posição do spinner (antes do botão scan) */
+  right: 45px; 
   top: 50%;
   transform: translateY(-50%);
   z-index: 5;
 }
+
 .field-group {
   position: relative;
 }
+
 .auto-filled {
   background-color: #e8f5e8 !important;
   border-color: #28a745 !important;
   transition: all 0.3s ease;
 }
-.auto-filled + .select2-container .select2-selection--single {
+
+.auto-filled+.select2-container .select2-selection--single {
   background-color: #e8f5e8 !important;
   border-color: #28a745 !important;
 }
+
 .scanner-instructions {
   font-size: 0.75rem;
   color: #6c757d;
   margin-top: 0.25rem;
 }
+
 .success-message {
   color: #28a745;
   font-size: 0.875rem;
   margin-top: 0.25rem;
   display: none;
 }
+
 .select2-results__option {
   padding: 8px 12px;
 }
+
 .select2-dropdown {
   border: 1px solid #ced4da;
   border-radius: 0.375rem;
 }
+
 .spinner-border-sm {
   width: 1rem;
   height: 1rem;
   border-width: 0.15em;
 }
 
-/* --- Ajuste Botão Limpar (x) Select2 --- */
-#id_ca + .select2-container--bootstrap-5 .select2-selection__clear {
-  right: 45px; /* Ajustado para ficar antes do botão scan */
+#id_ca+.select2-container--bootstrap-5 .select2-selection__clear {
+  right: 45px; 
   top: 50%;
   transform: translateY(-50%);
   z-index: 1;
-  font-size: 1.1em; /* Aumentar um pouco o tamanho */
+  font-size: 1.1em;
   opacity: 0.7;
   transition: opacity 0.2s ease;
 }
-#id_ca + .select2-container--bootstrap-5 .select2-selection__clear:hover {
-    opacity: 1;
+
+#id_ca+.select2-container--bootstrap-5 .select2-selection__clear:hover {
+  opacity: 1;
 }
 
-/* --- Melhoria Botão Scanner --- */
 .barcode-scanner-btn {
   position: absolute;
-  right: 8px; /* Posição mais à direita */
-  top: 50%;
-  transform: translateY(-50%);
+  right: 8px;
+  top: 4px; /* Ajustado de top: 50% e transform */
   z-index: 10;
-  padding: 0; /* Remover padding */
-  width: 30px; /* Largura fixa */
-  height: 30px; /* Altura fixa */
-  font-size: 16px; /* Tamanho do ícone */
+  padding: 0;
+  width: 30px;
+  height: 30px;
+  font-size: 16px;
   border: none;
-  background-color: #ff9800; /* Cor laranja */
+  background-color: #ff9800;
   color: white;
-  border-radius: 50%; /* Botão redondo */
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-.barcode-scanner-btn:hover {
-  background-color: #e68900; /* Laranja mais escuro */
-  transform: translateY(-50%) scale(1.1); /* Efeito de zoom */
-}
-.barcode-scanner-btn:active {
-    transform: translateY(-50%) scale(0.95); /* Efeito de clique */
-}
-.barcode-scanner-btn svg {
-    width: 18px;
-    height: 18px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* --- Melhoria Modal Scanner --- */
+.barcode-scanner-btn:hover {
+  background-color: #e68900;
+  transform: scale(1.1); /* Ajustado transform */
+}
+
+.barcode-scanner-btn:active {
+  transform: scale(0.95); /* Ajustado transform */
+}
+
+.barcode-scanner-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
 #barcodeModal .modal-content {
-    border-radius: 0.75rem; /* Bordas mais arredondadas */
-    border: none;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  border-radius: 0.75rem;
+  border: none;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
+
 #barcodeModal .modal-header {
-    background-color: #f8f9fa; /* Fundo levemente cinza */
-    border-bottom: 1px solid #dee2e6;
-    border-top-left-radius: 0.75rem;
-    border-top-right-radius: 0.75rem;
-    padding: 1rem 1.5rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: 0.75rem;
+  border-top-right-radius: 0.75rem;
+  padding: 1rem 1.5rem;
 }
+
 #barcodeModal .modal-title {
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem; /* Espaço entre ícone e texto */
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
- #barcodeModal .modal-title svg {
-    width: 24px;
-    height: 24px;
-    color: #495057;
- }
+
+#barcodeModal .modal-title svg {
+  width: 24px;
+  height: 24px;
+  color: #495057;
+}
+
 #barcodeModal .modal-body {
-    padding: 1.5rem;
+  padding: 1.5rem;
 }
+
 .barcode-modal-input {
-  font-size: 1.1rem; /* Fonte maior */
-  padding: 0.75rem 1rem; /* Mais padding */
-  border: 2px solid #ced4da; /* Borda padrão */
-  border-radius: 0.5rem; /* Borda mais suave */
+  font-size: 1.1rem;
+  padding: 0.75rem 1rem;
+  border: 2px solid #ced4da;
+  border-radius: 0.5rem;
   text-align: center;
   letter-spacing: 1px;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
+
 .barcode-modal-input:focus {
-  border-color: #ff9800; /* Foco laranja */
+  border-color: #ff9800;
   box-shadow: 0 0 0 0.25rem rgba(255, 152, 0, 0.25);
   outline: none;
 }
+
 .barcode-status {
-  min-height: 50px; /* Mais espaço vertical */
+  min-height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1rem; /* Mais margem */
+  margin-top: 1rem;
   font-size: 1rem;
 }
-.barcode-status .spinner-border {
-    width: 1.5rem; /* Spinner maior */
-    height: 1.5rem;
-    color: #ff9800; /* Spinner laranja */
-}
-.barcode-status .bi {
-    font-size: 1.8rem; /* Ícones maiores */
-    margin-right: 0.5rem;
-}
-.barcode-status .text-success {
-    color: #198754 !important; /* Verde Bootstrap */
-}
- .barcode-status .text-danger {
-    color: #dc3545 !important; /* Vermelho Bootstrap */
-}
-#barcodeModal .modal-footer {
-    background-color: #f8f9fa;
-    border-top: 1px solid #dee2e6;
-    border-bottom-left-radius: 0.75rem;
-    border-bottom-right-radius: 0.75rem;
-    padding: 0.75rem 1.5rem;
+
+.barcode-status > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
-/* Garante que a mensagem de erro do CA tenha espaço */
-.field-group .text-danger {
-    margin-top: 0.25rem;
+.barcode-status .spinner-border {
+  width: 1.5rem;
+  height: 1.5rem;
+  color: #ff9800;
+}
+
+.barcode-status .bi {
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+}
+
+.barcode-status .text-success {
+  color: #198754 !important;
+}
+
+.barcode-status .text-danger {
+  color: #dc3545 !important;
+}
+
+#barcodeModal .modal-footer {
+  background-color: #f8f9fa;
+  border-top: 1px solid #dee2e6;
+  border-bottom-left-radius: 0.75rem;
+  border-bottom-right-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+}
+
+/* Regra para a mensagem de erro adicionada via JS */
+.text-danger.mt-1 {
+  font-size: 0.875rem;
+  display: none; /* Controlado por JS */
+}
+
+#id_modelo_epi+.select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: normal;
+}
+
+#id_modelo_epi+.select2-container--bootstrap-5 .select2-selection--single {
+  height: auto;
+  min-height: 38px;
 }
 
