@@ -29,35 +29,28 @@
     <nav class="nav flex-column">
       <a class="nav-link" href="./dashboard.html">Dashboard</a>
       <a class="nav-link active" style="color: orange;" href="./estoque.html">Estoque</a>
-      <a class="nav-link" href="./myepi.html">EPI</a>
+      <a class="nav-link" href="./epi.html">EPI</a>
       <a class="nav-link" href="#">Funcionário</a>
       <a class="nav-link" href="./entregas.html">Entregas de EPI</a>
     </nav>
   </div>
 
   <!-- CONTEÚDO PRINCIPAL -->
- <div class="main-content">
+  <div class="main-content">
     <h2 class="mb-4">Entregas de EPI</h2>
 
     <div class="form-container">
-      <span class="close-button" onclick="window.location.href='estoque.html'">&times;</span>
+      <span class="close-button" onclick="window.location.href='entregas.html'">&times;</span>
 
       <h4>Registrar Entrega</h4>
 
       <form id="form-cadastro-remessa">
         <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="codigo_lote" class="form-label">Código do Lote</label>
-            <input type="text" id="codigo_lote" class="form-control" required>
-          </div>
-          <div class="col-md-6">
-            <label for="quantidade" class="form-label">Quantidade</label>
-            <input type="number" id="quantidade" class="form-control" required min="1">
-          </div>
+
         </div>
 
         <div class="row mb-3">
-           <div class="col-md-6">
+          <div class="col-md-6">
             <label for="id_modelo_epi" class="form-label">Modelo do EPI</label>
             <select id="id_modelo_epi" class="form-select" required>
               <option value="" selected disabled>Carregando...</option>
@@ -75,23 +68,43 @@
 
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="data_entrega" class="form-label">Data de Entrega</label>
-            <input type="date" id="data_entrega" class="form-control" required>
+            <label for="id_ca" class="form-label">Nome do Funcionário</label>
+            <select id="id_ca" class="form-select" required>
+              <option value="" selected disabled>Carregando...</option>
+              <!-- Opções carregadas via JS -->
+            </select>
           </div>
           <div class="col-md-6">
-            <label for="validade_lote" class="form-label">Validade do Lote/EPI</label>
-            <input type="date" id="validade_lote" class="form-control" required>
+            <label for="id_ca" class="form-label">Matrícula do Funcionário</label>
+            <select id="id_ca" class="form-select" required>
+              <option value="" selected disabled>Carregando...</option>
+              <!-- Opções carregadas via JS -->
+            </select>
           </div>
         </div>
 
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="nota_fiscal" class="form-label">Nota Fiscal</label>
-            <input type="text" id="nota_fiscal" class="form-control" required>
-          </div>
-           <div class="col-md-6">
-            <label for="id_fornecedor" class="form-label">Fornecedor</label>
+            <label for="id_fornecedor" class="form-label">Tipo de Entrega</label>
             <select id="id_fornecedor" class="form-select" required>
+              <option value="" selected disabled>Carregando...</option>
+              <!-- Opções carregadas via JS -->
+            </select>
+          </div>
+          <div class="col-md-6">
+            <label for="data_entrega" class="form-label">Data de Entrega</label>
+            <input type="date" id="data_entrega" class="form-control" required>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="id_ca" class="form-label">Quantidade</label>
+             <input type="text" id="quantidade" class="form-control" required>
+          </div>
+          <div class="col-md-6">
+            <label for="id_ca" class="form-label">Código do Lote</label>
+            <select id="id_ca" class="form-select" required>
               <option value="" selected disabled>Carregando...</option>
               <!-- Opções carregadas via JS -->
             </select>
@@ -104,7 +117,7 @@
         </div>
 
         <div class="text-center">
-          <button type="submit" class="btn btn-submit">Adicionar</button>
+          <button type="submit" class="btn btn-submit">Registrar</button>
         </div>
       </form>
     </div>
@@ -115,9 +128,9 @@
   <!-- Axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   <!-- API Service -->
-  <script type="module" src="../services/api.js"></script> 
+  <script type="module" src="../services/api.js"></script>
   <!-- Script da página -->
-  <script type="module" src="../assets/js/cadastrar-remessa.js"></script> 
+  <script type="module" src="../assets/js/cadastrar-remessa.js"></script>
 
 </body>
 

@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Entregas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/src/assets/css/movimentacoes.css">
+  <link rel="stylesheet" href="/src/assets/css/entregas.css">
   
 </head>
 
@@ -26,9 +26,9 @@
     <nav class="nav flex-column">
       <a class="nav-link" href="./dashboard.html">Dashboard</a>
       <a class="nav-link" href="./estoque.html">Estoque</a>
-      <a class="nav-link" href="./myepi.html">EPI</a>
+      <a class="nav-link" href="./epi.html">EPI</a>
       <a class="nav-link" href="#">Funcionário</a>
-      <a class="nav-link active" href="./movimentacoes.html">Entregas de EPI</a>
+      <a class="nav-link active" href="./entregas.html">Entregas de EPI</a>
     </nav>
   </div>
 
@@ -43,7 +43,7 @@
       <!-- ENTREGAS DE EPI -->
       <div class="text-center">
         <p class="fw-bold">REGISTRAR ENTREGA DE EPI</p>
-        <button class="btn btn-light rounded-circle entregas-btn" onclick="window.location.href='movimentacoes-epi.html'">+</button>
+        <button class="btn btn-light rounded-circle entregas-btn" onclick="window.location.href='registrar-entrega.html'">+</button>
       </div>
 
       <!-- HISTÓRICO DE EPI -->
@@ -51,7 +51,7 @@
         <p class="fw-bold">HISTÓRICO DE ENTREGAS</p>
         <div class="input-group epi-search">
           <input type="text" class="form-control" placeholder="Nome ou código do funcionário">
-          <button class="btn btn-outline-light" type="button">🔍</button>
+          <button class="btn btn-outline-light" type="button"  onclick="window.location.href='historico-entregas.html'">🔍</button>
         </div>
       </div>
 
