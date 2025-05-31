@@ -1,15 +1,12 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Cadastro de Remessa - My EPI</title>
-
-  <!-- Bootstrap -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Histórico de Entregas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!--CSS puro-->
-  <link rel="stylesheet" href="/src/assets/css/remessa.css">
+  <link rel="stylesheet" href="/src/assets/css/registrar-entrega.css">
 </head>
 
 <body>
@@ -34,18 +31,18 @@
       <a class="nav-link active" style="color: orange;" href="./estoque.html">Estoque</a>
       <a class="nav-link" href="./myepi.html">EPI</a>
       <a class="nav-link" href="#">Funcionário</a>
-      <a class="nav-link" href="./movimentacoes.html">Entregas de EPI</a>
+      <a class="nav-link" href="./entregas.html">Entregas de EPI</a>
     </nav>
   </div>
 
-  <!-- CONTEÚDO -->
-  <div class="main-content">
-    <h2 class="mb-4">Depósito</h2>
+  <!-- CONTEÚDO PRINCIPAL -->
+ <div class="main-content">
+    <h2 class="mb-4">Entregas de EPI</h2>
 
     <div class="form-container">
       <span class="close-button" onclick="window.location.href='estoque.html'">&times;</span>
 
-      <h4>Cadastro de Remessa</h4>
+      <h4>Registrar Entrega</h4>
 
       <form id="form-cadastro-remessa">
         <div class="row mb-3">
@@ -121,6 +118,7 @@
   <script type="module" src="../services/api.js"></script> 
   <!-- Script da página -->
   <script type="module" src="../assets/js/cadastrar-remessa.js"></script> 
-</body>
-</html>
 
+</body>
+
+</html>
