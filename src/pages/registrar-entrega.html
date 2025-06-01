@@ -4,19 +4,81 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Histórico de Entregas</title>
+  <title>Registrar Entrega de EPI</title>
+  
+  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/src/assets/css/registrar-entrega.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  
+  <!-- Select2 -->
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+  
+  <!-- CSS Personalizado (NÃO MUDAR CAMINHO) -->
+  <link rel="stylesheet" href="../assets/css/registrar-entrega.css">
+  
+  <!-- Estilos adicionais para Select2 e loading -->
+  <style>
+    .select2-container--bootstrap-5 .select2-selection {
+        border-radius: 20px;
+        background-color: white;
+        border: none;
+        color: black;
+        min-height: calc(1.5em + .75rem + 2px); /* Altura padrão do Bootstrap */
+        padding: .375rem .75rem;
+        align-items: center;
+    }
+    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__rendered {
+        color: black;
+        line-height: 1.5;
+    }
+    .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow {
+        height: calc(1.5em + .75rem); /* Ajustar altura da seta */
+    }
+    .select2-container--bootstrap-5.select2-container--open .select2-dropdown {
+        border-radius: 15px;
+        border: none;
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15);
+    }
+    .select2-container--bootstrap-5 .select2-search--dropdown .select2-search__field {
+        border-radius: 20px;
+    }
+    .field-group {
+        position: relative;
+    }
+    .loading-indicator {
+        position: absolute;
+        right: 40px; /* Ajustar posição conforme necessário */
+        top: 50%;
+        transform: translateY(-50%);
+        display: none; /* Oculto por padrão */
+    }
+    .select2-container.auto-filled .select2-selection {
+        background-color: #e9f5ff !important; /* Cor de fundo para indicar preenchimento automático */
+        transition: background-color 0.5s ease;
+    }
+    .scanner-instructions {
+        font-size: 0.8rem;
+        color: #adb5bd;
+        margin-top: 2px;
+    }
+    .success-message {
+        font-size: 0.8rem;
+        color: #28a745; /* Verde sucesso */
+        margin-top: 2px;
+        display: none; /* Oculto por padrão */
+    }
+  </style>
 </head>
 
 <body>
 
   <!-- NAVBAR SUPERIOR -->
-  <div class="top-navbar position-relative">
-    <div class="navbar-title position-absolute start-50 translate-middle-x">
+  <div class="top-navbar">
+    <div class="navbar-title">
       FUSIONSTEC ENGENHARIA
     </div>
-    <button class="btn btn-sm btn-light position-absolute end-0 me-4" onclick="window.location.href='../../index.html'">
+    <button class="btn btn-sm btn-light" onclick="window.location.href='../../index.html'">
       Sair
     </button>
   </div>
@@ -37,58 +99,87 @@
 
   <!-- CONTEÚDO PRINCIPAL -->
   <div class="main-content">
-    <h2 class="mb-4">Entregas de EPI</h2>
+    <h2 class="mb-4">Registrar Entrega de EPI</h2>
 
     <div class="form-container">
       <span class="close-button" onclick="window.location.href='entregas.html'">&times;</span>
 
-      <h4>Registrar Entrega</h4>
+      <h4>Detalhes da Entrega</h4>
 
-      <form id="form-cadastro-remessa">
-        <div class="row mb-3">
-
-        </div>
+      <form id="form-registro-entrega">
 
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="id_modelo_epi" class="form-label">Modelo do EPI</label>
-            <select id="id_modelo_epi" class="form-select" required>
-              <option value="" selected disabled>Carregando...</option>
-              <!-- Opções carregadas via JS -->
-            </select>
+            <div class="field-group">
+              <select id="id_modelo_epi" class="form-select searchable-select" required data-placeholder="Digite para buscar Modelo...">
+                <option value=""></option> <!-- Necessário para placeholder do Select2 -->
+              </select>
+              <div class="loading-indicator">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                  <span class="visually-hidden">Carregando...</span>
+                </div>
+              </div>
+            </div>
+             <div id="modelo-success-message" class="success-message"></div>
           </div>
           <div class="col-md-6">
-            <label for="id_ca" class="form-label">Certificado de Aprovação (CA)</label>
-            <select id="id_ca" class="form-select" required>
-              <option value="" selected disabled>Carregando...</option>
-              <!-- Opções carregadas via JS -->
-            </select>
+            <label for="id_ca_epi" class="form-label">Certificado de Aprovação (CA)</label>
+             <div class="field-group">
+              <select id="id_ca_epi" class="form-select searchable-select" required data-placeholder="Digite/Escaneie CA ou selecione Modelo">
+                 <option value=""></option> <!-- Necessário para placeholder do Select2 -->
+              </select>
+               <div class="loading-indicator">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                  <span class="visually-hidden">Carregando...</span>
+                </div>
+              </div>
+            </div>
+            <div class="scanner-instructions">
+              Escaneie código de barras ou digite CA (ex: 12345)
+            </div>
+             <div id="ca-error-message" class="text-danger mt-1" style="font-size: 0.875rem; display: none;"></div>
           </div>
         </div>
 
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="id_ca" class="form-label">Nome do Funcionário</label>
-            <select id="id_ca" class="form-select" required>
-              <option value="" selected disabled>Carregando...</option>
-              <!-- Opções carregadas via JS -->
-            </select>
+            <label for="id_funcionario_nome" class="form-label">Nome do Funcionário</label>
+            <div class="field-group">
+              <select id="id_funcionario_nome" class="form-select searchable-select" required data-placeholder="Digite para buscar Nome...">
+                 <option value=""></option> <!-- Necessário para placeholder do Select2 -->
+              </select>
+              <div class="loading-indicator">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                  <span class="visually-hidden">Carregando...</span>
+                </div>
+              </div>
+            </div>
           </div>
           <div class="col-md-6">
-            <label for="id_ca" class="form-label">Matrícula do Funcionário</label>
-            <select id="id_ca" class="form-select" required>
-              <option value="" selected disabled>Carregando...</option>
-              <!-- Opções carregadas via JS -->
-            </select>
+            <label for="id_funcionario_matricula" class="form-label">Matrícula do Funcionário</label>
+            <div class="field-group">
+              <select id="id_funcionario_matricula" class="form-select searchable-select" required data-placeholder="Digite/Escaneie Matrícula...">
+                 <option value=""></option> <!-- Necessário para placeholder do Select2 -->
+              </select>
+               <div class="loading-indicator">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                  <span class="visually-hidden">Carregando...</span>
+                </div>
+              </div>
+            </div>
+             <div class="scanner-instructions">
+              Escaneie código de barras ou digite Matrícula
+            </div>
           </div>
         </div>
 
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="id_fornecedor" class="form-label">Tipo de Entrega</label>
-            <select id="id_fornecedor" class="form-select" required>
-              <option value="" selected disabled>Carregando...</option>
-              <!-- Opções carregadas via JS -->
+            <label for="id_tipo_entrega" class="form-label">Tipo de Movimentação</label>
+            <!-- Este campo não precisa ser filtrável, mantido como select padrão -->
+            <select id="id_tipo_entrega" class="form-select" required>
+              <option value="" selected disabled>Selecione o Tipo</option>
             </select>
           </div>
           <div class="col-md-6">
@@ -99,15 +190,21 @@
 
         <div class="row mb-3">
           <div class="col-md-6">
-            <label for="id_ca" class="form-label">Quantidade</label>
-             <input type="text" id="quantidade" class="form-control" required>
+            <label for="quantidade" class="form-label">Quantidade</label>
+             <input type="number" id="quantidade" class="form-control" min="1" required>
           </div>
           <div class="col-md-6">
-            <label for="id_ca" class="form-label">Código do Lote</label>
-            <select id="id_ca" class="form-select" required>
-              <option value="" selected disabled>Carregando...</option>
-              <!-- Opções carregadas via JS -->
-            </select>
+            <label for="id_lote" class="form-label">Código do Lote</label>
+            <div class="field-group">
+              <select id="id_lote" class="form-select searchable-select" required data-placeholder="Digite para buscar Lote...">
+                 <option value=""></option> <!-- Necessário para placeholder do Select2 -->
+              </select>
+              <div class="loading-indicator">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                  <span class="visually-hidden">Carregando...</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -117,21 +214,25 @@
         </div>
 
         <div class="text-center">
-          <button type="submit" class="btn btn-submit">Registrar</button>
+          <button type="submit" class="btn btn-submit">Registrar Entrega</button>
         </div>
       </form>
     </div>
   </div>
 
-  <!-- Bootstrap JS -->
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- Axios -->
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <!-- API Service -->
-  <script type="module" src="../services/api.js"></script>
-  <!-- Script da página -->
-  <script type="module" src="../assets/js/cadastrar-remessa.js"></script>
+  
+  <!-- API Service (NÃO MUDAR CAMINHO) -->
+  <script type="module" src="../assets/services/api.js"></script>
+  
+  <!-- Script da página (NÃO MUDAR CAMINHO) -->
+  <script type="module" src="../assets/js/registrar-entrega.js"></script>
 
 </body>
 
 </html>
+
