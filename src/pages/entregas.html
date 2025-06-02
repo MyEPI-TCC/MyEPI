@@ -1,25 +1,24 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Entregas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/src/assets/css/entregas.css">
   
+  <link rel="stylesheet" href="/src/assets/css/entregas.css">
 </head>
 
 <body>
-
   <!-- NAVBAR SUPERIOR -->
-  <div class="top-navbar position-relative">
-    <div class="navbar-title position-absolute start-50 translate-middle-x">FUSIONSTEC ENGENHARIA</div>
-    <button class="btn btn-sm" onclick="window.location.href='../../index.html'">Sair</button>
+  <div class="top-navbar d-flex justify-content-center align-items-center">
+    <button class="btn btn-menu d-md-none" onclick="toggleSidebar()" style="position: absolute; left: 15px; background: none; border: none; color: white; font-size: 1.2rem;">☰</button>
+    <div class="navbar-title">FUSIONSTEC ENGENHARIA</div>
+    <a href="../../index.html" class="btn btn-sair">Sair</a>
   </div>
 
   <!-- SIDEBAR -->
-  <div class="sidebar">
+  <div class="sidebar" id="sidebar">
     <div class="text-center mb-5">
       <img src="../assets/images/logo.png" alt="Logo" width="120" />
     </div>
@@ -27,7 +26,7 @@
       <a class="nav-link" href="./dashboard.html">Dashboard</a>
       <a class="nav-link" href="./estoque.html">Estoque</a>
       <a class="nav-link" href="./epi.html">EPI</a>
-      <a class="nav-link" href="funcionario.html">Funcionário</a>
+      <a class="nav-link" href="./funcionario.html">Funcionário</a>
       <a class="nav-link active" href="./entregas.html">Entregas de EPI</a>
     </nav>
   </div>
@@ -35,29 +34,23 @@
   <!-- CONTEÚDO PRINCIPAL -->
   <div class="main-content">
     <h4 class="mb-4">Entregas de EPI</h4>
-
     <p class="fs-5 text-center mb-5">Qual operação você deseja realizar?</p>
 
-    <div class="d-flex flex-wrap justify-content-center gap-5">
-
+    <div class="options-container">
       <!-- ENTREGAS DE EPI -->
-      <div class="text-center">
-        <p class="fw-bold">REGISTRAR ENTREGA DE EPI</p>
-        <button class="btn btn-light rounded-circle entregas-btn" onclick="window.location.href='registrar-entrega.html'">+</button>
+      <div class="option">
+        <div class="option-label">REGISTRAR ENTREGA DE EPI</div>
+        <button class="btn entregas-btn rounded-circle" onclick="window.location.href='registrar-entrega.html'">+</button>
       </div>
 
       <!-- HISTÓRICO DE EPI -->
-      <div class="text-center">
-        <p class="fw-bold">HISTÓRICO DE ENTREGAS</p>
-        <div class="input-group epi-search">
-          <input type="text" class="form-control" placeholder="Nome ou código do funcionário">
-          <button class="btn btn-outline-light" type="button"  onclick="window.location.href='historico-entregas.html'">🔍</button>
-        </div>
+      <div class="option">
+        <div class="option-label">HISTÓRICO DE ENTREGAS</div>
+        <button class="btn entregas-btn rounded-circle" onclick="window.location.href='historico-entregas.html'">+</button>
       </div>
-
     </div>
   </div>
 
+ <script src="../assets/js/entregas.js"></script>
 </body>
-
 </html>

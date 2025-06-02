@@ -1,135 +1,225 @@
-body, html {
+html, body {
+  height: 100%;
   margin: 0;
   padding: 0;
-  height: 100%;
   font-family: Arial, sans-serif;
   background-color: #12191b;
   color: white;
 }
 
-/* NAVBAR */
+/* Navbar superior */
 .top-navbar {
   background-color: rgb(160, 56, 0);
   height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  z-index: 1000;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .navbar-title {
-  font-size: 1.2rem;
   font-weight: bold;
+  font-size: 1.2rem;
   color: white;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
-.top-navbar button {
+/* Botão "Sair" alinhado à direita */
+.btn-sair {
+  position: absolute;
+  right: 20px;
   background-color: white;
   color: rgb(160, 56, 0);
   font-weight: bold;
-  position: absolute;
-  right: 20px;
+  border-radius: 6px;
+  padding: 4px 12px;
+  text-decoration: none;
   border: none;
-  padding: 6px 14px;
-  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
 }
 
-.top-navbar button:hover {
+.btn-sair:hover {
   background-color: #f0f0f0;
 }
 
-/* SIDEBAR */
+/* Sidebar */
 .sidebar {
+  height: 100vh;
+  width: 250px;
+  background-color: #162225;
   position: fixed;
   top: 60px;
   left: 0;
-  height: 100%;
-  width: 250px;
-  background-color: #162225;
   padding-top: 40px;
+  display: flex;
+  flex-direction: column;
 }
 
 .sidebar .nav-link {
   color: white;
   padding: 15px 20px;
-  transition: background 0.3s;
+  transition: all 0.3s;
 }
 
 .sidebar .nav-link:hover {
   background-color: #1e2d31;
-  border-left: 4px solid orange;
+  border-left: 5px solid rgb(255, 102, 0);
 }
 
 .nav-link.active {
   color: orange !important;
 }
 
-/* CONTEÚDO PRINCIPAL */
+/* Conteúdo centralizado */
 .main-content {
   margin-left: 250px;
-  padding: 90px 30px 30px 30px;
-  min-height: 100vh;
+  margin-top: 60px;
+  height: calc(100vh - 60px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  transform: translateY(-40px);
 }
 
-/* BOTÃO DE ENTREGA */
+.options-container {
+  display: flex;
+  gap: 80px;
+  margin-top: 40px;
+  align-items: flex-start;
+}
+
+.option {
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Botão circular para registrar entrega */
 .entregas-btn {
   width: 80px;
   height: 80px;
-  font-size: 2.5rem;
+  background-color: #d9d9d9;
+  color: #12191b;
+  font-size: 36px;
   font-weight: bold;
-  transition: all 0.3s ease;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s;
 }
 
 .entregas-btn:hover {
-  background-color: #dcdcdc;
-  transform: scale(1.05);
+  background-color: #bbbbbb;
 }
 
-/* CAMPO DE BUSCA */
-.epi-search {
-  max-width: 280px;
-  margin: auto;
+.option-label {
+  font-weight: bold;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
 }
 
-/* RESPONSIVIDADE */
+/* RESPONSIVIDADE PARA CELULAR */
 @media (max-width: 768px) {
+  /* Navbar ajustada para mobile */
+  .navbar-title {
+    font-size: 1rem;
+    left: 20px;
+    transform: none;
+  }
+  
+  .btn-sair {
+    right: 15px;
+    padding: 3px 10px;
+    font-size: 0.8rem;
+  }
+
+  /* Sidebar vira menu hamburguer ou fica oculta */
   .sidebar {
-    position: static;
     width: 100%;
     height: auto;
-    padding: 20px 10px;
-    text-align: center;
+    position: static;
+    background-color: #162225;
+    padding: 20px 0;
+    display: none;
   }
 
-  .sidebar .nav-link {
-    display: inline-block;
-    margin: 5px;
+  .sidebar.show {
+    display: block;
   }
 
-  .top-navbar {
+  /* Conteúdo ocupa toda a largura */
+  .main-content {
+    margin-left: 0;
+    margin-top: 60px;
+    padding: 20px 15px;
+    transform: translateY(-20px);
+  }
+
+  /* Ajusta o título */
+  .main-content h4 {
+    font-size: 1.5rem;
+  }
+
+  .main-content p {
+    font-size: 1.1rem;
+  }
+
+  /* Options em coluna no mobile */
+  .options-container {
     flex-direction: column;
-    height: auto;
-    padding: 10px;
-    text-align: center;
+    gap: 40px;
+    margin-top: 30px;
+    align-items: center;
   }
 
+  /* Botão menor no mobile */
+  .entregas-btn {
+    width: 70px;
+    height: 70px;
+    font-size: 32px;
+  }
+
+  .option-label {
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 480px) {
+  /* Ajustes para telas muito pequenas */
   .navbar-title {
-    position: static;
-    transform: none;
-    margin-bottom: 10px;
-  }
-
-  .top-navbar button {
-    position: static;
-    margin-top: 10px;
+    font-size: 0.9rem;
   }
 
   .main-content {
-    margin-left: 0;
-    padding: 100px 15px 30px 15px;
+    padding: 15px 10px;
+  }
+
+  .main-content h4 {
+    font-size: 1.3rem;
+  }
+
+  .main-content p {
+    font-size: 1rem;
+  }
+
+  .options-container {
+    gap: 30px;
+  }
+
+  .entregas-btn {
+    width: 65px;
+    height: 65px;
+    font-size: 28px;
   }
 }
