@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Funcionário - MEPI</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="/src/assets/css/funcionario.css" />
+</head>
+<body>
+  <!-- NAVBAR SUPERIOR -->
+  <div class="top-navbar position-relative">
+    <div class="navbar-title position-absolute start-50 translate-middle-x">
+      FUSIONSTEC ENGENHARIA
+    </div>
+    <button class="btn btn-sm btn-light position-absolute end-0 me-4" onclick="window.location.href='../../index.html'">
+      Sair
+    </button>
+  </div>
+
+  <!-- SIDEBAR VERTICAL -->
+  <div class="sidebar">
+    <div class="text-center mb-5">
+      <img src="../assets/images/logo.png" alt="Logo" width="120" />
+    </div>
+    <nav class="nav flex-column">
+      <a class="nav-link" href="./dashboard.html">Dashboard</a>
+      <a class="nav-link" href="./estoque.html">Estoque</a>
+      <a class="nav-link" href="./epi.html">EPI</a>
+      <a class="nav-link active" style="color: orange;"href="funcionario.html">Funcionário</a>
+      <a class="nav-link" href="./entregas.html">Entregas de EPI</a>
+    </nav>
+  </div>
+  </div>
+
+  <!-- CONTEÚDO PRINCIPAL -->
+  <div class="main-content text-center">
+    <h1 class="mb-4">Funcionário</h1>
+    <h5 class="mb-5">Qual operação você deseja realizar?</h5>
+
+    <div class="operation-section">
+      <div class="d-flex gap-5 flex-wrap justify-content-center">
+        <div class="operation-box">
+          <div class="btn-circle"><i class="fas fa-plus"></i></div>
+          <div>ASSOCIAR EPI</div>
+        </div>
+        <div class="operation-box">
+          <div class="btn-circle"><i class="fas fa-users"></i></div>
+          <div>EXIBIR FUNCIONÁRIOS</div>
+        </div>
+        <div class="operation-box">
+          <div class="btn-circle"><i class="fas fa-user-plus"></i></div>
+          <div>CADASTRAR FUNCIONÁRIO</div>
+        </div>
+      </div>
+
+      <div class="search-box">
+        <label for="search">EXIBIR FUNCIONÁRIO</label>
+        <div style="display: flex; align-items: center;">
+          <input type="text" id="search" placeholder="Informe um código do funcionário" />
+          <button><i class="fas fa-search"></i></button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

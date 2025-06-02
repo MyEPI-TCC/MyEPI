@@ -1,0 +1,156 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    background-color: #12191b;
+    color: white;
+    text-align: center;
+  }
+  
+  /* NAVBAR SUPERIOR */
+  .top-navbar {
+    background-color: rgb(160, 56, 0);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1001;
+  }
+  
+  .navbar-title {
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: white;
+  }
+  
+  .top-navbar button {
+    background-color: #ffffff;
+    color: rgb(160, 56, 0);
+    border: none;
+    font-weight: bold;
+    transition: background 0.3s;
+    padding: 5px 12px;
+    border-radius: 5px;
+  }
+  
+  .top-navbar button:hover {
+    background-color: #f0f0f0;
+  }
+  
+  /* SIDEBAR */
+  .sidebar {
+    height: 100vh;
+    width: 250px;
+    background-color: #162225;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    padding-top: 40px;
+    display: flex;
+    flex-direction: column;
+    color: white;
+    z-index: 1000;
+    text-align: left;
+  }
+  
+  .sidebar .nav-link {
+    color: white;
+    padding: 15px 20px;
+    transition: all 0.3s;
+  }
+  
+  .sidebar .nav-link:hover {
+    background-color: #1e2d31;
+    border-left: 5px solid rgb(255, 102, 0);
+    color: white;
+  }
+  
+  /* MAIN CONTENT */
+  .main-content {
+    margin-left: 250px;
+    padding: 100px 40px 40px;
+    text-align: center;
+  }
+  
+  /* OPERATION SECTION */
+  .operation-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 40px;
+  }
+  
+  /* BOTÕES BRANCOS */
+  .btn-circle {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    font-size: 30px;
+    color: #12191b;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 10px;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+  
+  .btn-circle:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .operation-box {
+    text-align: center;
+    color: white;
+    width: 180px;
+  }
+  
+  /* SEARCH */
+  .search-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    margin-left: 40px;
+  }
+  
+  .search-box label {
+    font-weight: bold;
+    color: white;
+    margin-bottom: 8px;
+  }
+  
+  .search-box input {
+    padding: 10px 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    width: 300px;
+    background-color: #ffffff;
+    color: #12191b;
+    font-weight: bold;
+  }
+  
+  .search-box button {
+    background-color: #ffffff;
+    border: none;
+    color: #12191b;
+    font-size: 18px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-left: -40px;
+    transition: background 0.3s;
+  }
+  
+  .search-box button:hover {
+    background-color: #eeeeee;
+  }
+  
