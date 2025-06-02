@@ -28,41 +28,35 @@
       <a class="nav-link" href="./dashboard.html">Dashboard</a>
       <a class="nav-link" href="./estoque.html">Estoque</a>
       <a class="nav-link" href="./epi.html">EPI</a>
-      <a class="nav-link active" style="color: orange;"href="funcionario.html">Funcionário</a>
+      <a class="nav-link active" style="color: orange;" href="funcionario.html">Funcionário</a>
       <a class="nav-link" href="./entregas.html">Entregas de EPI</a>
     </nav>
-  </div>
   </div>
 
   <!-- CONTEÚDO PRINCIPAL -->
   <div class="main-content text-center">
     <h1 class="mb-4">Funcionário</h1>
     <h5 class="mb-5">Qual operação você deseja realizar?</h5>
-
-    <div class="operation-section">
-      <div class="d-flex gap-5 flex-wrap justify-content-center">
-        <div class="operation-box">
-          <div class="btn-circle"><i class="fas fa-plus"></i></div>
-          <div>ASSOCIAR EPI</div>
-        </div>
-        <div class="operation-box">
+  
+    <div class="d-flex justify-content-center gap-5 flex-wrap">
+      <!-- Botão 1 -->
+      <a href="exibir_funcionario.html" class="text-decoration-none">
+        <div class="operation-box text-white">
           <div class="btn-circle"><i class="fas fa-users"></i></div>
           <div>EXIBIR FUNCIONÁRIOS</div>
         </div>
-        <div class="operation-box">
+      </a>
+  
+      <!-- Botão 2 -->
+      <a href="cadastrar_funcionario.html" class="text-decoration-none">
+        <div class="operation-box text-white">
           <div class="btn-circle"><i class="fas fa-user-plus"></i></div>
           <div>CADASTRAR FUNCIONÁRIO</div>
         </div>
-      </div>
-
-      <div class="search-box">
-        <label for="search">EXIBIR FUNCIONÁRIO</label>
-        <div style="display: flex; align-items: center;">
-          <input type="text" id="search" placeholder="Informe um código do funcionário" />
-          <button><i class="fas fa-search"></i></button>
-        </div>
-      </div>
+      </a>
     </div>
+  </div>
+  
   </div>
 
   <!-- Bootstrap JS -->
