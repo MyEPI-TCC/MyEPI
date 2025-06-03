@@ -1,34 +1,61 @@
 import { get, post } from "../../services/api.js"; // Mantendo caminho original
 
 $(document).ready(function () {
-    // Elementos do formulário
+    // --- Elementos do Formulário ---
     const form = document.getElementById("form-registro-entrega");
     const epiModelSelect = document.getElementById("id_modelo_epi");
+    const loteSelect = document.getElementById("id_lote");
     const caSelect = document.getElementById("id_ca_epi");
-    const funcionarioNomeSelect = document.getElementById("id_funcionario_nome");
+    const quantidadeInput = document.getElementById("quantidade");
     const funcionarioMatriculaSelect = document.getElementById("id_funcionario_matricula");
+    const funcionarioNomeSelect = document.getElementById("id_funcionario_nome");
     const tipoEntregaSelect = document.getElementById("id_tipo_entrega");
     const dataEntregaInput = document.getElementById("data_entrega");
-    const quantidadeInput = document.getElementById("quantidade");
-    const loteSelect = document.getElementById("id_lote");
     const observacoesTextarea = document.getElementById("observacoes");
 
-    // Elementos de feedback
+    // --- Elementos de Scanner ---
+    const scanCaBtn = document.getElementById("scan-ca-btn");
+    const scanMatriculaBtn = document.getElementById("scan-matricula-btn");
+    const scannerModalElement = document.getElementById("scannerModal");
+    const scannerModal = scannerModalElement ? new bootstrap.Modal(scannerModalElement) : null;
+    const scannerInput = document.getElementById("scanner-input");
+    const scannerModalLabel = document.getElementById("scannerModalLabel");
+    const scannerModalInstruction = document.getElementById("scannerModalInstruction");
+    const scannerLoading = document.getElementById("scanner-loading");
+    const scannerSuccess = document.getElementById("scanner-success");
+    const scannerError = document.getElementById("scanner-error");
+    let currentScanTarget = null; 
+    // --- Elementos de Feedback ---
     const caErrorMessage = document.getElementById("ca-error-message");
     const modeloSuccessMessage = document.getElementById("modelo-success-message");
+    const loteErrorMessage = document.createElement("div");
+    loteErrorMessage.className = "text-danger mt-1";
+    loteErrorMessage.style.fontSize = "0.875rem";
+    loteErrorMessage.style.display = "none";
+    if (loteSelect && loteSelect.parentNode) {
+        loteSelect.parentNode.appendChild(loteErrorMessage);
+    }
+    const matriculaErrorMessage = document.createElement("div");
+    matriculaErrorMessage.className = "text-danger mt-1";
+    matriculaErrorMessage.style.fontSize = "0.875rem";
+    matriculaErrorMessage.style.display = "none";
+     if (funcionarioMatriculaSelect && funcionarioMatriculaSelect.parentNode) {
+        funcionarioMatriculaSelect.parentNode.appendChild(matriculaErrorMessage);
+    }
 
-    // Cache e Estado
+    // --- Cache e Estado ---
     let dadosCache = {
         modelosEpi: [],
         funcionarios: [],
-        cas: [], // Cache geral de CAs (pode ser útil para validação rápida)
-        lotes: [], // Cache geral de Lotes
+        cas: [],
+        lotes: [], // Cache para todos os lotes
+        tiposEntrega: ["Entrega", "Troca", "Devolucao"],
         casPorModeloCache: new Map(),
-        lotesPorModeloCache: new Map(),
+        lotesPorModeloCache: new Map(), // Cache para lotes filtrados por modelo
         modeloPorCaCache: new Map(),
         funcionarioPorMatriculaCache: new Map(),
         validCaForModel: [],
-        validLoteForModel: [],
+        validLoteForModel: [], // Guarda os lotes válidos após filtrar
     };
     let isLoading = {
         modelos: false,
@@ -39,28 +66,26 @@ $(document).ready(function () {
     let isUpdating = {
         modelo: false,
         ca: false,
+        lote: false,
         funcionarioNome: false,
         funcionarioMatricula: false,
-        lote: false,
     };
     let validatedCaId = null;
     let validatedFuncionarioId = null;
     let validatedLoteId = null;
+    let validatedModeloId = null;
 
-    // Variáveis do Scanner
-    let scannedInput = "";
-    let lastKeyTime = Date.now();
+    // --- Funções Auxiliares ---
 
-    // --- Funções Auxiliares (Adaptadas de cadastrar-remessa.js) ---
-
+    // Normaliza CA para conter apenas números
     function normalizeCaNumber(caText) {
         if (!caText) return "";
-        const numbers = caText.match(/\d+/g);
-        return numbers ? numbers.join("") : "";
+        // Remove tudo que não for dígito
+        return caText.replace(/\D/g, 
+            '') || "";
     }
 
     function normalizeMatricula(matriculaText) {
-        // Simplesmente remove espaços extras, pode ajustar se necessário
         return matriculaText ? matriculaText.trim() : "";
     }
 
@@ -100,51 +125,44 @@ $(document).ready(function () {
     }
 
     function showFieldError(selectElement, errorElement, message) {
+        if (!selectElement || !errorElement) return;
         const $selectContainer = $(selectElement).next(".select2-container").find(".select2-selection");
         if (message) {
             errorElement.textContent = message;
             errorElement.style.display = "block";
             selectElement.classList.add("is-invalid");
-            $selectContainer.addClass("is-invalid");
+            if ($selectContainer.length) $selectContainer.addClass("is-invalid");
         } else {
             errorElement.style.display = "none";
             selectElement.classList.remove("is-invalid");
-            $selectContainer.removeClass("is-invalid");
+             if ($selectContainer.length) $selectContainer.removeClass("is-invalid");
         }
     }
 
-    // --- Inicialização do Select2 --- 
-
+    // --- Inicialização do Select2 ---
     function initializeSelect2() {
-        $(".searchable-select:not(#id_ca_epi, #id_funcionario_matricula)").select2({
+        // Selects comuns
+        $("#id_modelo_epi, #id_lote, #id_funcionario_nome").select2({
             theme: "bootstrap-5",
-            placeholder: function () {
-                return $(this).data("placeholder") || "Digite para buscar...";
-            },
+            placeholder: function () { return $(this).data("placeholder") || "Selecione..."; },
             allowClear: true,
-            minimumInputLength: 0, // Permite abrir sem digitar
-            language: {
-                noResults: function () { return "Nenhum resultado encontrado"; },
-                searching: function () { return "Buscando..."; },
-                inputTooShort: function () { return "Digite para buscar..."; }
-            },
-            escapeMarkup: function (markup) { return markup; }
+            minimumInputLength: 0,
+            language: { noResults: () => "Nenhum resultado", searching: () => "Buscando..." },
+            escapeMarkup: (markup) => markup
         });
 
-        // Configuração específica para CA (permite tags e validação)
+        // Configuração para CA (permite tags e validação flexível)
         $("#id_ca_epi").select2({
             theme: "bootstrap-5",
-            placeholder: "Digite/Escaneie CA ou selecione modelo",
+            placeholder: "Digite/Escaneie CA...",
             allowClear: true,
-            tags: true, // Permite digitar valores não existentes na lista
+            tags: true,
             minimumInputLength: 0,
-            language: {
-                noResults: function () { return "CA não encontrado na lista"; },
-                searching: function () { return "Buscando CA..."; }
-            },
+            language: { noResults: () => "CA não encontrado", searching: () => "Buscando CA..." },
             matcher: function (params, data) {
                 if ($.trim(params.term) === "") return data;
                 if (typeof data.text === "undefined" || !data.id) return null;
+                // Compara usando o número normalizado
                 const searchTermNormalized = normalizeCaNumber(params.term);
                 const optionTextNormalized = normalizeCaNumber(data.text);
                 if (optionTextNormalized.includes(searchTermNormalized)) return data;
@@ -153,68 +171,65 @@ $(document).ready(function () {
             createTag: function (params) {
                 const term = $.trim(params.term);
                 const normalizedTerm = normalizeCaNumber(term);
-                // Só cria tag se for um número
-                if (normalizedTerm === "" || isNaN(parseInt(normalizedTerm))) return null;
-                return { id: term, text: term, newTag: true };
+                if (normalizedTerm === '' || isNaN(parseInt(normalizedTerm))) {
+                    return null;
+                }
+                return {
+                    id: term,
+                    text: term,
+                    newTag: true
+                };
             }
         });
 
-        // Configuração específica para Matrícula (permite tags e validação)
+        // Configuração para Matrícula (permite tags)
         $("#id_funcionario_matricula").select2({
             theme: "bootstrap-5",
-            placeholder: "Digite/Escaneie Matrícula ou selecione nome",
+            placeholder: "Digite/Escaneie Matrícula...",
             allowClear: true,
-            tags: true, // Permite digitar valores não existentes na lista
+            tags: true,
             minimumInputLength: 0,
-            language: {
-                noResults: function () { return "Matrícula não encontrada na lista"; },
-                searching: function () { return "Buscando Matrícula..."; }
-            },
-            // Matcher simples por enquanto, pode refinar se necessário
-            matcher: function (params, data) {
-                 if ($.trim(params.term) === "") return data;
-                 if (typeof data.text === "undefined" || !data.id) return null;
-                 const searchTermNormalized = normalizeMatricula(params.term);
-                 const optionTextNormalized = normalizeMatricula(data.text);
-                 if (optionTextNormalized.includes(searchTermNormalized)) return data;
-                 return null;
-            },
+            language: { noResults: () => "Matrícula não encontrada", searching: () => "Buscando..." },
             createTag: function (params) {
                 const term = $.trim(params.term);
-                // Só cria tag se não estiver vazio
                 if (term === "") return null;
                 return { id: term, text: term, newTag: true };
             }
         });
     }
 
-    // --- Funções de Carregamento de Dados --- 
-
+    // --- Funções de Carregamento de Dados ---
     async function popularSelect(selectElement, endpoint, valueField, textField, cacheKey, config = {}) {
-        const { relatedSelectId, filterFn, dataMapFn } = config;
-        if (isLoading[cacheKey]) return dadosCache[cacheKey];
+        const { forceReload = false, dataMapFn = null } = config;
+        // Permite pré-carregar CAs e Lotes sem elemento select visível inicialmente
+        if (!selectElement && cacheKey !== 'cas' && cacheKey !== 'lotes') return [];
+
+        if (isLoading[cacheKey] && !forceReload) {
+            if(selectElement) populateSelectOptions(selectElement, dadosCache[cacheKey] || [], valueField, textField, config);
+            return dadosCache[cacheKey] || [];
+        }
         isLoading[cacheKey] = true;
-        toggleLoading(selectElement.id, true);
+        if(selectElement) toggleLoading(selectElement.id, true);
         try {
-            // Tenta usar cache primeiro
-            if (dadosCache[cacheKey] && dadosCache[cacheKey].length > 0) {
-                populateSelectOptions(selectElement, dadosCache[cacheKey], valueField, textField, config);
+            if (!forceReload && dadosCache[cacheKey] && dadosCache[cacheKey].length > 0) {
+                if(selectElement) populateSelectOptions(selectElement, dadosCache[cacheKey], valueField, textField, config);
                 return dadosCache[cacheKey];
             }
-            // Busca na API
+            console.log(`Buscando dados para ${cacheKey} em ${endpoint}`); // Log da chamada
             const response = await get(endpoint);
+            console.log(`Resposta para ${cacheKey} de ${endpoint}:`, response); // Log da resposta
             let items = response?.success ? response.data : (Array.isArray(response) ? response : []);
             if (!Array.isArray(items)) {
+                console.error(`Formato de dados inválido para ${cacheKey} de ${endpoint}:`, items);
                 throw new Error(`Formato de dados inválido para ${cacheKey}`);
             }
-            // Aplica mapeamento se necessário (ex: Funcionários)
             if (dataMapFn) {
                 items = items.map(dataMapFn);
             }
             dadosCache[cacheKey] = items;
-            populateSelectOptions(selectElement, items, valueField, textField, config);
+            if(selectElement) populateSelectOptions(selectElement, items, valueField, textField, config);
 
-            // Preenche caches específicos
+            // Preencher caches específicos
             if (cacheKey === "cas") {
                 dadosCache.modeloPorCaCache.clear();
                 items.forEach(ca => {
@@ -236,525 +251,686 @@ $(document).ready(function () {
 
             return items;
         } catch (error) {
-            console.error(`Erro ao carregar ${cacheKey}:`, error);
-            populateSelectOptions(selectElement, [], valueField, textField, { placeholderText: "Erro ao carregar" });
+            console.error(`Erro ao carregar ${cacheKey} de ${endpoint}:`, error);
+            if(selectElement) populateSelectOptions(selectElement, [], valueField, textField, { placeholderText: "Erro ao carregar" });
             dadosCache[cacheKey] = [];
             return [];
         } finally {
             isLoading[cacheKey] = false;
-            toggleLoading(selectElement.id, false);
+            if(selectElement) toggleLoading(selectElement.id, false);
         }
     }
 
     function populateSelectOptions(selectElement, items, valueField, textField, config = {}) {
-        const { placeholderText = "Selecione...", selectedValue = null, filterFn, relatedSelectId } = config;
+        const { placeholderText = "Selecione...", selectedValue = null } = config;
         if (!selectElement) return;
         const $select = $(selectElement);
         const currentValue = selectedValue || $select.val();
         const finalPlaceholder = $select.data("placeholder") || placeholderText;
-        selectElement.innerHTML = ""; // Limpa opções existentes
-
-        // Adiciona placeholder
+        selectElement.innerHTML = "";
         const placeholderOption = document.createElement("option");
         placeholderOption.value = "";
         placeholderOption.textContent = finalPlaceholder;
         selectElement.appendChild(placeholderOption);
-
-        // Filtra itens se necessário (ex: CAs/Lotes por modelo)
-        const itemsToPopulate = filterFn ? items.filter(filterFn) : items;
-
-        // Adiciona itens
-        itemsToPopulate.forEach(item => {
+        items.forEach(item => {
             if (item && typeof item === "object" && item.hasOwnProperty(valueField) && item.hasOwnProperty(textField)) {
                 const option = document.createElement("option");
                 option.value = item[valueField];
                 option.textContent = item[textField];
-                option.dataset.item = JSON.stringify(item); // Guarda o objeto inteiro
+                option.dataset.item = JSON.stringify(item);
                 selectElement.appendChild(option);
             }
         });
-
-        // Restaura valor selecionado e atualiza Select2
+        // Define o valor e dispara change.select2 para atualizar a UI do Select2
         $select.val(currentValue).trigger("change.select2");
+    }
 
-        // Atualiza select relacionado (ex: Matrícula quando Nome muda)
-        if (relatedSelectId) {
-            const relatedSelect = document.getElementById(relatedSelectId);
-            if (relatedSelect) {
-                const relatedValueField = relatedSelectId === "id_funcionario_matricula" ? "id_funcionario" : "id_funcionario";
-                const relatedTextField = relatedSelectId === "id_funcionario_matricula" ? "numero_matricula" : "nome_funcionario";
-                populateSelectOptions(relatedSelect, items, relatedValueField, relatedTextField, { selectedValue: currentValue });
+    // Função para buscar e popular lotes filtrados por modelo
+    async function buscarLotesPorModelo(modeloId) {
+        if (!modeloId) {
+            dadosCache.validLoteForModel = [];
+            populateSelectOptions(loteSelect, [], "id_estoque_lote", "codigo_lote", { placeholderText: "Selecione Modelo primeiro..." });
+            return [];
+        }
+        // Tenta usar cache
+        if (dadosCache.lotesPorModeloCache.has(modeloId)) {
+            const cachedData = dadosCache.lotesPorModeloCache.get(modeloId);
+            dadosCache.validLoteForModel = cachedData;
+            populateSelectOptions(loteSelect, cachedData, "id_estoque_lote", "codigo_lote");
+            return cachedData;
+        }
+        // Busca na API
+        toggleLoading(loteSelect.id, true);
+        try {
+            const endpoint = `estoques/modelo-epi/${modeloId}`;
+            console.log(`Buscando lotes para modelo ${modeloId} em ${endpoint}`); // Log
+            const response = await get(endpoint);
+            console.log(`Resposta para lotes do modelo ${modeloId}:`, response); // Log
+            const data = response.success ? response.data : (Array.isArray(response) ? response : []);
+            if (!Array.isArray(data)) {
+                 console.error("Resposta inválida para lotes por modelo:", data);
+                throw new Error(`Resposta inválida para lotes`);
             }
+            dadosCache.lotesPorModeloCache.set(modeloId, data);
+            dadosCache.validLoteForModel = data;
+            loteSelect.disabled = false; // Re-enable BEFORE populating
+            populateSelectOptions(loteSelect, data, "id_estoque_lote", "codigo_lote"); // Populates and triggers change.select2
+            return data;
+        } catch (error) {
+            console.error(`Erro ao buscar lotes para modelo ${modeloId}:`, error);
+            dadosCache.validLoteForModel = [];
+            loteSelect.disabled = true; // Keep disabled on error
+            populateSelectOptions(loteSelect, [], "id_estoque_lote", "codigo_lote", { placeholderText: "Erro ao carregar lotes" });
+            return [];
+        } finally {
+            toggleLoading(loteSelect.id, false);
+            // No need to explicitly enable/disable here again, handled in try/catch
+            $(loteSelect).trigger("change.select2"); // Ensure visual state is updated
         }
     }
 
-    async function buscarDadosDependentes(modeloId, cacheMap, endpointPrefix, targetSelect, valueField, textField, cacheKey) {
+    // Função para buscar e popular CAs filtrados por modelo
+    async function buscarCasPorModelo(modeloId) {
         if (!modeloId) {
-            dadosCache[cacheKey] = [];
+            dadosCache.validCaForModel = [];
+            populateSelectOptions(caSelect, [], "id_ca", "numero_ca", { placeholderText: "Selecione Modelo primeiro..." });
             return [];
         }
-        if (cacheMap.has(modeloId)) {
-            dadosCache[cacheKey] = cacheMap.get(modeloId);
-            return dadosCache[cacheKey];
+        // Tenta usar cache
+        if (dadosCache.casPorModeloCache.has(modeloId)) {
+            const cachedData = dadosCache.casPorModeloCache.get(modeloId);
+            dadosCache.validCaForModel = cachedData;
+            populateSelectOptions(caSelect, cachedData, "id_ca", "numero_ca");
+            return cachedData;
         }
-        toggleLoading(targetSelect.id, true);
+        // Busca na API
+        toggleLoading(caSelect.id, true);
         try {
-            const response = await get(`${endpointPrefix}/modelo/${modeloId}`); // Ajustado para CA
-            // Para Lotes, o endpoint é diferente: `estoques/modelo-epi/${modeloId}`
-            if (endpointPrefix === 'estoques') {
-                 response = await get(`estoques/modelo-epi/${modeloId}`);
-            }
-
+            const endpoint = `ca/modelo/${modeloId}`;
+            console.log(`Buscando CAs para modelo ${modeloId} em ${endpoint}`); // Log
+            const response = await get(endpoint);
+            console.log(`Resposta para CAs do modelo ${modeloId}:`, response); // Log
             const data = response.success ? response.data : (Array.isArray(response) ? response : []);
             if (!Array.isArray(data)) {
-                dadosCache[cacheKey] = [];
-                return [];
+                console.error("Resposta inválida para CAs por modelo:", data);
+                throw new Error(`Resposta inválida para CAs`);
             }
-            cacheMap.set(modeloId, data);
-            dadosCache[cacheKey] = data;
+            dadosCache.casPorModeloCache.set(modeloId, data);
+            dadosCache.validCaForModel = data;
+            populateSelectOptions(caSelect, data, "id_ca", "numero_ca");
             return data;
         } catch (error) {
-            console.error(`Erro ao buscar ${cacheKey} para modelo ${modeloId}:`, error);
-            dadosCache[cacheKey] = [];
+            console.error(`Erro ao buscar CAs para modelo ${modeloId}:`, error);
+            dadosCache.validCaForModel = [];
+            populateSelectOptions(caSelect, [], "id_ca", "numero_ca", { placeholderText: "Erro ao carregar CAs" });
             return [];
         } finally {
-            toggleLoading(targetSelect.id, false);
+            toggleLoading(caSelect.id, false);
         }
     }
 
     function loadTiposEntrega() {
-        const tipos = ["Entrega", "Troca", "Devolucao"];
-        tipoEntregaSelect.innerHTML = 
-            '<option value="" selected disabled>Selecione o Tipo</option>';
-        tipos.forEach((tipo) => {
-            const option = document.createElement("option");
-            option.value = tipo;
-            option.textContent = tipo;
-            tipoEntregaSelect.appendChild(option);
-        });
+        populateSelectOptions(tipoEntregaSelect, dadosCache.tiposEntrega.map(t => ({id: t, nome: t})), "id", "nome");
     }
 
-    // --- Funções de Validação e Processamento (Adaptadas) ---
+    // --- Funções de Validação e Processamento --- 
 
-    function validateSelectedOption(selectElement, errorElement, validList, valueToCheck, normalizeFn, errorMsgPrefix, idField) {
-        showFieldError(selectElement, errorElement, null);
-        let validatedId = null;
-        if (!valueToCheck) return null; // Não valida se vazio
+    // Valida CA (considera seleção ou tag digitada)
+    function validateCaOption(selectedValue) {
+        showFieldError(caSelect, caErrorMessage, null);
+        validatedCaId = null;
+        if (!selectedValue) return false;
 
-        const selectedOption = selectElement.querySelector(`option[value="${valueToCheck}"]`);
+        const modeloId = validatedModeloId || $(epiModelSelect).val();
+        if (!modeloId) {
+            showFieldError(caSelect, caErrorMessage, "Selecione o Modelo do EPI primeiro.");
+            return false;
+        }
+
+        const selectedOption = caSelect.querySelector(`option[value="${selectedValue}"]`);
+        const isNewTag = selectedOption && selectedOption.dataset.select2Tag === "true";
+        const textToValidate = isNewTag ? selectedValue : selectedOption?.textContent;
+        const normalizedCaInput = normalizeCaNumber(textToValidate);
+
+        if (!normalizedCaInput) {
+             showFieldError(caSelect, caErrorMessage, `Formato de CA inválido: "${textToValidate}".`);
+             return false;
+        }
+
+        if (!dadosCache.validCaForModel || dadosCache.validCaForModel.length === 0) {
+            console.warn("Lista de CAs válidos para o modelo não carregada.");
+            // Tenta validar pelo menos se o CA existe no cache geral e pertence ao modelo
+            const caGeral = dadosCache.cas.find(ca => normalizeCaNumber(ca.numero_ca) === normalizedCaInput);
+            if (caGeral && caGeral.id_modelo_epi == modeloId) {
+                validatedCaId = caGeral.id_ca;
+                // Se for tag, atualiza o select com o valor correto
+                if (isNewTag) {
+                    const option = new Option(caGeral.numero_ca, caGeral.id_ca, true, true);
+                    $(caSelect).find(`option[value="${selectedValue}"]`).remove();
+                    caSelect.appendChild(option);
+                    $(caSelect).trigger("change.select2");
+                }
+                return true;
+            }
+            showFieldError(caSelect, caErrorMessage, `CA "${normalizedCaInput}" não encontrado ou inválido para este modelo.`);
+            return false;
+        }
+
+        // Valida contra a lista específica do modelo
+        const foundCa = dadosCache.validCaForModel.find(ca => normalizeCaNumber(ca.numero_ca) === normalizedCaInput);
+        if (foundCa) {
+            validatedCaId = foundCa.id_ca;
+             // Se for tag, atualiza o select com o valor correto
+            if (isNewTag) {
+                const option = new Option(foundCa.numero_ca, foundCa.id_ca, true, true);
+                $(caSelect).find(`option[value="${selectedValue}"]`).remove();
+                caSelect.appendChild(option);
+                $(caSelect).trigger("change.select2");
+            }
+            return true;
+        } else {
+            showFieldError(caSelect, caErrorMessage, `CA "${normalizedCaInput}" não é válido para este Modelo.`);
+            return false;
+        }
+    }
+
+    // Valida Lote
+    function validateLoteOption(selectedValue) {
+        showFieldError(loteSelect, loteErrorMessage, null);
+        validatedLoteId = null;
+        if (!selectedValue) return false;
+
+        const modeloId = validatedModeloId || $(epiModelSelect).val();
+        if (!modeloId) {
+            showFieldError(loteSelect, loteErrorMessage, "Selecione o Modelo do EPI primeiro.");
+            return false;
+        }
+
+        if (!dadosCache.validLoteForModel || dadosCache.validLoteForModel.length === 0) {
+            console.warn("Lista de Lotes válidos para o modelo não carregada.");
+            // Tenta validar contra o cache geral de lotes, verificando se pertence ao modelo
+            const loteGeral = dadosCache.lotes.find(lote => lote.id_estoque_lote == selectedValue);
+             if (loteGeral && loteGeral.id_modelo_epi == modeloId) { // Verifica se pertence ao modelo
+                validatedLoteId = loteGeral.id_estoque_lote;
+                return true;
+            }
+            showFieldError(loteSelect, loteErrorMessage, "Não foi possível validar o Lote.");
+            return false;
+        }
+
+        // Valida contra a lista específica do modelo
+        const foundLote = dadosCache.validLoteForModel.find(lote => lote.id_estoque_lote == selectedValue);
+        if (foundLote) {
+            validatedLoteId = foundLote.id_estoque_lote;
+            return true;
+        } else {
+            showFieldError(loteSelect, loteErrorMessage, `Lote selecionado não é válido para este Modelo.`);
+            return false;
+        }
+    }
+
+    // Valida Funcionário (considera seleção ou tag digitada)
+    function validateFuncionarioOption(selectedValue, isMatricula) {
+        showFieldError(funcionarioMatriculaSelect, matriculaErrorMessage, null);
+        validatedFuncionarioId = null;
+        if (!selectedValue) return false;
+
+        const targetSelect = isMatricula ? funcionarioMatriculaSelect : funcionarioNomeSelect;
+        const relatedSelect = isMatricula ? funcionarioNomeSelect : funcionarioMatriculaSelect;
+        const selectedOption = targetSelect.querySelector(`option[value="${selectedValue}"]`);
         const isNewTag = selectedOption && selectedOption.dataset.select2Tag === "true";
 
         if (isNewTag) {
-            showFieldError(selectElement, errorElement, `${errorMsgPrefix} digitado "${valueToCheck}" não foi validado/encontrado.`);
-            return null;
+            // A validação de tag acontece em processarScan ou no evento change da matrícula
+            return false;
         }
 
-        if (!validList || validList.length === 0) {
-            // Não pode validar se a lista de referência (ex: CAs do modelo) não carregou
-            // Poderia mostrar um aviso, mas por ora, não bloqueia
-            console.warn(`Lista de validação para ${selectElement.id} está vazia.`);
-             // Tenta encontrar o ID pelo valor selecionado na lista completa (cache geral)
-            const itemCompleto = dadosCache[selectElement.id === 'id_ca_epi' ? 'cas' : 'lotes']?.find(item => item[idField] == valueToCheck);
-            return itemCompleto ? itemCompleto[idField] : null;
-        }
-
-        const normalizedInput = normalizeFn(selectedOption.textContent);
-        const foundItem = validList.find(item => normalizeFn(item[selectElement.id === 'id_ca_epi' ? 'numero_ca' : 'codigo_lote']) === normalizedInput);
-
-        if (foundItem && foundItem[idField] == valueToCheck) {
-            validatedId = foundItem[idField];
-            return validatedId;
+        // Valida se o ID existe no cache
+        const foundFunc = dadosCache.funcionarios.find(f => f.id_funcionario == selectedValue);
+        if (foundFunc) {
+            validatedFuncionarioId = foundFunc.id_funcionario;
+            // Sincroniza o outro select (Nome ou Matrícula)
+            const relatedValue = foundFunc.id_funcionario;
+            if ($(relatedSelect).val() != relatedValue) {
+                const updatingFlag = isMatricula ? 'funcionarioNome' : 'funcionarioMatricula';
+                isUpdating[updatingFlag] = true;
+                $(relatedSelect).val(relatedValue).trigger("change.select2");
+                setTimeout(() => isUpdating[updatingFlag] = false, 50);
+            }
+            return true;
         } else {
-            // Se o valor selecionado não corresponde a um item válido na lista filtrada
-            showFieldError(selectElement, errorElement, `${errorMsgPrefix} "${selectedOption.textContent}" selecionado não pertence à lista do modelo atual.`);
-            return null;
+            showFieldError(funcionarioMatriculaSelect, matriculaErrorMessage, "Funcionário selecionado inválido.");
+            return false;
         }
     }
 
-    async function processarEselecionarItem(selectElement, codigo, apiEndpoint, cacheMap, normalizeFn, idField, textField, relatedSelectElement, relatedIdField, successMsgElement, errorElement, errorMsgPrefix) {
-        const codigoNormalizado = normalizeFn(codigo);
-        if (!codigoNormalizado) {
-            showFieldError(selectElement, errorElement, `Formato inválido: ${codigo}`);
-            $(selectElement).val(null).trigger("change.select2");
-            return null;
-        }
-
-        toggleLoading(selectElement.id, true);
-        showFieldError(selectElement, errorElement, null);
-        isUpdating[selectElement.id] = true;
-        if (relatedSelectElement) isUpdating[relatedSelectElement.id] = true;
+    // --- Processamento de Scan/Tag (Apenas CA e Matrícula) ---
+    async function processarScan(codigo, target) {
+        console.log(`Processando scan para ${target}: ${codigo}`);
+        let success = false;
+        let foundItem = null;
+        let errorMessage = "Código não encontrado ou inválido.";
 
         try {
-            let itemInfo = null;
-            let relatedIdDoItem = cacheMap.get(codigoNormalizado);
-
-            // 1. Tenta buscar via API específica (ex: /ca/numero/ ou /funcionarios?numero_matricula=)
-            try {
-                const response = await get(`${apiEndpoint}${codigoNormalizado}`);
-                const data = response.success ? response.data : (Array.isArray(response) && response.length > 0 ? response[0] : (response || null)); // Ajuste para funcionario
-                if (data && data[idField]) {
-                    itemInfo = data;
-                    relatedIdDoItem = itemInfo[relatedIdField];
-                    if (relatedIdDoItem) cacheMap.set(codigoNormalizado, relatedIdDoItem);
+            if (target === "ca") {
+                const normalizedCa = normalizeCaNumber(codigo);
+                if (!normalizedCa) {
+                    errorMessage = "Formato de CA inválido.";
+                    throw new Error(errorMessage);
+                }
+                const modeloIdDoCa = dadosCache.modeloPorCaCache.get(normalizedCa);
+                if (modeloIdDoCa) {
+                    // Busca os CAs específicos do modelo para obter o ID correto do CA
+                    const casDoModelo = await buscarCasPorModelo(modeloIdDoCa);
+                    foundItem = casDoModelo.find(ca => normalizeCaNumber(ca.numero_ca) === normalizedCa);
+                    if (foundItem) {
+                        // Atualiza modelo se necessário
+                        if ($(epiModelSelect).val() != modeloIdDoCa) {
+                            isUpdating.modelo = true;
+                            $(epiModelSelect).val(modeloIdDoCa).trigger("change"); // Dispara change para carregar Lotes/CAs
+                            markAsAutoFilled(epiModelSelect);
+                            validatedModeloId = modeloIdDoCa;
+                            // Espera um pouco para o change do modelo terminar antes de selecionar o CA
+                            await new Promise(resolve => setTimeout(resolve, 150));
+                            isUpdating.modelo = false;
+                        }
+                        // Seleciona o CA
+                        isUpdating.ca = true;
+                        const option = new Option(foundItem.numero_ca, foundItem.id_ca, true, true);
+                        $(caSelect).find(`option[value="${codigo}"]`).remove(); // Remove tag temporária se houver
+                        caSelect.appendChild(option);
+                        $(caSelect).val(foundItem.id_ca).trigger("change.select2");
+                        markAsAutoFilled(caSelect);
+                        validatedCaId = foundItem.id_ca;
+                        showFieldError(caSelect, caErrorMessage, null);
+                        success = true;
+                        setTimeout(() => isUpdating.ca = false, 50);
+                    } else {
+                         errorMessage = `CA "${normalizedCa}" encontrado, mas não na lista do modelo ${modeloIdDoCa}.`;
+                    }
                 } else {
-                     console.log(`${errorMsgPrefix} ${codigo} não encontrado via API específica.`);
+                     errorMessage = `CA "${normalizedCa}" não encontrado no sistema.`;
+                     console.warn(errorMessage);
                 }
-            } catch (error) {
-                 if (error.response?.status !== 404) {
-                    console.error(`Erro ao buscar ${errorMsgPrefix} ${codigo} via API:`, error);
-                 }
-            }
-
-            // 2. Se não encontrou via API específica ou não tem ID relacionado, tenta no cache geral
-            if (!itemInfo && dadosCache[selectElement.id === 'id_ca_epi' ? 'cas' : 'funcionarios']) {
-                 itemInfo = dadosCache[selectElement.id === 'id_ca_epi' ? 'cas' : 'funcionarios'].find(item => normalizeFn(item[textField]) === codigoNormalizado);
-                 if(itemInfo) relatedIdDoItem = itemInfo[relatedIdField];
-            }
-
-            // 3. Se ainda não encontrou, falha
-            if (!itemInfo || (relatedSelectElement && !relatedIdDoItem)) {
-                const errorDetail = relatedSelectElement && !relatedIdDoItem ? ` ou sem ${relatedSelectElement.id.replace('id_', '').replace('_epi','')} associado` : '';
-                showFieldError(selectElement, errorElement, `${errorMsgPrefix} ${codigo} não encontrado${errorDetail}.`);
-                $(selectElement).find(`option[value="${codigo}"]`).remove(); // Remove tag inválida
-                $(selectElement).val(null).trigger("change.select2");
-                return null;
-            }
-
-            // 4. Atualiza campo relacionado (Modelo EPI ou Nome Funcionário) se necessário
-            if (relatedSelectElement) {
-                const relatedSelecionadoAtual = $(relatedSelectElement).val();
-                if (relatedSelecionadoAtual != relatedIdDoItem) {
-                    $(relatedSelectElement).val(relatedIdDoItem).trigger("change.select2");
-                    markAsAutoFilled(relatedSelectElement);
-                    if (successMsgElement) showSuccessMessage(successMsgElement.id, `✓ ${relatedSelectElement.id.replace('id_', '').replace('_epi','')} atualizado automaticamente.`);
-                    // Espera a atualização do campo relacionado (ex: carregar CAs do modelo)
-                    await new Promise(resolve => setTimeout(resolve, 500)); // Pequeno delay
+            } else if (target === "matricula") {
+                const normalizedMatricula = normalizeMatricula(codigo);
+                if (!normalizedMatricula) {
+                     errorMessage = "Formato de matrícula inválido.";
+                     throw new Error(errorMessage);
+                }
+                const funcionarioId = dadosCache.funcionarioPorMatriculaCache.get(normalizedMatricula);
+                if (funcionarioId) {
+                    foundItem = dadosCache.funcionarios.find(f => f.id_funcionario == funcionarioId);
+                    if (foundItem) {
+                        isUpdating.funcionarioMatricula = true;
+                        isUpdating.funcionarioNome = true;
+                        // Adiciona opção se não existir (caso venha de scan)
+                         if (!funcionarioMatriculaSelect.querySelector(`option[value="${funcionarioId}"]`)) {
+                             const optionMat = new Option(foundItem.numero_matricula, funcionarioId, true, true);
+                             funcionarioMatriculaSelect.appendChild(optionMat);
+                         }
+                         if (!funcionarioNomeSelect.querySelector(`option[value="${funcionarioId}"]`)) {
+                             const optionNome = new Option(foundItem.nome_funcionario, funcionarioId, true, true);
+                             funcionarioNomeSelect.appendChild(optionNome);
+                         }
+                        $(funcionarioMatriculaSelect).val(funcionarioId).trigger("change.select2");
+                        $(funcionarioNomeSelect).val(funcionarioId).trigger("change.select2");
+                        markAsAutoFilled(funcionarioMatriculaSelect);
+                        markAsAutoFilled(funcionarioNomeSelect);
+                        validatedFuncionarioId = funcionarioId;
+                        showFieldError(funcionarioMatriculaSelect, matriculaErrorMessage, null);
+                        success = true;
+                        setTimeout(() => {
+                            isUpdating.funcionarioMatricula = false;
+                            isUpdating.funcionarioNome = false;
+                        }, 50);
+                    }
+                } else {
+                     errorMessage = `Funcionário com matrícula "${normalizedMatricula}" não encontrado.`;
+                     console.warn(errorMessage);
                 }
             }
-
-            // 5. Garante que a opção existe e seleciona no select principal
-            const $select = $(selectElement);
-            $select.find(`option[value="${codigo}"]`).remove(); // Remove tag digitada
-            if (!$select.find(`option[value="${itemInfo[idField]}"]`).length) {
-                const option = new Option(itemInfo[textField], itemInfo[idField], true, true);
-                option.dataset.item = JSON.stringify(itemInfo);
-                $select.append(option);
-            }
-            $select.val(itemInfo[idField]).trigger("change.select2");
-            markAsAutoFilled(selectElement);
-            showFieldError(selectElement, errorElement, null); // Limpa erro
-            return itemInfo;
-
         } catch (error) {
-            console.error(`Erro geral ao processar ${errorMsgPrefix} ${codigo}:`, error);
-            showFieldError(selectElement, errorElement, `Erro ao validar ${errorMsgPrefix} ${codigo}.`);
-            $(selectElement).val(null).trigger("change.select2");
-            return null;
-        } finally {
-            toggleLoading(selectElement.id, false);
-            setTimeout(() => {
-                isUpdating[selectElement.id] = false;
-                if (relatedSelectElement) isUpdating[relatedSelectElement.id] = false;
-            }, 150); // Aumentar ligeiramente o timeout
+            console.error(`Erro ao processar scan para ${target}:`, error);
+            success = false;
+            errorMessage = error.message || errorMessage;
         }
+
+        // Limpa tag temporária do Select2 se existir
+        if (target === "ca") $(caSelect).find(`option[value="${codigo}"]`).remove();
+        if (target === "matricula") $(funcionarioMatriculaSelect).find(`option[value="${codigo}"]`).remove();
+
+        // Atualiza modal do scanner
+        scannerLoading.style.display = "none";
+        if (success) {
+            scannerSuccess.style.display = "flex";
+            setTimeout(() => scannerModal.hide(), 1000); // Fecha modal após sucesso
+        } else {
+            scannerError.querySelector("span").textContent = errorMessage;
+            scannerError.style.display = "flex";
+            scannerInput.value = ""; // Limpa input no erro
+            scannerInput.focus();
+        }
+
+        return success;
     }
 
     // --- Event Listeners --- 
 
-    // Modelo EPI -> Carrega CAs e Lotes
-    $(epiModelSelect).on("change", async function () {
-        if (isUpdating.modelo) return;
+    // Modelo EPI change
+    $(epiModelSelect).on("change", async function (event) {
+        // if (isUpdating.modelo) return; // REMOVIDO: Pode impedir atualização após scan
         const modeloId = $(this).val();
+        console.log("Modelo EPI selecionado:", modeloId);
+        validatedModeloId = modeloId;
+        // Limpa e desabilita/habilita campos dependentes
         validatedCaId = null;
         validatedLoteId = null;
         showFieldError(caSelect, caErrorMessage, null);
-        // Limpa e atualiza CAs
-        const casDoModelo = await buscarDadosDependentes(modeloId, dadosCache.casPorModeloCache, "ca", caSelect, "id_ca", "numero_ca", "validCaForModel");
-        populateSelectOptions(caSelect, casDoModelo, "id_ca", "numero_ca");
-        // Limpa e atualiza Lotes
-        const lotesDoModelo = await buscarDadosDependentes(modeloId, dadosCache.lotesPorModeloCache, "estoques", loteSelect, "id_estoque_lote", "codigo_lote", "validLoteForModel");
-        populateSelectOptions(loteSelect, lotesDoModelo, "id_estoque_lote", "codigo_lote");
+        showFieldError(loteSelect, loteErrorMessage, null);
+        isUpdating.ca = true;
+        isUpdating.lote = true;
+        $(caSelect).val(null).trigger("change.select2");
+        $(loteSelect).val(null).trigger("change.select2");
+        caSelect.disabled = !modeloId;
+        loteSelect.disabled = !modeloId;
+        $(caSelect).trigger("change.select2"); // Atualiza visual do select2
+        $(loteSelect).trigger("change.select2");
 
         if (modeloId) {
-            showSuccessMessage("modelo-success-message", "✓ CAs e Lotes disponíveis carregados.");
+            // Busca CAs e Lotes em paralelo
+            const [casDoModelo, lotesDoModelo] = await Promise.all([
+                buscarCasPorModelo(modeloId),
+                buscarLotesPorModelo(modeloId)
+            ]);
+        } else {
+            // Limpa opções se nenhum modelo for selecionado
+            populateSelectOptions(caSelect, [], "id_ca", "numero_ca", { placeholderText: "Selecione Modelo primeiro..." });
+            populateSelectOptions(loteSelect, [], "id_estoque_lote", "codigo_lote", { placeholderText: "Selecione Modelo primeiro..." });
         }
+        setTimeout(() => {
+            isUpdating.ca = false;
+            isUpdating.lote = false;
+        }, 50);
     });
 
-    // CA -> Valida ou Processa Tag
-    $(caSelect).on("change", async function () {
+    // CA change
+    $(caSelect).on("change", async function (event) {
         if (isUpdating.ca) return;
         const selectedValue = $(this).val();
-        validatedCaId = null;
-        showFieldError(caSelect, caErrorMessage, null);
-
-        if (selectedValue) {
+        if (!selectedValue) {
+            validatedCaId = null;
+            showFieldError(caSelect, caErrorMessage, null);
+        } else {
             const selectedOption = caSelect.querySelector(`option[value="${selectedValue}"]`);
             const isNewTag = selectedOption && selectedOption.dataset.select2Tag === "true";
-
             if (isNewTag) {
-                const caInfo = await processarEselecionarItem(caSelect, selectedValue, "ca/numero/", dadosCache.modeloPorCaCache, normalizeCaNumber, "id_ca", "numero_ca", epiModelSelect, "id_modelo_epi", modeloSuccessMessage, caErrorMessage, "CA");
-                if (caInfo) {
-                    validatedCaId = caInfo.id_ca;
-                } else {
-                    $(caSelect).val(null).trigger("change.select2");
-                }
+                // Se for tag, tenta processar como se fosse scan/digitação direta
+                await processarScan(selectedValue, "ca");
             } else {
-                // Valida opção existente contra a lista do modelo
-                validatedCaId = validateSelectedOption(caSelect, caErrorMessage, dadosCache.validCaForModel, selectedValue, normalizeCaNumber, "CA", "id_ca");
+                // Se for seleção normal, apenas valida
+                validateCaOption(selectedValue);
             }
         }
     });
 
-    // Lote -> Valida (não permite tag)
-     $(loteSelect).on("change", function () {
+    // Lote change
+    $(loteSelect).on("change", function (event) {
         if (isUpdating.lote) return;
         const selectedValue = $(this).val();
-        validatedLoteId = null;
-        // Adicionar elemento de erro para lote se necessário
-        // showFieldError(loteSelect, loteErrorMessage, null);
-
-        if (selectedValue) {
-            // Valida opção existente contra a lista do modelo
-            // Nota: Não permite tags para lote, apenas seleção
-            const loteValido = dadosCache.validLoteForModel?.find(lote => lote.id_estoque_lote == selectedValue);
-            if(loteValido){
-                validatedLoteId = loteValido.id_estoque_lote;
-            } else if (dadosCache.validLoteForModel?.length > 0) {
-                 // Se a lista de lotes do modelo existe mas o selecionado não está nela
-                 // showFieldError(loteSelect, loteErrorMessage, "Lote selecionado não pertence ao modelo atual.");
-                 console.warn("Lote selecionado não pertence ao modelo atual.");
-                 // $(loteSelect).val(null).trigger("change.select2"); // Descomentar para limpar seleção inválida
-            } else {
-                // Se a lista de lotes do modelo está vazia (não carregou ou não tem lotes)
-                // Apenas aceita o ID selecionado, assumindo que veio do cache geral
-                validatedLoteId = parseInt(selectedValue, 10);
-                console.warn("Validando lote sem lista específica do modelo.");
-            }
+        if (!selectedValue) {
+            validatedLoteId = null;
+            showFieldError(loteSelect, loteErrorMessage, null);
+        } else {
+            validateLoteOption(selectedValue);
         }
     });
 
-    // Funcionário Nome -> Sincroniza Matrícula
-    $(funcionarioNomeSelect).on("change", function () {
+    // Funcionário Nome change
+    $(funcionarioNomeSelect).on("change", function (event) {
         if (isUpdating.funcionarioNome) return;
-        const selectedFuncId = $(this).val();
-        validatedFuncionarioId = selectedFuncId ? parseInt(selectedFuncId, 10) : null;
-        isUpdating.funcionarioMatricula = true;
-        $(funcionarioMatriculaSelect).val(selectedFuncId).trigger("change.select2");
-        setTimeout(() => { isUpdating.funcionarioMatricula = false; }, 100);
-        // Limpar erro da matrícula se houver
-        // showFieldError(funcionarioMatriculaSelect, matriculaErrorMessage, null);
+        const selectedValue = $(this).val();
+        validateFuncionarioOption(selectedValue, false);
     });
 
-    // Funcionário Matrícula -> Sincroniza Nome / Valida ou Processa Tag
-    $(funcionarioMatriculaSelect).on("change", async function () {
+    // Funcionário Matrícula change (AGORA TRATA TAGS/DIGITAÇÃO)
+    $(funcionarioMatriculaSelect).on("change", async function (event) {
         if (isUpdating.funcionarioMatricula) return;
         const selectedValue = $(this).val();
-        validatedFuncionarioId = null;
-        // Limpar erro da matrícula se houver
-        // showFieldError(funcionarioMatriculaSelect, matriculaErrorMessage, null);
-
-        if (selectedValue) {
+         if (!selectedValue) {
+            validatedFuncionarioId = null;
+            showFieldError(funcionarioMatriculaSelect, matriculaErrorMessage, null);
+            // Limpa nome também se matrícula for limpa
+            if ($(funcionarioNomeSelect).val()) {
+                 isUpdating.funcionarioNome = true;
+                 $(funcionarioNomeSelect).val(null).trigger("change.select2");
+                 setTimeout(() => isUpdating.funcionarioNome = false, 50);
+            }
+        } else {
             const selectedOption = funcionarioMatriculaSelect.querySelector(`option[value="${selectedValue}"]`);
             const isNewTag = selectedOption && selectedOption.dataset.select2Tag === "true";
-
             if (isNewTag) {
-                // Tenta processar a matrícula digitada
-                const funcInfo = await processarEselecionarItem(funcionarioMatriculaSelect, selectedValue, "funcionarios?numero_matricula=", dadosCache.funcionarioPorMatriculaCache, normalizeMatricula, "id_funcionario", "numero_matricula", funcionarioNomeSelect, "id_funcionario", null, null, "Matrícula"); // Adicionar elementos de erro/sucesso se desejar
-                if (funcInfo) {
-                    validatedFuncionarioId = funcInfo.id_funcionario;
+                // Se for tag (digitado), tenta encontrar o funcionário pela matrícula
+                const normalizedMatricula = normalizeMatricula(selectedValue);
+                const funcionarioId = dadosCache.funcionarioPorMatriculaCache.get(normalizedMatricula);
+                if (funcionarioId) {
+                    const foundFunc = dadosCache.funcionarios.find(f => f.id_funcionario == funcionarioId);
+                    if (foundFunc) {
+                        validatedFuncionarioId = funcionarioId;
+                        isUpdating.funcionarioMatricula = true;
+                        isUpdating.funcionarioNome = true;
+                        // Remove a tag e adiciona/seleciona a opção correta
+                        $(funcionarioMatriculaSelect).find(`option[value="${selectedValue}"]`).remove();
+                        const optionMat = new Option(foundFunc.numero_matricula, funcionarioId, true, true);
+                        funcionarioMatriculaSelect.appendChild(optionMat);
+                        $(funcionarioMatriculaSelect).val(funcionarioId).trigger("change.select2");
+                        // Sincroniza o nome
+                        $(funcionarioNomeSelect).val(funcionarioId).trigger("change.select2");
+                        markAsAutoFilled(funcionarioMatriculaSelect);
+                        markAsAutoFilled(funcionarioNomeSelect);
+                        showFieldError(funcionarioMatriculaSelect, matriculaErrorMessage, null);
+                        setTimeout(() => {
+                            isUpdating.funcionarioMatricula = false;
+                            isUpdating.funcionarioNome = false;
+                        }, 50);
+                    } else {
+                        // Funcionário não encontrado no cache principal (erro)
+                        showFieldError(funcionarioMatriculaSelect, matriculaErrorMessage, `Erro interno ao buscar dados do funcionário (ID: ${funcionarioId}).`);
+                        validatedFuncionarioId = null;
+                    }
                 } else {
-                    $(funcionarioMatriculaSelect).val(null).trigger("change.select2");
-                    // Sincroniza nome para vazio também
-                    isUpdating.funcionarioNome = true;
-                    $(funcionarioNomeSelect).val(null).trigger("change.select2");
-                    setTimeout(() => { isUpdating.funcionarioNome = false; }, 100);
+                    // Matrícula digitada não encontrada
+                    showFieldError(funcionarioMatriculaSelect, matriculaErrorMessage, `Matrícula "${normalizedMatricula}" não encontrada.`);
+                    validatedFuncionarioId = null;
+                    // Limpa o nome se a matrícula digitada for inválida
+                    if ($(funcionarioNomeSelect).val()) {
+                        isUpdating.funcionarioNome = true;
+                        $(funcionarioNomeSelect).val(null).trigger("change.select2");
+                        setTimeout(() => isUpdating.funcionarioNome = false, 50);
+                    }
                 }
             } else {
-                // Apenas sincroniza o nome se a seleção foi de um item existente
-                validatedFuncionarioId = parseInt(selectedValue, 10);
-                isUpdating.funcionarioNome = true;
-                $(funcionarioNomeSelect).val(selectedValue).trigger("change.select2");
-                setTimeout(() => { isUpdating.funcionarioNome = false; }, 100);
+                // Se for seleção normal, apenas valida e sincroniza
+                validateFuncionarioOption(selectedValue, true);
             }
         }
-         else {
-             // Se limpou a matrícula, limpa o nome também
-             isUpdating.funcionarioNome = true;
-             $(funcionarioNomeSelect).val(null).trigger("change.select2");
-             setTimeout(() => { isUpdating.funcionarioNome = false; }, 100);
-         }
     });
 
-    // --- Scanner --- 
-    document.addEventListener("keypress", async (event) => {
-        const currentTime = Date.now();
-        // Ignora input se foco estiver em campos editáveis
-        if (event.target.tagName === "INPUT" || event.target.tagName === "TEXTAREA" || $(event.target).closest('.select2-search__field').length > 0) {
-            lastKeyTime = currentTime;
-            return;
-        }
-        // Reseta buffer se pausa longa
-        if (currentTime - lastKeyTime > 150) { // Aumentar um pouco o tempo
-            scannedInput = "";
-        }
-        // Processa ao pressionar Enter
-        if (event.key === "Enter") {
-            if (scannedInput.length > 3) {
-                console.log("Scanner Enter detectado, código:", scannedInput);
-                await processScannedCode(scannedInput);
-            }
-            scannedInput = "";
-        } else if (event.key && event.key.length === 1) {
-            // Adiciona ao buffer
-            scannedInput += event.key;
-        }
-        lastKeyTime = currentTime;
-    });
+    // --- Lógica do Scanner Modal ---
+    function openScannerModal(target) {
+        currentScanTarget = target;
+        let title = "Escanear Código";
+        let instruction = "Aponte o leitor para o código ou digite abaixo:";
+        let placeholder = "Aguardando leitura...";
+        let iconClass = "bi-upc-scan";
 
-    async function processScannedCode(code) {
-        console.log("Processando código do scanner:", code);
-        // Prioridade 1: Tentar como Matrícula de Funcionário
-        const funcInfo = await processarEselecionarItem(funcionarioMatriculaSelect, code, "funcionarios?numero_matricula=", dadosCache.funcionarioPorMatriculaCache, normalizeMatricula, "id_funcionario", "numero_matricula", funcionarioNomeSelect, "id_funcionario", null, null, "Matrícula");
-        if (funcInfo) {
-            console.log(`Scanner: Funcionário ${funcInfo.nome_funcionario} selecionado.`);
-            validatedFuncionarioId = funcInfo.id_funcionario;
-            return; // Encontrou funcionário, termina
+        if (target === "ca") {
+            title = "Escanear CA";
+            instruction = "Aponte para o código de barras do CA ou digite:";
+            placeholder = "Número do CA (ex: 12345)";
+            iconClass = "bi-upc-scan";
+        } else if (target === "matricula") {
+            title = "Escanear Matrícula";
+            instruction = "Aponte para o código da Matrícula ou digite:";
+            placeholder = "Número da Matrícula";
+            iconClass = "bi-person-badge";
+        } else {
+            console.error("Alvo de scan inválido:", target);
+            return; // Não abre o modal se o alvo for inválido
         }
 
-        // Prioridade 2: Tentar como CA
-        const caInfo = await processarEselecionarItem(caSelect, code, "ca/numero/", dadosCache.modeloPorCaCache, normalizeCaNumber, "id_ca", "numero_ca", epiModelSelect, "id_modelo_epi", modeloSuccessMessage, caErrorMessage, "CA");
-        if (caInfo) {
-            console.log(`Scanner: CA ${caInfo.numero_ca} selecionado.`);
-            validatedCaId = caInfo.id_ca;
-            return; // Encontrou CA, termina
-        }
-
-        console.log(`Scanner: Código ${code} não reconhecido.`);
-        // Poderia adicionar feedback visual aqui se não reconhecido
+        scannerModalLabel.querySelector("span").textContent = title;
+        scannerModalLabel.querySelector("i").className = `bi ${iconClass} me-2`;
+        scannerModalInstruction.textContent = instruction;
+        scannerInput.placeholder = placeholder;
+        scannerModal.show();
     }
 
-    // --- Submissão do Formulário --- 
+    if (scannerModalElement) {
+        scannerModalElement.addEventListener("shown.bs.modal", () => {
+            scannerInput.focus();
+            scannerInput.value = "";
+            scannerLoading.style.display = "none";
+            scannerSuccess.style.display = "none";
+            scannerError.style.display = "none";
+        });
+    }
+
+    let scannerTimeout;
+    if (scannerInput) {
+        scannerInput.addEventListener("input", () => {
+            clearTimeout(scannerTimeout);
+            const codigo = scannerInput.value.trim();
+
+            // Limpa status ao digitar
+            scannerLoading.style.display = "none";
+            scannerSuccess.style.display = "none";
+            scannerError.style.display = "none";
+
+            if (codigo.length > 2) { // Trigger após alguns caracteres
+                scannerLoading.style.display = "flex";
+                scannerTimeout = setTimeout(async () => {
+                    // Chama processarScan que agora atualiza o modal internamente
+                    await processarScan(codigo, currentScanTarget);
+                }, 600); // Delay para permitir digitação/leitura completa
+            }
+        });
+    }
+
+    // Listeners dos botões de scanner (APENAS CA e MATRICULA)
+    if (scanCaBtn) scanCaBtn.addEventListener("click", () => openScannerModal("ca"));
+    if (scanMatriculaBtn) scanMatriculaBtn.addEventListener("click", () => openScannerModal("matricula"));
+
+    // --- Submissão do Formulário ---
     form.addEventListener("submit", async (event) => {
         event.preventDefault();
 
-        // Revalidar campos Select2 antes de submeter
-        const modeloId = $(epiModelSelect).val();
-        const caValue = $(caSelect).val();
-        const loteValue = $(loteSelect).val();
-        const funcValue = $(funcionarioNomeSelect).val(); // Usa nome ou matrícula, já que estão sincronizados
-
-        if (!modeloId) {
-            alert("Selecione o Modelo do EPI.");
-            $(epiModelSelect).select2("open");
+        // Revalidações finais
+        validatedModeloId = $(epiModelSelect).val();
+        if (!validatedModeloId) {
+            alert("Erro: Modelo do EPI não selecionado ou inválido.");
+            epiModelSelect.focus();
             return;
         }
-
-        // Valida CA
-        validatedCaId = validateSelectedOption(caSelect, caErrorMessage, dadosCache.validCaForModel, caValue, normalizeCaNumber, "CA", "id_ca");
-        if (!validatedCaId) {
-             if (!caErrorMessage.textContent) { // Se não houve erro específico, mostra erro genérico
-                 showFieldError(caSelect, caErrorMessage, "Selecione ou digite/escaneie um CA válido para o modelo.");
-             }
-            $(caSelect).select2("open");
-            return;
+        if (!validateLoteOption($(loteSelect).val())) {
+             alert(loteErrorMessage.textContent || "Erro: Lote inválido ou não selecionado para este modelo.");
+             loteSelect.focus();
+             return;
+        }
+         if (!validateCaOption($(caSelect).val())) {
+             alert(caErrorMessage.textContent || "Erro: CA inválido ou não selecionado para este modelo.");
+             caSelect.focus();
+             return;
+        }
+        // Valida funcionário pela matrícula selecionada/validada
+        if (!validateFuncionarioOption($(funcionarioMatriculaSelect).val(), true)) {
+             alert(matriculaErrorMessage.textContent || "Erro: Funcionário inválido ou não selecionado.");
+             funcionarioMatriculaSelect.focus();
+             return;
+        }
+        if (!tipoEntregaSelect.value) {
+             alert("Erro: Selecione o Tipo de Movimentação.");
+             tipoEntregaSelect.focus();
+             return;
+        }
+         if (!dataEntregaInput.value) {
+             alert("Erro: Selecione a Data de Entrega.");
+             dataEntregaInput.focus();
+             return;
+        }
+         if (!quantidadeInput.value || parseInt(quantidadeInput.value, 10) <= 0) {
+             alert("Erro: Insira uma Quantidade válida (maior que zero).");
+             quantidadeInput.focus();
+             return;
         }
 
-         // Valida Funcionário (apenas verifica se algo foi selecionado)
-         if (!funcValue) {
-             alert("Selecione o Funcionário (Nome ou Matrícula).");
-             // Poderia adicionar showFieldError para funcionário se desejado
-             $(funcionarioNomeSelect).select2("open");
-             return;
-         }
-         validatedFuncionarioId = parseInt(funcValue, 10);
-
-         // Valida Lote
-         validatedLoteId = validateSelectedOption(loteSelect, null, dadosCache.validLoteForModel, loteValue, (val) => val, "Lote", "id_estoque_lote"); // Normalização simples
-         if (!validatedLoteId) {
-             alert("Selecione um Lote válido para o modelo.");
-             // Poderia adicionar showFieldError para lote se desejado
-             $(loteSelect).select2("open");
-             return;
-         }
-
-        // Coleta dados para envio
-        const now = new Date();
-        const dataFormatada = dataEntregaInput.value || now.toISOString().split("T")[0];
-        const horaFormatada = now.toTimeString().split(" ")[0];
+        // Obtém a hora atual no formato HH:MM:SS
+        const agora = new Date();
+        const horaAtual = [
+            agora.getHours().toString().padStart(2, '0'),
+            agora.getMinutes().toString().padStart(2, '0'),
+            agora.getSeconds().toString().padStart(2, '0')
+        ].join(':');
 
         const entregaData = {
             tipo_movimentacao: tipoEntregaSelect.value,
-            data: dataFormatada,
-            hora: horaFormatada,
+            data: dataEntregaInput.value,
+            hora: horaAtual,
             quantidade: parseInt(quantidadeInput.value, 10),
-            descricao: observacoesTextarea.value || null,
-            id_funcionario: validatedFuncionarioId,
-            id_modelo_epi: parseInt(modeloId, 10),
-            id_ca: validatedCaId, // Adiciona o ID do CA validado
-            id_estoque_lote: validatedLoteId,
+            descricao: observacoesTextarea.value,
+            id_funcionario: parseInt(validatedFuncionarioId, 10),
+            id_modelo_epi: parseInt(validatedModeloId, 10),
+            id_estoque_lote: parseInt(validatedLoteId, 10),
         };
-
-        // Validação final dos dados coletados
-        if (
-            !entregaData.tipo_movimentacao ||
-            isNaN(entregaData.quantidade) ||
-            entregaData.quantidade <= 0 ||
-            isNaN(entregaData.id_funcionario) ||
-            isNaN(entregaData.id_modelo_epi) ||
-            isNaN(entregaData.id_ca) ||
-            isNaN(entregaData.id_estoque_lote)
-        ) {
-            alert("Erro na coleta de dados. Verifique os campos obrigatórios.");
-            console.error("Dados inválidos para submissão:", entregaData);
-            return;
-        }
 
         console.log("Enviando dados da entrega:", entregaData);
 
-        // Envio para API
         try {
-            const responseData = await post("entregas-epi", entregaData);
-            if (responseData.success || responseData.id) { // Verifica sucesso ou presença de ID
-                 alert(`Entrega registrada com sucesso! ID: ${responseData.id || 'N/A'}`);
-                 form.reset();
-                 // Limpa Select2
-                 $(".searchable-select").val(null).trigger("change.select2");
-                 // Limpa campos dependentes e mensagens de erro/sucesso
-                 populateSelectOptions(caSelect, [], "id_ca", "numero_ca");
-                 populateSelectOptions(loteSelect, [], "id_estoque_lote", "codigo_lote");
-                 showFieldError(caSelect, caErrorMessage, null);
-                 modeloSuccessMessage.style.display = 'none';
-                 validatedCaId = null;
-                 validatedFuncionarioId = null;
-                 validatedLoteId = null;
+            // AJUSTAR ENDPOINT SE NECESSÁRIO (ex: "entregas" ou "movimentacoes/saida")
+            const response = await post("entregas-epi", entregaData);
+            console.log("Resposta do backend:", response); // Adicionado para depuração
+            if (response && response.success) { // Verifica se response existe e tem success: true
+                // Redireciona para a página de confirmação
+                window.location.href = 'confirmacao-entrega.html';
+                form.reset();
             } else {
-                 throw new Error(responseData.error || "Falha ao registrar entrega.");
+                // Tenta exibir a mensagem de erro do backend, se houver
+                const errorMessage = response?.error || response?.message || "Erro desconhecido";
+                alert(`Erro ao registrar entrega: ${errorMessage}`);
             }
         } catch (error) {
-            const errorMessage = error.response?.data?.error || error.message || "Erro desconhecido ao registrar entrega.";
-            alert(`Erro: ${errorMessage}`);
-            console.error("Erro ao registrar entrega:", error);
+            console.error("Erro ao enviar formulário:", error);
+            alert("Erro de comunicação ao registrar entrega.");
         }
     });
 
-    // --- Carregamento Inicial --- 
+    // --- Inicialização da Página ---
     async function inicializarPagina() {
         initializeSelect2();
-        loadTiposEntrega(); // Carrega tipos estáticos
+        loadTiposEntrega();
+
+        // Carrega dados iniciais
         await Promise.all([
             popularSelect(epiModelSelect, "modelos-epi", "id_modelo_epi", "nome_epi", "modelosEpi"),
             popularSelect(funcionarioNomeSelect, "funcionarios", "id_funcionario", "nome_funcionario", "funcionarios", {
-                relatedSelectId: "id_funcionario_matricula"
+                relatedSelectId: "id_funcionario_matricula",
+                dataMapFn: (f) => ({ ...f, numero_matricula: f.numero_matricula || "S/ Matrícula" })
             }),
-            // Carrega CAs e Lotes gerais no cache, mas não popula os selects inicialmente
-            popularSelect(null, "ca", "id_ca", "numero_ca", "cas"),
-            popularSelect(null, "estoques", "id_estoque_lote", "codigo_lote", "lotes"),
+            popularSelect(funcionarioMatriculaSelect, "funcionarios", "id_funcionario", "numero_matricula", "funcionarios", {
+                 relatedSelectId: "id_funcionario_nome",
+                 dataMapFn: (f) => ({ ...f, numero_matricula: f.numero_matricula || "S/ Matrícula" })
+            }),
+            popularSelect(null, "ca", "id_ca", "numero_ca", "cas"), // Pré-carrega CAs para cache        popularSelect(loteSelect, "estoques", "id_estoque_lote", "codigo_lote", { cacheKey: "lotes" }), // Carrega todos os lotes inicialmente
         ]);
-         // Popula matrícula após funcionários carregarem
-         populateSelectOptions(funcionarioMatriculaSelect, dadosCache.funcionarios, "id_funcionario", "numero_matricula");
-         // Define placeholders iniciais para CAs e Lotes
-         populateSelectOptions(caSelect, [], "id_ca", "numero_ca", { placeholderText: "Selecione o Modelo Primeiro" });
-         populateSelectOptions(loteSelect, [], "id_estoque_lote", "codigo_lote", { placeholderText: "Selecione o Modelo Primeiro" });
+
+        // Desabilita campos dependentes inicialmente (CA)
+        // Lote começa habilitado com todos os lotes
+        caSelect.disabled = true;
+        loteSelect.disabled = false; // Garante que lote esteja habilitado inicialmente
+        $(caSelect).trigger("change.select2");
+        $(loteSelect).trigger("change.select2");
+
+        console.log("Página de Registro de Entregas inicializada.");
     }
 
     inicializarPagina();

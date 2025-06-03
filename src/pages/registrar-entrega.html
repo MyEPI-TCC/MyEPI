@@ -17,14 +17,15 @@
   <!-- CSS Personalizado (NÃO MUDAR CAMINHO) -->
   <link rel="stylesheet" href="../assets/css/registrar-entrega.css">
   
-  <!-- Estilos adicionais para Select2 e loading -->
+  <!-- Estilos adicionais para Select2, loading e Scanners -->
   <style>
+    /* Estilos Select2 (mantidos do ficheiro original) */
     .select2-container--bootstrap-5 .select2-selection {
         border-radius: 20px;
         background-color: white;
         border: none;
         color: black;
-        min-height: calc(1.5em + .75rem + 2px); /* Altura padrão do Bootstrap */
+        min-height: calc(1.5em + .75rem + 2px);
         padding: .375rem .75rem;
         align-items: center;
     }
@@ -33,7 +34,7 @@
         line-height: 1.5;
     }
     .select2-container--bootstrap-5 .select2-selection--single .select2-selection__arrow {
-        height: calc(1.5em + .75rem); /* Ajustar altura da seta */
+        height: calc(1.5em + .75rem);
     }
     .select2-container--bootstrap-5.select2-container--open .select2-dropdown {
         border-radius: 15px;
@@ -48,13 +49,17 @@
     }
     .loading-indicator {
         position: absolute;
-        right: 40px; /* Ajustar posição conforme necessário */
+        right: 10px; /* Posição padrão */
         top: 50%;
         transform: translateY(-50%);
-        display: none; /* Oculto por padrão */
+        display: none;
+    }
+    /* Ajusta posição do loading se houver botão scanner */
+    .field-group.has-scanner .loading-indicator {
+        right: 45px; 
     }
     .select2-container.auto-filled .select2-selection {
-        background-color: #e9f5ff !important; /* Cor de fundo para indicar preenchimento automático */
+        background-color: #e9f5ff !important;
         transition: background-color 0.5s ease;
     }
     .scanner-instructions {
@@ -64,9 +69,67 @@
     }
     .success-message {
         font-size: 0.8rem;
-        color: #28a745; /* Verde sucesso */
+        color: #28a745;
         margin-top: 2px;
-        display: none; /* Oculto por padrão */
+        display: none;
+    }
+    /* Estilo para Botões de Scanner */
+    .scanner-btn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        z-index: 5; /* Para ficar sobre o select2 */
+        padding: 0.3rem 0.6rem;
+        font-size: 0.9rem;
+        line-height: 1;
+        background-color: #0d6efd; /* Azul Bootstrap */
+        color: white;
+        border: none;
+        border-radius: 50%; /* Botão redondo */
+        cursor: pointer;
+        transition: background-color 0.2s ease-in-out;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px; /* Largura fixa */
+        height: 30px; /* Altura fixa */
+    }
+    .scanner-btn:hover {
+        background-color: #0b5ed7;
+    }
+    .scanner-btn i {
+        font-size: 1rem; /* Tamanho do ícone */
+    }
+    /* Ajuste para Select2 com botão scanner */
+    .select2-container--bootstrap-5 .select2-selection--single {
+        padding-right: 40px; /* Espaço para o botão scanner */
+    }
+    /* Estilos Modal Scanner */
+    .barcode-modal-input {
+        text-align: center;
+        font-size: 1.2rem;
+        padding: 0.75rem;
+        border-color: #ff9800;
+    }
+    .barcode-modal-input:focus {
+        border-color: #ff9800;
+        box-shadow: 0 0 0 0.25rem rgba(255, 152, 0, 0.25);
+    }
+    .barcode-status {
+        min-height: 40px; /* Altura mínima para evitar pulos */
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1rem;
+    }
+    .barcode-status .spinner-border {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+    .barcode-status i {
+        font-size: 1.8rem; /* Ícones maiores */
+        margin-right: 0.5rem;
     }
   </style>
 </head>
@@ -111,10 +174,12 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="id_modelo_epi" class="form-label">Modelo do EPI</label>
+            <!-- Removido has-scanner e botão de scan -->
             <div class="field-group">
-              <select id="id_modelo_epi" class="form-select searchable-select" required data-placeholder="Digite para buscar Modelo...">
-                <option value=""></option> <!-- Necessário para placeholder do Select2 -->
+              <select id="id_modelo_epi" class="form-select searchable-select" required data-placeholder="Selecione ou digite o Modelo...">
+                <option value=""></option>
               </select>
+              <!-- Botão Scanner Modelo EPI REMOVIDO -->
               <div class="loading-indicator">
                 <div class="spinner-border spinner-border-sm text-primary" role="status">
                   <span class="visually-hidden">Carregando...</span>
@@ -124,30 +189,10 @@
              <div id="modelo-success-message" class="success-message"></div>
           </div>
           <div class="col-md-6">
-            <label for="id_ca_epi" class="form-label">Certificado de Aprovação (CA)</label>
-             <div class="field-group">
-              <select id="id_ca_epi" class="form-select searchable-select" required data-placeholder="Digite/Escaneie CA ou selecione Modelo">
-                 <option value=""></option> <!-- Necessário para placeholder do Select2 -->
-              </select>
-               <div class="loading-indicator">
-                <div class="spinner-border spinner-border-sm text-primary" role="status">
-                  <span class="visually-hidden">Carregando...</span>
-                </div>
-              </div>
-            </div>
-            <div class="scanner-instructions">
-              Escaneie código de barras ou digite CA (ex: 12345)
-            </div>
-             <div id="ca-error-message" class="text-danger mt-1" style="font-size: 0.875rem; display: none;"></div>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="id_funcionario_nome" class="form-label">Nome do Funcionário</label>
+            <label for="id_lote" class="form-label">Lote</label>
             <div class="field-group">
-              <select id="id_funcionario_nome" class="form-select searchable-select" required data-placeholder="Digite para buscar Nome...">
-                 <option value=""></option> <!-- Necessário para placeholder do Select2 -->
+              <select id="id_lote" class="form-select searchable-select" required data-placeholder="Selecione Modelo primeiro...">
+                 <option value=""></option>
               </select>
               <div class="loading-indicator">
                 <div class="spinner-border spinner-border-sm text-primary" role="status">
@@ -156,20 +201,64 @@
               </div>
             </div>
           </div>
-          <div class="col-md-6">
-            <label for="id_funcionario_matricula" class="form-label">Matrícula do Funcionário</label>
-            <div class="field-group">
-              <select id="id_funcionario_matricula" class="form-select searchable-select" required data-placeholder="Digite/Escaneie Matrícula...">
-                 <option value=""></option> <!-- Necessário para placeholder do Select2 -->
+        </div>
+
+        <div class="row mb-3">
+           <div class="col-md-6">
+            <label for="id_ca_epi" class="form-label">Certificado de Aprovação (CA)</label>
+             <!-- Adicionado has-scanner para ajustar loading -->
+             <div class="field-group has-scanner">
+              <select id="id_ca_epi" class="form-select searchable-select" required data-placeholder="Digite/Escaneie CA...">
+                 <option value=""></option>
               </select>
+              <!-- Botão Scanner CA -->
+              <button type="button" class="scanner-btn" id="scan-ca-btn" title="Escanear CA">
+                <i class="bi bi-upc-scan"></i>
+              </button>
                <div class="loading-indicator">
                 <div class="spinner-border spinner-border-sm text-primary" role="status">
                   <span class="visually-hidden">Carregando...</span>
                 </div>
               </div>
             </div>
-             <div class="scanner-instructions">
-              Escaneie código de barras ou digite Matrícula
+             <div id="ca-error-message" class="text-danger mt-1" style="font-size: 0.875rem; display: none;"></div>
+          </div>
+          <div class="col-md-6">
+            <label for="quantidade" class="form-label">Quantidade</label>
+             <input type="number" id="quantidade" class="form-control" min="1" required>
+          </div>
+        </div>
+
+        <div class="row mb-3">
+          <div class="col-md-6">
+            <label for="id_funcionario_matricula" class="form-label">Matrícula do Funcionário</label>
+            <!-- Adicionado has-scanner para ajustar loading -->
+            <div class="field-group has-scanner">
+              <select id="id_funcionario_matricula" class="form-select searchable-select" required data-placeholder="Digite/Escaneie Matrícula...">
+                 <option value=""></option>
+              </select>
+              <!-- Botão Scanner Matrícula -->
+              <button type="button" class="scanner-btn" id="scan-matricula-btn" title="Escanear Matrícula">
+                <i class="bi bi-person-badge"></i> <!-- Ícone diferente para matrícula -->
+              </button>
+               <div class="loading-indicator">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                  <span class="visually-hidden">Carregando...</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6">
+            <label for="id_funcionario_nome" class="form-label">Nome do Funcionário</label>
+            <div class="field-group">
+              <select id="id_funcionario_nome" class="form-select searchable-select" required data-placeholder="Selecione Matrícula...">
+                 <option value=""></option>
+              </select>
+              <div class="loading-indicator">
+                <div class="spinner-border spinner-border-sm text-primary" role="status">
+                  <span class="visually-hidden">Carregando...</span>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -177,34 +266,14 @@
         <div class="row mb-3">
           <div class="col-md-6">
             <label for="id_tipo_entrega" class="form-label">Tipo de Movimentação</label>
-            <!-- Este campo não precisa ser filtrável, mantido como select padrão -->
             <select id="id_tipo_entrega" class="form-select" required>
               <option value="" selected disabled>Selecione o Tipo</option>
+              <!-- Opções carregadas via JS -->
             </select>
           </div>
           <div class="col-md-6">
             <label for="data_entrega" class="form-label">Data de Entrega</label>
             <input type="date" id="data_entrega" class="form-control" required>
-          </div>
-        </div>
-
-        <div class="row mb-3">
-          <div class="col-md-6">
-            <label for="quantidade" class="form-label">Quantidade</label>
-             <input type="number" id="quantidade" class="form-control" min="1" required>
-          </div>
-          <div class="col-md-6">
-            <label for="id_lote" class="form-label">Código do Lote</label>
-            <div class="field-group">
-              <select id="id_lote" class="form-select searchable-select" required data-placeholder="Digite para buscar Lote...">
-                 <option value=""></option> <!-- Necessário para placeholder do Select2 -->
-              </select>
-              <div class="loading-indicator">
-                <div class="spinner-border spinner-border-sm text-primary" role="status">
-                  <span class="visually-hidden">Carregando...</span>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
 
@@ -217,6 +286,47 @@
           <button type="submit" class="btn btn-submit">Registrar Entrega</button>
         </div>
       </form>
+    </div>
+  </div>
+
+  <!-- Modal Genérico para Scanner -->
+  <div class="modal fade" id="scannerModal" tabindex="-1" aria-labelledby="scannerModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="scannerModalLabel">
+            <i class="bi bi-upc-scan me-2"></i> <!-- Ícone Padrão -->
+            <span>Escanear Código</span> <!-- Título Dinâmico -->
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <p class="mb-3" id="scannerModalInstruction">Aponte o leitor para o código ou digite abaixo:</p>
+            <input type="text" id="scanner-input" class="form-control barcode-modal-input" placeholder="" autofocus>
+            <div class="barcode-status mt-3">
+              <div id="scanner-loading" style="display: none;">
+                <div class="spinner-border me-2" role="status"></div>
+                <span>Processando...</span>
+              </div>
+              <div id="scanner-success" style="display: none;">
+                <i class="bi bi-check-circle-fill text-success"></i>
+                <span>Código lido com sucesso!</span>
+              </div>
+              <div id="scanner-error" style="display: none;">
+                 <i class="bi bi-x-octagon-fill text-danger"></i>
+                <span>Código não encontrado ou inválido.</span>
+              </div>
+            </div>
+            <small class="form-text text-muted mt-2">
+              A leitura é automática após digitar ou escanear.
+            </small>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+        </div>
+      </div>
     </div>
   </div>
 

@@ -193,3 +193,20 @@ html, body {
         }
     }
 
+
+
+/* --- Correção Alinhamento Ícone Modal Scanner --- */
+#scannerModal .scanner-status {
+  display: flex !important; /* Garante display flex */
+  align-items: center !important; /* Alinha verticalmente */
+  justify-content: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+#scannerModal .scanner-status i {
+  font-size: 1.5rem;
+  margin-right: 8px;
+  flex-shrink: 0; /* Impede que o ícone encolha */
+}
+
