@@ -1,19 +1,20 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Funcionário</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EPI</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="/src/assets/css/exibir_funcionario.css">
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
-  <!-- NAVBAR -->
-  <div class="top-navbar">
-    <div class="navbar-title">FUSIONSTEC ENGENHARIA</div>
-    <a href="../../index.html" class="btn btn-sair">Sair</a>
+
+  <!-- NAVBAR SUPERIOR -->
+  <div class="top-navbar position-relative">
+    <div class="navbar-title position-absolute start-50 translate-middle-x">FUSIONSTEC ENGENHARIA</div>
+    <button class="btn btn-sm" onclick="window.location.href='../../index.html'">Sair</button>
   </div>
 
   <!-- SIDEBAR -->
@@ -31,76 +32,36 @@
   </div>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <main>
-    <h2>Funcionário</h2>
-    <section class="card">
+  <div class="main-content">
+    <h4 class="mb-4">Funcionário</h4>
+    <div class="table-box position-relative">
       <div class="d-flex justify-content-between align-items-center mb-3">
-        <h3>Foto do Funcionário</h3>
-        <button class="btn btn-danger btn-sm" onclick="removerFoto()">
-          <i class="fas fa-trash"></i>
-        </button>
+        <h5 class="mb-0">Funcionários Cadastrados</h5>
+        <span class="close-button" onclick="window.location.href='./funcionario.html'">&times;</span>
       </div>
 
-      <div class="form-funcionario">
-        <div class="foto-upload-vertical">
-          <label for="fotoInput" class="upload-box" id="uploadBox">
-            <span id="fotoTexto">Clique para adicionar foto</span>
-            <img id="fotoPreview" style="display: none;" />
-          </label>
-          <input type="file" id="fotoInput" accept="image/*" onchange="mostrarPreview(event)">
-        </div>
-
-        <div class="form-fields">
-          <div class="inputs">
-            <label>Nome Completo</label>
-            <input type="text" />
-
-            <label>Data de Admissão</label>
-            <input type="date" />
-
-            <label>Idade</label>
-            <input type="number" />
-          </div>
-
-          <div class="inputs">
-            <label>Função do Funcionário</label>
-            <input type="text" />
-
-            <label>ID do Funcionário</label>
-            <input type="text" />
-          </div>
-        </div>
+      <!-- TABELA RESPONSIVA -->
+      <div class="table-responsive">
+        <table class="table table-dark table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Nome do Funcionário</th>
+              <th>Idade</th>
+              <th>Código do Funcionário</th>
+              <th>ID do Funcionário</th>
+              <th>Função</th>
+              <th>Data de Admissão</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- Vai ser preenchido dinamicamente pelo JS -->
+          </tbody>
+        </table>
       </div>
+    </div>
+  </div>
 
-      <div class="text-center mt-4">
-        <button class="btn-cadastrar">Cadastrar</button>
-      </div>
-    </section>
-  </main>
-
-  <script>
-    function mostrarPreview(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const preview = document.getElementById('fotoPreview');
-        const texto = document.getElementById('fotoTexto');
-        preview.src = URL.createObjectURL(file);
-        preview.style.display = 'block';
-        texto.style.display = 'none';
-      }
-    }
-
-    function removerFoto() {
-      if (confirm("Tem certeza que deseja remover a foto do funcionário?")) {
-        const preview = document.getElementById('fotoPreview');
-        const texto = document.getElementById('fotoTexto');
-        const input = document.getElementById('fotoInput');
-        preview.src = '';
-        preview.style.display = 'none';
-        texto.style.display = 'block';
-        input.value = '';
-      }
-    }
-  </script>
+  <script src="../assets/js/ficha-epi.js"></script>
 </body>
+
 </html>

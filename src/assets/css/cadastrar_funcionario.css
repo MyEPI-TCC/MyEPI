@@ -1,0 +1,195 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: #12191b;
+}
+
+/* NAVBAR */
+.top-navbar {
+  background-color: rgb(160, 56, 0);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1001;
+}
+
+.navbar-title {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: white;
+}
+
+.btn-sair {
+  position: absolute;
+  right: 15px;
+  background-color: white;
+  color: rgb(160, 56, 0);
+  border: none;
+  font-weight: bold;
+  border-radius: 5px;
+  padding: 5px 12px;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  /* espaço reservado pela navbar */
+  left: 0;
+  width: 200px;
+  height: calc(100vh - 60px);
+  /* altura total da tela menos a navbar */
+  background-color: #121c1e;
+  padding-top: 20px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+
+.sidebar .nav-link {
+  color: white;
+  padding: 15px 20px;
+  transition: all 0.3s;
+  display: block;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+  background-color: #1e2d31;
+  border-left: 5px solid rgb(255, 102, 0);
+  color: rgb(255, 119, 0);
+}
+
+/* MAIN */
+main {
+  margin-left: 200px;
+  /* mesmo valor da largura da sidebar */
+  padding: 100px 40px 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: calc(100vh - 60px);
+}
+
+main h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: white;
+  width: 100%;
+}
+
+/* CARD */
+.card {
+  background-color: #1a2224;
+  padding: 30px;
+  border-radius: 12px;
+  max-width: 900px;
+  width: 100%;
+  color: white;
+  position: absolute;
+}
+
+/* FORMULÁRIO */
+.form-funcionario {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.foto-upload-vertical {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 240px;
+}
+
+.upload-box {
+  width: 100%;
+  height: 320px;
+  background-color: #d9d9d9;
+  border-radius: 10px;
+  border: 2px dashed #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  text-align: center;
+  color: #444;
+  position: relative;
+}
+
+.upload-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+#fotoInput {
+  display: none;
+}
+
+.form-fields {
+  flex: 1;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 200px;
+  max-width: 280px;
+  flex: 1;
+}
+
+label {
+  color: white;
+}
+
+input {
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  background-color: #d9d9d9;
+}
+
+/* BOTÃO */
+.btn-cadastrar {
+  background-color: #ff6b1c;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 30px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
+  padding: 0 10px;
+  z-index: 1;
+}
+
+.close-button:hover {
+  color: #ff6961;
+}

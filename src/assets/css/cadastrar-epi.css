@@ -41,16 +41,17 @@ html, body {
 }
 
 .sidebar {
-  height: 100vh;
-  width: 250px;
-  background-color: #162225;
   position: fixed;
-  top: 60px;
+  top: 60px; /* espaço reservado pela navbar */
   left: 0;
-  padding-top: 40px;
-  display: flex;
-  flex-direction: column;
+  width: 200px;
+  height: calc(100vh - 60px); /* altura total da tela menos a navbar */
+  background-color: #121c1e;
+  padding-top: 20px;
+  overflow-y: auto;
+  z-index: 1000;
 }
+
 
 .sidebar .nav-link {
   color: white;
@@ -68,12 +69,13 @@ html, body {
 }
 
 .main-content {
-  margin-left: 250px;
-  padding: 90px 30px 30px 30px;
-  min-height: 100vh;
+   margin-left: 200px; /* mesmo valor da largura da sidebar */
+  padding: 100px 40px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  min-height: calc(100vh - 60px);
+
 }
 
 .form-box {
