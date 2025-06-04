@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Histórico de Entregas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/src/assets/css/historico-entregas.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.6.0/axios.min.js"></script>
+  <link rel="stylesheet" href="../assets/css/historico-entregas.css" />
 </head>
 <body>
-
   <!-- NAVBAR SUPERIOR -->
   <div class="top-navbar position-relative">
     <div class="navbar-title position-absolute start-50 translate-middle-x">FUSIONSTEC ENGENHARIA</div>
@@ -32,40 +32,89 @@
   <!-- CONTEÚDO PRINCIPAL -->
   <div class="main-content">
     <h4 class="mb-4">Entregas</h4>
-
     <div class="content-box p-4 rounded-3">
+      <!-- Controles superiores -->
       <div class="d-flex justify-content-between align-items-center mb-3">
         <div>
           <h5 class="fw-bold">Histórico</h5>
-          <p class="m-0">Robson Andrade dos Santos</p> <!-- Substituir dinamicamente depois -->
         </div>
         <div class="d-flex align-items-center gap-3">
-          <input type="text" class="form-control" placeholder="Digite o EPI" />
-          <button class="btn btn-outline-light">🔍</button>
-          <button class="btn btn-light fw-bold fs-4" onclick="window.location.href='entregas.html'">✕</button>
+          <input type="text" id="searchInput" class="form-control" placeholder="Digite o EPI, funcionário ou descrição" style="width: 300px;" />
+          <button class="btn btn-outline-light" onclick="searchEntregas()">🔍</button>
+          <button class="btn btn-light fw-bold fs-4" onclick="clearSearch()">✕</button>
+          <button class="btn btn-outline-light" onclick="reloadData()">
+            <span id="reloadIcon">🔄</span>
+          </button>
         </div>
       </div>
 
+      <!-- Filtros adicionais -->
+      <div class="row mb-3">
+        <div class="col-md-3">
+          <select class="form-select" id="typeFilter" onchange="filterByType(this.value)">
+            <option value="todos">Todos os tipos</option>
+            <option value="entrega">Entrega</option>
+            <option value="troca">Troca</option>
+            <option value="devolucao">Devolução</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <input type="date" class="form-control" id="startDate" onchange="filterByDateRange()" placeholder="Data inicial">
+        </div>
+        <div class="col-md-3">
+          <input type="date" class="form-control" id="endDate" onchange="filterByDateRange()" placeholder="Data final">
+        </div>
+        <div class="col-md-3">
+          <button class="btn btn-success w-100" onclick="exportToCSV()">
+            📊 Exportar CSV
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading indicator -->
+      <div id="loading" class="loading d-none">
+        <div class="spinner-border" role="status">
+          <span class="visually-hidden">Carregando...</span>
+        </div>
+        <p>Carregando dados...</p>
+      </div>
+
+      <!-- Error message -->
+      <div id="errorMessage" class="error-message d-none"></div>
+
+      <!-- Tabela -->
       <div class="table-responsive">
         <table class="table table-dark table-striped table-hover align-middle text-center">
           <thead>
             <tr>
               <th>Nome do EPI</th>
-              <th>Categoria do EPI</th>
-              <th>Status</th>
-              <th>Estado</th>
-              <th>CA</th>
-              <th>Hora</th>
-              <th>Data</th>
+              <th>Funcionário</th>
+              <th>Tipo Movimentação</th>
+              <th>Quantidade</th>
+              <th>Data e Hora</th>
+              <th>Descrição</th>
             </tr>
           </thead>
           <tbody id="historico-tbody">
-            <!-- Conteúdo será inserido pelo back-end -->
+            <!-- Conteúdo será inserido dinamicamente -->
           </tbody>
         </table>
+      </div>
+
+      <!-- Informações e Paginação -->
+      <div class="d-flex justify-content-between align-items-center mt-3">
+        <div id="recordsInfo" class="text-muted"></div>
+        <nav>
+          <ul class="pagination pagination-dark" id="pagination">
+            <!-- Pagination será inserida dinamicamente -->
+          </ul>
+        </nav>
       </div>
     </div>
   </div>
 
+  <!-- Scripts -->
+  <script type="module" src="../assets/js/services/api.js"></script>
+  <script type="module" src="../assets/js/historico-entregas.js"></script>
 </body>
 </html>

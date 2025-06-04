@@ -9,7 +9,6 @@ async function carregarEstoque() {
         const estoque = response.data; // aqui está o array de remessas
         
         tabela.innerHTML = '';
-        console.log(estoque);
         
         estoque.forEach(item => {
             const row = `

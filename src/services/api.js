@@ -20,5 +20,24 @@ async function post(endpoint, data) {
         throw error;
     }
 }
+async function put(endpoint, data) {
+    try {
+        const response = await axios.put(`${API_BASE_URL}/${endpoint}`, data);
+        return response.data;
+    } catch (error) {
+        console.error(`Erro ao fazer PUT em ${endpoint}:`, error);
+        throw error;
+    }
+}
 
-export { get, post };
+async function deleteRequest(endpoint) {
+    try {
+        const response = await axios.delete(`${API_BASE_URL}/${endpoint}`);
+        return response.data;
+    } catch (error) {
+        console.error(`Erro ao fazer DELETE em ${endpoint}:`, error);
+        throw error;
+    }
+}
+
+export { get, post, put, deleteRequest };

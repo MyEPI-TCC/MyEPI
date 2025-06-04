@@ -1,121 +1,392 @@
 body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: Arial, sans-serif;
-    background-color: #12191b;
-    color: white;
-  }
-  
-  /* NAVBAR */
-  .top-navbar {
-    background-color: rgb(160, 56, 0);
-    height: 60px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 1000;
-  }
-  
-  .navbar-title {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: white;
-  }
-  
-  .top-navbar button {
-    background-color: white;
-    color: rgb(160, 56, 0);
-    font-weight: bold;
-    position: absolute;
-    right: 20px;
-    border: none;
-    padding: 6px 14px;
-    border-radius: 5px;
-  }
-  
-  .top-navbar button:hover {
-    background-color: #f0f0f0;
-  }
-  
-  /* SIDEBAR */
-  .sidebar {
-    position: fixed;
-    top: 60px;
-    left: 0;
-    height: 100%;
-    width: 250px;
-    background-color: #162225;
-    padding-top: 40px;
-  }
-  
-  .sidebar .nav-link {
-    color: white;
-    padding: 15px 20px;
-    transition: background 0.3s;
-  }
-  
-  .sidebar .nav-link:hover {
-    background-color: #1e2d31;
-    border-left: 4px solid orange;
-  }
-  
-  .nav-link.active {
-    color: orange !important;
-  }
-  
-  /* CONTEÚDO PRINCIPAL */
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  font-family: Arial, sans-serif;
+  background-color: #12191b;
+  color: white;
+}
+
+/* NAVBAR */
+.top-navbar {
+  background-color: rgb(160, 56, 0);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+.navbar-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: white;
+}
+
+.top-navbar button {
+  background-color: white;
+  color: rgb(160, 56, 0);
+  font-weight: bold;
+  position: absolute;
+  right: 20px;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.top-navbar button:hover {
+  background-color: #f0f0f0;
+}
+
+/* SIDEBAR */
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #162225;
+  padding-top: 40px;
+  overflow-y: auto;
+}
+
+.sidebar .nav-link {
+  color: white;
+  padding: 15px 20px;
+  transition: all 0.3s;
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar .nav-link:hover {
+  background-color: #1e2d31;
+  border-left: 4px solid orange;
+  color: white;
+}
+
+.nav-link.active {
+  color: orange !important;
+  background-color: #1e2d31;
+  border-left: 4px solid orange;
+}
+
+/* CONTEÚDO PRINCIPAL */
+.main-content {
+  margin-left: 250px;
+  padding: 90px 30px 30px 30px;
+  min-height: 100vh;
+}
+
+/* CONTEÚDO DA TABELA */
+.content-box {
+  background-color: #1f2a2d;
+  border-radius: 8px;
+}
+
+/* Loading spinner */
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: white;
+}
+
+.spinner-border {
+  color: orange;
+  width: 3rem;
+  height: 3rem;
+}
+
+/* Status badges */
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  display: inline-block;
+}
+
+.status-entrega {
+  background-color: #28a745;
+  color: white;
+}
+
+.status-devolucao {
+  background-color: #dc3545;
+  color: white;
+}
+
+/* Error message */
+.error-message {
+  background-color: #dc3545;
+  color: white;
+  padding: 15px;
+  border-radius: 8px;
+  margin: 10px 0;
+  border: 1px solid #bd2130;
+}
+
+/* Form controls customization */
+.form-control, .form-select {
+  background-color: #162225;
+  border-color: orange;
+  color: white;
+}
+
+.form-control:focus, .form-select:focus {
+  background-color: #162225;
+  border-color: orange;
+  color: white;
+  box-shadow: 0 0 0 0.2rem rgba(255, 165, 0, 0.25);
+}
+
+.form-control::placeholder {
+  color: #9ca3af;
+}
+
+.form-select option {
+  background-color: #162225;
+  color: white;
+}
+
+/* Button customizations */
+.btn-outline-light {
+  border-color: orange;
+  color: orange;
+}
+
+.btn-outline-light:hover {
+  background-color: orange;
+  border-color: orange;
+  color: black;
+}
+
+.btn-light {
+  background-color: orange;
+  border-color: orange;
+  color: black;
+}
+
+.btn-light:hover {
+  background-color: #e5930a;
+  border-color: #e5930a;
+  color: black;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-success:hover {
+  background-color: #218838;
+  border-color: #1e7e34;
+}
+
+/* Pagination customization */
+.pagination .page-link {
+  background-color: #162225;
+  border-color: orange;
+  color: white;
+  cursor: pointer;
+}
+
+.pagination .page-item.active .page-link {
+  background-color: orange;
+  border-color: orange;
+  color: black;
+}
+
+.pagination .page-link:hover {
+  background-color: #1e2d31;
+  border-color: orange;
+  color: white;
+}
+
+.pagination .page-item.disabled .page-link {
+  background-color: #162225;
+  border-color: #495057;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+/* Table customizations */
+.table-dark {
+  --bs-table-bg: #1f2a2d;
+  --bs-table-striped-bg: #243035;
+  --bs-table-hover-bg: #2a3f44;
+}
+
+.table-dark th {
+  border-color: #374151;
+  background-color: #1f2937;
+  color: orange;
+  font-weight: 600;
+}
+
+.table-dark td {
+  border-color: #374151;
+  vertical-align: middle;
+}
+
+/* Records info styling */
+#recordsInfo {
+  color: #9ca3af;
+  font-size: 0.9rem;
+}
+
+/* Empty state styling */
+.table tbody tr td.text-center.text-muted {
+  color: #9ca3af !important;
+  font-style: italic;
+  padding: 40px !important;
+}
+
+/* Animation for reload button */
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinning {
+  animation: spin 1s linear infinite;
+}
+
+/* Gap utilities for older bootstrap versions */
+.gap-3 > * + * {
+  margin-left: 1rem;
+}
+
+/* RESPONSIVO */
+@media (max-width: 992px) {
   .main-content {
-    margin-left: 250px;
-    padding: 90px 30px 30px 30px;
-    min-height: 100vh;
+    margin-left: 0;
+    padding: 80px 20px 30px 20px;
   }
   
-  /* CONTEÚDO DA TABELA */
-  .content-box {
-    background-color: #1f2a2d;
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.3s;
   }
   
-  /* RESPONSIVO */
-  @media (max-width: 768px) {
-    .sidebar {
-      position: static;
-      width: 100%;
-      height: auto;
-      padding: 20px 10px;
-      text-align: center;
-    }
-  
-    .sidebar .nav-link {
-      display: inline-block;
-      margin: 5px;
-    }
-  
-    .top-navbar {
-      flex-direction: column;
-      height: auto;
-      padding: 10px;
-      text-align: center;
-    }
-  
-    .navbar-title {
-      position: static;
-      transform: none;
-      margin-bottom: 10px;
-    }
-  
-    .top-navbar button {
-      position: static;
-      margin-top: 10px;
-    }
-  
-    .main-content {
-      margin-left: 0;
-      padding: 100px 15px 30px 15px;
-    }
+  .sidebar.show {
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .top-navbar {
+    flex-direction: column;
+    height: auto;
+    padding: 10px;
+    text-align: center;
+  }
+
+  .navbar-title {
+    position: static;
+    transform: none;
+  }
+
+  .top-navbar button {
+    position: static;
+    margin-top: 10px;
+  }
+
+  .main-content {
+    padding: 100px 15px 30px 15px;
+  }
+
+  /* Mobile controls */
+  .d-flex.justify-content-between.align-items-center.mb-3 {
+    flex-direction: column;
+    gap: 15px;
+    align-items: stretch !important;
+  }
+
+  .d-flex.align-items-center.gap-3 {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  #searchInput {
+    max-width: none;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  /* Mobile table adjustments */
+  .table-responsive {
+    font-size: 0.8rem;
   }
   
+  .table th, .table td {
+    padding: 0.5rem 0.25rem;
+  }
+
+  /* Mobile pagination */
+  .pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pagination .page-item {
+    margin: 2px;
+  }
+
+  /* Mobile records info */
+  .d-flex.justify-content-between.align-items-center.mt-3 {
+    flex-direction: column;
+    gap: 15px;
+    text-align: center;
+  }
+
+  /* Mobile filters */
+  .row.mb-3 .col-md-3 {
+    margin-bottom: 10px;
+  }
+}
+/* Adicione estas regras ao seu historico-entregas.css */
+
+.status-badge {
+  padding: 0.3em 0.6em;
+  border-radius: 0.25rem;
+  font-weight: bold;
+  font-size: 0.85em;
+  color: white; /* Cor do texto padrão */
+}
+
+.status-entrega {
+  background-color: #28a745; /* Verde */
+}
+
+.status-devolucao {
+  background-color: #dc3545; /* Vermelho */
+}
+
+.status-troca {
+  background-color: #ffc107; /* Amarelo/Laranja */
+  color: #333; /* Texto escuro para contraste */
+}
+
+.status-outro {
+  background-color: #6c757d; /* Cinza */
+}
+
+
+@media (max-width: 576px) {
+  .table-responsive {
+    font-size: 0.7rem;
+  }
+  
+  .status-badge {
+    font-size: 0.6rem;
+    padding: 4px 8px;
+  }
+}
