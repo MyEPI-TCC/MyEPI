@@ -1,6 +1,8 @@
 async function carregarEPIs() {
     try {
-      const response = await fetch('http://localhost:3000/api/epis'); // Troque pela sua API real
+      // const response = await fetch('http://localhost:3000/api/epis'); 
+      // const response = await fetch('http://localhost:3000/api/modelos-epi'); 
+      const response = await fetch('https://my-epi-api.vercel.app/api/modelos-epi'); 
       if (!response.ok) {
         throw new Error('Erro ao buscar os dados: ' + response.status);
       }
