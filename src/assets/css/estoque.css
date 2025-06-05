@@ -1,4 +1,5 @@
-html, body {
+html,
+body {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -50,28 +51,32 @@ html, body {
   background-color: #f0f0f0;
 }
 
-/* Sidebar */
 .sidebar {
-  height: 100vh;
-  width: 250px;
-  background-color: #162225;
   position: fixed;
   top: 60px;
+  /* espaço reservado pela navbar */
   left: 0;
-  padding-top: 40px;
-  display: flex;
-  flex-direction: column;
+  width: 200px;
+  height: calc(100vh - 60px);
+  /* altura total da tela menos a navbar */
+  background-color: #121c1e;
+  padding-top: 20px;
+  overflow-y: auto;
+  z-index: 1000;
+
 }
 
 .sidebar .nav-link {
   color: white;
   padding: 15px 20px;
   transition: all 0.3s;
+  text-align: left;
 }
 
 .sidebar .nav-link:hover {
   background-color: #1e2d31;
   border-left: 5px solid rgb(255, 102, 0);
+  color: white;
 }
 
 .nav-link.active {
@@ -80,16 +85,14 @@ html, body {
 
 /* Conteúdo centralizado */
 .main-content {
-  margin-left: 250px;
-  margin-top: 60px;
-  height: calc(100vh - 60px);
+  margin-left: 200px;
+  /* mesmo valor da largura da sidebar */
+  padding: 100px 40px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
-  transform: translateY(-40px);
+  min-height: calc(100vh - 60px);
+
 }
 
 .options-container {
@@ -106,23 +109,37 @@ html, body {
 .icon-circle {
   width: 80px;
   height: 80px;
-  background-color: #d9d9d9;
   border-radius: 50%;
+  font-size: 30px;
+  color: #12191b;
+  background-color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 0 auto;
-  transition: background 0.3s;
+  margin: 0 auto 10px;
+  cursor: pointer;
+  transition: transform 0.3s, background 0.3s, color 0.3s;
+}
+.icon-option {
+  text-align: center;
+  transition: transform 0.3s;
+  cursor: pointer;
 }
 
+.icon-option:hover {
+  transform: translateY(-5px);
+}
+
+
 .icon-circle:hover {
-  background-color: #bbbbbb;
+  transform: translateY(-5px);
 }
 
 .icon {
   font-size: 36px;
   color: #12191b;
   font-weight: bold;
+  transition: transform 0.3s;
 }
 
 .option-label {
@@ -143,13 +160,14 @@ html, body {
 
 /* RESPONSIVIDADE PARA CELULAR */
 @media (max-width: 768px) {
+
   /* Navbar ajustada para mobile */
   .navbar-title {
     font-size: 1rem;
     left: 20px;
     transform: none;
   }
-  
+
   .btn-sair {
     right: 15px;
     padding: 3px 10px;
@@ -163,7 +181,8 @@ html, body {
     position: static;
     background-color: #162225;
     padding: 20px 0;
-    display: none; /* Oculta por padrão no mobile */
+    display: none;
+    /* Oculta por padrão no mobile */
   }
 
   .sidebar.show {
@@ -212,6 +231,7 @@ html, body {
 }
 
 @media (max-width: 480px) {
+
   /* Ajustes para telas muito pequenas */
   .navbar-title {
     font-size: 0.9rem;

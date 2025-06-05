@@ -46,17 +46,14 @@ body {
 /* SIDEBAR */
 .sidebar {
   position: fixed;
-  top: 60px;
-  /* espaço reservado pela navbar */
+  top: 60px; /* espaço reservado pela navbar */
   left: 0;
   width: 200px;
-  height: calc(100vh - 60px);
-  /* altura total da tela menos a navbar */
+  height: calc(100vh - 60px); /* altura total da tela menos a navbar */
   background-color: #121c1e;
   padding-top: 20px;
   overflow-y: auto;
   z-index: 1000;
-
 }
 
 .sidebar .nav-link {
@@ -74,14 +71,12 @@ body {
 
 /* MAIN CONTENT - CENTRALIZADO */
 .main-content {
-  margin-left: 200px;
-  /* mesmo valor da largura da sidebar */
+  margin-left: 200px; /* mesmo valor da largura da sidebar */
   padding: 100px 40px 40px;
   display: flex;
   flex-direction: column;
   align-items: center;
   min-height: calc(100vh - 60px);
-
 }
 
 /* BOTÕES BRANCOS */
@@ -97,26 +92,39 @@ body {
   justify-content: center;
   margin: 0 auto 10px;
   cursor: pointer;
-  transition: background 0.3s, color 0.3s;
+  transition: transform 0.3s, background 0.3s, color 0.3s;
 }
 
 .btn-circle:hover {
   background-color: #f0f0f0;
+  transform: translateY(-5px);
 }
 
+/* CAIXAS DE OPERAÇÃO */
 .operation-box {
   text-align: center;
   color: white;
   width: 180px;
   padding: 20px;
   border-radius: 10px;
-  transition: transform 0.3s;
+  text-align: center;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: bold;
 }
 
-.operation-box:hover {
+/* ANIMAÇÃO CONJUNTA */
+.icon-option {
+  text-align: center;
+  transition: transform 0.3s;
+  cursor: pointer;
+}
+
+.icon-option:hover {
   transform: translateY(-5px);
 }
 
+/* ORGANIZAÇÃO VISUAL */
 .content-wrapper {
   display: flex;
   flex-direction: column;
@@ -131,7 +139,7 @@ body {
   flex-wrap: wrap;
 }
 
-/* Responsividade */
+/* RESPONSIVIDADE */
 @media (max-width: 768px) {
   .main-content {
     margin-left: 0;

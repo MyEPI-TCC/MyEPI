@@ -141,6 +141,29 @@
       max-width: 250px; /* diminui largura */
     }
 
+    /* Estilização padronizada dos placeholders para todos os campos */
+    .form-control::placeholder {
+      color: #6c757d !important;
+      opacity: 1;
+    }
+
+    .form-select option[value=""] {
+      color: #6c757d;
+    }
+
+    .form-select {
+      color: #6c757d;
+    }
+
+    .form-select:focus {
+      color: #212529;
+    }
+
+    /* Para quando o select tiver um valor selecionado */
+    .form-select:not([value=""]) {
+      color: #212529;
+    }
+
     @media (max-width: 768px) {
       .form-scroll-container {
         max-width: 350px;
