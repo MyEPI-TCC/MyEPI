@@ -36,23 +36,26 @@ body {
   font-weight: bold;
   border-radius: 5px;
   padding: 5px 12px;
+  text-decoration: none;
+}
+
+.btn-sair:hover {
+  background-color: #f0f0f0;
+  color: rgb(180, 60, 0);
 }
 
 /* SIDEBAR */
 .sidebar {
   position: fixed;
   top: 60px;
-  /* espaço reservado pela navbar */
   left: 0;
   width: 200px;
   height: calc(100vh - 60px);
-  /* altura total da tela menos a navbar */
   background-color: #121c1e;
   padding-top: 20px;
   overflow-y: auto;
   z-index: 1000;
 }
-
 
 .sidebar .nav-link {
   color: white;
@@ -71,12 +74,9 @@ body {
 /* MAIN */
 main {
   margin-left: 200px;
-  /* mesmo valor da largura da sidebar */
-  padding: 100px 40px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 80px 20px 40px;
   min-height: calc(100vh - 60px);
+  color: white;
 }
 
 main h2 {
@@ -84,18 +84,17 @@ main h2 {
   margin-bottom: 20px;
   text-align: center;
   color: white;
-  width: 100%;
 }
 
 /* CARD */
 .card {
   background-color: #1a2224;
   padding: 30px;
-  border-radius: 12px;
+  border-radius: 8px;
   max-width: 900px;
   width: 100%;
-  color: white;
-  position: absolute;
+  margin: 0 auto;
+  position: relative;
 }
 
 /* FORMULÁRIO */
@@ -103,7 +102,7 @@ main h2 {
   display: flex;
   gap: 40px;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: space-between;
   align-items: flex-start;
 }
 
@@ -112,6 +111,7 @@ main h2 {
   flex-direction: column;
   align-items: center;
   flex: 0 0 240px;
+  margin-bottom: 20px;
 }
 
 .upload-box {
@@ -151,21 +151,35 @@ main h2 {
 .inputs {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 15px;
   min-width: 200px;
-  max-width: 280px;
   flex: 1;
 }
 
 label {
   color: white;
+  margin-bottom: 5px;
+  display: block;
 }
 
-input {
+input, select {
   padding: 10px;
-  border-radius: 10px;
+  border-radius: 5px;
   border: none;
   background-color: #d9d9d9;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+select {
+  appearance: auto;
+  background-color: #d9d9d9;
+  color: #333;
+}
+
+input[type="date"] {
+  background-color: #d9d9d9;
+  color: #333;
 }
 
 /* BOTÃO */
@@ -177,6 +191,11 @@ input {
   padding: 10px 30px;
   font-weight: bold;
   cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-cadastrar:hover {
+  background-color: #e05e15;
 }
 
 .close-button {
@@ -192,4 +211,37 @@ input {
 
 .close-button:hover {
   color: #ff6961;
+}
+
+/* Botão Remover Foto */
+#btnRemoverFoto {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+#btnRemoverFoto:hover {
+  background-color: #c82333;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .form-funcionario {
+    flex-direction: column;
+  }
+  
+  .foto-upload-vertical {
+    max-width: 100%;
+  }
+  
+  .form-fields {
+    flex-direction: column;
+  }
+  
+  .inputs {
+    max-width: 100%;
+  }
 }
