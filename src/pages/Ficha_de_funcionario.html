@@ -6,7 +6,7 @@
   <title>Funcionário - MEPI</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="/src/assets/css/funcionario.css" />
+  <link rel="stylesheet" href="/src/assets/css/ficha_de_funcionario.css" />
 </head>
 <body>
   <!-- NAVBAR SUPERIOR -->
@@ -32,33 +32,33 @@
       <a class="nav-link" href="./entregas.html">Entregas de EPI</a>
     </nav>
   </div>
-
-  <!-- CONTEÚDO PRINCIPAL -->
-<div class="main-content text-center">
-  <h1 class="mb-4">Funcionário</h1>
-  <h5 class="mb-5">Qual operação você deseja realizar?</h5>
-
-  <div class="d-flex justify-content-center gap-5 flex-wrap">
-    <!-- Botão 1 -->
-<a href="cadastrar_funcionario.html" class="text-decoration-none">
-  <div class="operation-box icon-option text-white">
-    <div class="btn-circle"><i class="fas fa-user-plus"></i></div>
-    <div class="mt-2">CADASTRAR FUNCIONÁRIO</div>
+ <div class="main-content">
+    <h1>Funcionário</h1>
+    <div class="card-wrapper">
+      <div class="card">
+        <h5 class="card-title">Ficha do Funcionário</h5>
+        <div class="card-body d-flex align-items-start justify-content-between flex-wrap">
+          <div class="d-flex align-items-start">
+            <img src="../assets/images/icon (1).png" class="avatar" alt="Avatar do Funcionário">
+            <div class="employee-info text-start ms-3">
+              <p><strong>Robson Andrade dos Santos</strong></p>
+              <p>Função: Pedreiro</p>
+              <p>ID: 19.345</p>
+              <p><strong>Último EPI:</strong> Óculos de Proteção</p>
+              <p>Situação: Bom estado</p>
+              <p>Data: 19/06/2025 &nbsp;&nbsp;&nbsp; Hora: 10:35</p>
+              <p>Quantidade : 1</p>
+            </div>
+          </div>
+          <div class="description-box">
+            <h6><strong>Descrição</strong></h6>
+            <div class="desc-placeholder"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
-</a>
-
-<!-- Botão 2 -->
-<a href="exibir_funcionario.html" class="text-decoration-none">
-  <div class="operation-box icon-option text-white">
-    <div class="btn-circle"><i class="fas fa-users"></i></div>
-    <div class="mt-2">EXIBIR FUNCIONÁRIOS</div>
-  </div>
-</a>
-
-  
-  </div>
-
-  <!-- Bootstrap JS -->
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+  </body>
+  </html>
