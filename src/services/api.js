@@ -1,4 +1,4 @@
-const API_BASE_URL = 'https://my-epi-api-daniels-projects-83a49977.vercel.app';
+const API_BASE_URL = 'https://my-epi-api.vercel.app/api';
 // const API_BASE_URL = 'http://localhost:3000/api';
 
 async function get(endpoint) {

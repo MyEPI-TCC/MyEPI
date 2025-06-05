@@ -1,8 +1,12 @@
 // Variáveis globais
 let funcionariosData = [];
 let funcionarioIdParaExcluir = null;
-const API_BASE_URL = 'http://localhost:3000/api';
-const UPLOADS_BASE_URL = 'http://localhost:3000/uploads';
+
+// const API_BASE_URL = 'http://localhost:3000/api';
+// const UPLOADS_BASE_URL = 'http://localhost:3000/uploads';
+
+const API_BASE_URL = 'https://my-epi-api.vercel.app/api';
+const UPLOADS_BASE_URL = 'https://my-epi-api.vercel.app/uploads';
 
 // Elementos DOM
 let confirmacaoExclusaoModal;
