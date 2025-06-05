@@ -1,126 +1,171 @@
-html,
-body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
+ @import url('https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap');
 
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
 
-/* Altura total da tela */
+    /* Altura total da tela */
+    .full-height {
+        height: 100vh;
+    }
 
-.full-height {
-    height: 100vh;
-}
+    .row-full-height {
+        height: 100%;
+    }
 
-.row-full-height {
-    height: 100%;
-}
+    /* Imagem à esquerda */
+    .cadastro-image {
+        background: url('../images/foto-verificacao1.png') no-repeat center center;
+        background-size: cover;
+    }
 
+    /* Container do formulário */
+    .form-container {
+        max-width: 350px;
+        width: 100%;
+        padding: 2rem;
+    }
 
-/* Imagem à esquerda */
+    /* Títulos e textos com melhor espaçamento */
+    .form-container h2 {
+        margin-bottom: 1.5rem;
+    }
 
-.cadastro-image {
-    background: url('../images/foto-verificacao1.png') no-repeat center center;
-    background-size: cover;
-}
+    .form-container p {
+        margin-bottom: 2rem;
+    }
 
+    /* Lado direito escuro */
+    #login-dark {
+        background-color: #212529;
+    }
 
-/* Container do formulário */
+    /* Botão customizado sem borda ou traço */
+    .custom-btn {
+        background-color: rgb(160, 56, 0);
+        color: white;
+        border: none !important;
+        box-shadow: none !important;
+        outline: none;
+    }
 
-.form-container {
-    max-width: 350px;
-    width: 100%;
-    padding: 2rem;
-}
+    .custom-btn a {
+        text-decoration: none;
+        color: white;
+    }
 
+    .custom-btn:hover {
+        background-color: rgb(130, 46, 0);
+        color: white;
+    }
 
-/* Títulos e textos com melhor espaçamento */
+    .custom-btn:focus,
+    .custom-btn:active {
+        outline: none !important;
+        box-shadow: none !important;
+        border: none !important;
+    }
 
-.form-container h2 {
-    margin-bottom: 1.5rem;
-}
+    /* Navbar personalizada */
+    .custom-navbar {
+        background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
+        position: fixed;
+        top: 0;
+        width: 100%;
+        max-height: 100px;
+        z-index: 1000;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        font-weight: 500;
+    }
 
-.form-container p {
-    margin-bottom: 2rem;
-}
+    /* Compensar navbar fixa */
+    body {
+        padding-top: 0px;
+    }
 
+    /* Alinhamento da navbar */
+    .navbar-nav {
+        align-items: center;
+    }
 
-/* Lado direito escuro */
+    .nav-item {
+        margin: 0 50px;
+    }
 
-#login-dark {
-    background-color: #212529;
-}
+    .nav-link {
+        transition: all 0.3s ease;
+        padding: 10px 20px;
+        border-radius: 8px;
+        border: 2px solid transparent;
+        color: white;
+    }
 
+    .nav-link:hover {
+        background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
+        border: 2px solid rgb(180, 84, 23);
+        border-radius: 10px;
+        color: white;
+    }
 
-/* Botão customizado sem borda ou traço */
+    /* Botão do menu hambúrguer */
+    .navbar-toggler {
+        border: none;
+        padding: 4px 8px;
+    }
 
-.custom-btn {
-    background-color: rgb(160, 56, 0);
-    color: white;
-    border: none !important;
-    box-shadow: none !important;
-    outline: none;
-}
+    .navbar-toggler:focus {
+        box-shadow: none;
+    }
 
-.custom-btn a {
-    text-decoration: none;
-    color: white;
-}
+    .navbar-toggler-icon {
+        background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='m4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
 
-.custom-btn:hover {
-    background-color: rgb(130, 46, 0);
-    color: white;
-}
+    /* Estilização padronizada dos placeholders para todos os campos */
+    .form-control::placeholder {
+        color: #6c757d !important;
+        opacity: 1;
+    }
 
-.custom-btn:focus,
-.custom-btn:active {
-    outline: none !important;
-    box-shadow: none !important;
-    border: none !important;
-}
+    /* Links personalizados */
+    .form-container a {
+        color: #f0f0f0;
+        text-decoration: none;
+    }
 
+    .form-container a:hover {
+        text-decoration: underline;
+        color: #f2842a;
+    }
 
-/* Navbar personalizada */
+    /* Responsividade do menu */
+    @media (max-width: 768px) {
+        .nav-item {
+            margin: 0; /* Remove margem lateral em mobile */
+            text-align: center;
+            width: 100%;
+        }
 
-.custom-navbar {
-    background-color: rgb(160, 56, 0);
-    position: fixed;
-    top: 0;
-    width: 100%;
-    max-height: 100px;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
+        .nav-link {
+            margin: 5px 0; /* Espaçamento vertical entre links */
+            display: block;
+            width: 100%;
+        }
 
+        .navbar-nav {
+            align-items: stretch; /* Links ocupam toda a largura */
+            width: 100%;
+            padding: 10px 0;
+        }
 
-/* Compensar navbar fixa */
-
-body {
-    padding-top: 80px;
-}
-
-
-/* Alinhamento da navbar */
-
-.navbar-nav {
-    align-items: center;
-}
-
-.nav-item {
-    margin: 0 50px;
-}
-
-.nav-link {
-    transition: all 0.3s ease;
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: 2px solid transparent;
-    color: white;
-}
-
-.nav-link:hover {
-    background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
-    border: 2px solid rgb(180, 84, 23);
-    border-radius: 10px;
-    color: white;
-}
+        .navbar-collapse {
+            background: linear-gradient(90deg, rgb(140, 48, 0), rgb(160, 56, 0));
+            margin-top: 10px;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    }

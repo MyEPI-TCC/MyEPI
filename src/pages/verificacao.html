@@ -14,23 +14,21 @@
 <body>
 
   <!-- Navbar -->
-  <nav class="navbar navbar-expand-lg custom-navbar">
-    <div class="container">
-      <a class="navbar-brand" href="#">
-        <img src="../assets/images/logo.png" alt="Logo" width="120" />
-      </a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
-        <ul class="navbar-nav">
-          <li class="nav-item"><a class="nav-link text-white" href="#">Início</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="#">Planos</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="#">Suporte</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="login.html">Login</a></li>
-          <li class="nav-item"><a class="nav-link text-white" href="cadastro.html">Cadastre-se</a></li>
-        </ul>
-      </div>
+  <nav class="navbar navbar-expand-lg px-4 custom-navbar">
+    <a class="navbar-brand" href="#">
+      <img src="../assets/images/logo.png" alt="Logo" width="120" />
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item"><a class="nav-link text-white" href="../../index.html">Início</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="#">Planos</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="suporte.html">Suporte</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="login.html">Login</a></li>
+        <li class="nav-item"><a class="nav-link text-white" href="cadastro.html">Cadastre-se</a></li>
+      </ul>
     </div>
   </nav>
 
@@ -58,10 +56,10 @@
             </div>
 
             <div class="mb-4 text-end">
-              <a href="#" class="text-warning text-decoration-none">Reenviar código</a>
+              <a href="#" class="text-white small">Reenviar código</a>
             </div>
 
-            <button type="submit" class="btn custom-btn w-100"><a href="validacao.html">Avançar</a></button>
+            <button type="button" class="btn custom-btn w-100" onclick="window.location.href='validacao.html'">Avançar</button>
           </form>
         </div>
       </div>
