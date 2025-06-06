@@ -6,7 +6,7 @@ let funcionarioIdParaExcluir = null;
 // const UPLOADS_BASE_URL = 'http://localhost:3000/uploads';
 
 const API_BASE_URL = 'https://my-epi-api.vercel.app/api';
-const UPLOADS_BASE_URL = 'https://myepi.netlify.app/uploads';
+const UPLOADS_BASE_URL = 'https://my-epi-api.vercel.app/uploads';
 
 // Elementos DOM
 let confirmacaoExclusaoModal;

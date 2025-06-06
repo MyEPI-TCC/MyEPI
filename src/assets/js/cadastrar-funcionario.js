@@ -107,7 +107,7 @@ async function carregarFuncionario(id) {
         if (funcionarioAtual.foto_perfil_path && preview && texto) {
       
             // preview.src = `http://localhost:3000/uploads/${funcionarioAtual.foto_perfil_path}`;
-            preview.src = `https://myepi.netlify.app/uploads/${funcionarioAtual.foto_perfil_path}`;
+            preview.src = `https://my-epi-api.vercel.app/uploads/${funcionarioAtual.foto_perfil_path}`;
             preview.style.display = 'block';
             texto.style.display = 'none';
             
