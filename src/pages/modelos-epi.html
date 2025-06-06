@@ -2,11 +2,18 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EPI</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modelos de EPI</title>
+  <!-- Bootstrap CSS (ajuste o caminho se necessário) -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="/src/assets/css/ficha-epi.css">
+  <!-- Bootstrap Icons (para modal) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Font Awesome para ícones (ajuste o caminho se necessário) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Seu CSS customizado -->
+  <link rel="stylesheet" href="../assets/css/modelos-epi.css">
+  <!-- Favicon (opcional, ajuste o caminho) -->
   <link rel="icon" href="/src/assets/images/Logo head.png" type="image/x-icon">
 </head>
 
@@ -18,67 +25,116 @@
     <button class="btn btn-sm" onclick="window.location.href='../../index.html'">Sair</button>
   </div>
 
-  <!-- SIDEBAR -->
+  <!-- SIDEBAR (Exemplo baseado no funcionario.html) -->
   <div class="sidebar">
-    <div class="text-center mb-5">
+    <div class="text-center mb-4 mt-3">
       <img src="../assets/images/logo.png" alt="Logo" width="120" />
     </div>
     <nav class="nav flex-column">
       <a class="nav-link" href="./dashboard.html">Dashboard</a>
       <a class="nav-link" href="./estoque.html">Estoque</a>
-      <a class="nav-link active" href="./epi.html">EPI</a>
+      <a class="nav-link  active" href="./epi.html">EPI</a>
       <a class="nav-link" href="funcionario.html">Funcionário</a>
       <a class="nav-link" href="./entregas.html">Entregas de EPI</a>
     </nav>
   </div>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <main>
-    <h2>Funcionários</h2>
-    
-    <!-- Botão para adicionar novo funcionário -->
-    <div class="d-flex justify-content-end w-100 mb-3">
-      <a href="cadastrar-funcionario.html" class="btn btn-primary">
-        <i class="fas fa-plus me-2"></i>Novo Funcionário
-      </a>
+  <main class="main-content">
+    <h2 class="mb-4">Modelos de Equipamentos de Proteção Individual (EPI)</h2>
+
+    <div class="row mb-3 align-items-center">
+      <!-- Campo de Pesquisa e Botão Scanner -->
+      <div class="col-md-6">
+        <div class="input-group">
+          <input type="search" id="pesquisaEpi" class="form-control form-control-dark"
+            placeholder="Pesquisar por Nome ou CA...">
+          <button class="btn btn-outline-secondary btn-scanner" type="button" id="scanCaButton" title="Escanear CA"
+            data-bs-toggle="modal" data-bs-target="#barcodeModal">
+            <i class="bi bi-upc-scan"></i>
+          </button>
+        </div>
+      </div>
+      <!-- Botão para adicionar novo -->
+      <div class="col-md-6 text-md-end mt-2 mt-md-0">
+        <a href="./cadastrar-epi.html" class="btn btn-primary btn-novo">
+          <i class="fas fa-plus me-2"></i>Novo Modelo de EPI
+        </a>
+      </div>
     </div>
-    
-    <!-- Tabela de funcionários -->
+
+    <!-- Tabela de Modelos de EPI -->
     <div class="table-responsive w-100">
-      <table class="table table-hover" id="tabelaFuncionarios">
+      <table class="table table-hover table-striped" id="tabelaModelosEpi">
         <thead class="table-dark">
           <tr>
-            <th style="width: 120px;">Ações</th>
+            <th scope="col" style="width: 60px;">Foto</th>
+            <th scope="col">Nome do EPI</th>
+            <th scope="col">Marca</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Qtd. Estoque</th>
+            <th scope="col">Descartável</th>
+            <th scope="col">Rastreável</th>
+            <th scope="col">Descrição</th>
+            <th scope="col" style="width: 100px;">Ações</th>
           </tr>
         </thead>
-        <tbody>
-          <!-- Dados serão carregados via JavaScript -->
+        <tbody id="modelos-epi-tbody">
+          <!-- Linhas da tabela -->
         </tbody>
       </table>
     </div>
 
-    <!-- Modal de Confirmação de Exclusão -->
-    <div class="modal fade" id="confirmacaoExclusaoModal" tabindex="-1" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Confirmar Exclusão</h5>
-            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-          </div>
-          <div class="modal-body">
-            <p>Tem certeza que deseja excluir este modelo de EPI?</p>
-            <p class="text-danger">Esta ação não pode ser desfeita.</p>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-            <button type="button" class="btn btn-danger" id="btnConfirmarExclusao">Excluir</button>
+  </main>
+
+  <!-- Modal Scanner de Código de Barras -->
+  <div class="modal fade" id="barcodeModal" tabindex="-1" aria-labelledby="barcodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-content-dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="barcodeModalLabel">
+            <i class="bi bi-upc-scan me-2"></i> Scanner de CA
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <p class="mb-3">Aponte o leitor para o código de barras do CA ou digite abaixo:</p>
+            <input type="text" id="barcode-input" class="form-control form-control-dark barcode-modal-input"
+              placeholder="Digite ou escaneie o CA..." autofocus>
+
+            <div class="barcode-status mt-3" style="min-height: 30px;"> <!-- Altura mínima para evitar pulos -->
+              <div id="barcode-loading" style="display: none;">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                <span>Processando...</span>
+              </div>
+              <div id="barcode-success" style="display: none;">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                <span>CA encontrado!</span>
+              </div>
+              <div id="barcode-error" style="display: none;">
+                <i class="bi bi-x-octagon-fill text-danger me-2"></i>
+                <span>CA não encontrado ou inválido.</span>
+              </div>
+            </div>
+            <small class="form-text text-muted mt-2">
+              A busca é automática após digitar ou escanear.
+            </small>
           </div>
         </div>
       </div>
     </div>
-  </main>
+  </div>
 
-  <script src="../assets/js/ficha-epi.js"></script>
+
+  <!-- Bootstrap JS Bundle (necessário para funcionalidades do Bootstrap como modal) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- Axios (necessário para o api.js) -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <!-- Seu script api.js (ajuste o caminho) -->
+  <script type="module" src="../services/api.js"></script>
+  <!-- Seu script modelos-epi.js -->
+  <script type="module" src="../assets/js/modelos-epi.js"></script>
 </body>
 
 </html>

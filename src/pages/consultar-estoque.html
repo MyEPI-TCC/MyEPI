@@ -2,79 +2,211 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Consulta de Estoque</title>
-  <link rel="icon" href="/src/assets/images/Logo head.png" type="image/x-icon">
-  <!-- Bootstrap -->
+  <!-- Bootstrap CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- CSS -->
-  <link rel="stylesheet" href="/src/assets/css/consulta-estoque.css">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <!-- Font Awesome para ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- CSS customizado -->
+  <link rel="stylesheet" href="../assets/css/consulta-estoque.css">
+  <!-- Favicon -->
+  <link rel="icon" href="/src/assets/images/Logo head.png" type="image/x-icon">
 </head>
 
 <body>
 
-  <!-- NAVBAR -->
-  <div class="top-navbar">
-    <div class="navbar-title">FUSIONSTEC ENGENHARIA</div>
+  <!-- NAVBAR SUPERIOR -->
+  <div class="top-navbar position-relative">
+    <div class="navbar-title position-absolute start-50 translate-middle-x">FUSIONSTEC ENGENHARIA</div>
+    <button class="btn btn-sm" onclick="window.location.href='../../index.html'">Sair</button>
   </div>
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="text-center mb-5">
+    <div class="text-center mb-4 mt-3">
       <img src="../assets/images/logo.png" alt="Logo" width="120" />
     </div>
     <nav class="nav flex-column">
       <a class="nav-link" href="./dashboard.html">Dashboard</a>
       <a class="nav-link active" href="./estoque.html">Estoque</a>
-      <a class="nav-link" href="./epi.html">EPI</a>
-      <a class="nav-link" href="funcionario.html">Funcionário</a>
+      <a class="nav-link" href="./epi.html">Modelos EPI</a>
+      <a class="nav-link" href="./funcionario.html">Funcionário</a>
       <a class="nav-link" href="./entregas.html">Entregas de EPI</a>
     </nav>
   </div>
 
   <!-- CONTEÚDO PRINCIPAL -->
-  <div class="main-content">
-    <h2>Consulta de Estoque</h2>
+  <main class="main-content">
+    <h2 class="mb-4">Consulta de Estoque - Lotes</h2>
 
-    <!-- LEGENDA -->
+    <!-- LEGENDA DE STATUS -->
     <div class="status-legend mb-4">
-      <div><span class="status-dot dot-adequada"></span> Qt. Adequada</div>
-      <div><span class="status-dot dot-moderada"></span> Qt. Moderada</div>
-      <div><span class="status-dot dot-minima"></span> Qt. Mínima</div>
+      <div class="legend-item">
+        <span class="status-dot dot-adequada"></span>
+        <span>Qt. Adequada</span>
+      </div>
+      <div class="legend-item">
+        <span class="status-dot dot-moderada"></span>
+        <span>Qt. Moderada</span>
+      </div>
+      <div class="legend-item">
+        <span class="status-dot dot-minima"></span>
+        <span>Qt. Mínima</span>
+      </div>
+      <div class="legend-item">
+        <span class="status-dot dot-vencido"></span>
+        <span>Vencido</span>
+      </div>
     </div>
 
-    <!-- TABELA -->
-    <div class="estoque-table">
-      <table class="table table-striped">
-        <thead>
+    <div class="row mb-3 align-items-center">
+      <!-- Campo de Pesquisa com Scanner -->
+      <div class="col-md-6">
+        <div class="input-group">
+          <input type="search" id="pesquisaEstoque" class="form-control form-control-dark"
+            placeholder="Pesquisar por Nome EPI, Lote, CA ou Fornecedor...">
+          <button class="btn btn-outline-secondary btn-scanner" type="button" id="scanCaButton" title="Escanear CA"
+            data-bs-toggle="modal" data-bs-target="#barcodeModal">
+            <i class="bi bi-upc-scan"></i>
+          </button>
+          <button class="btn btn-outline-secondary btn-scanner" type="button" id="clearSearchButton" title="Limpar Pesquisa">
+            <i class="bi bi-x-lg"></i>
+          </button>
+        </div>
+      </div>
+      <!-- Filtros de Status -->
+      <div class="col-md-6 text-md-end mt-2 mt-md-0">
+        <div class="btn-group" role="group" aria-label="Filtros de Status">
+          <input type="radio" class="btn-check" name="filtroStatus" id="filtroTodos" value="todos" checked>
+          <label class="btn btn-outline-secondary btn-sm" for="filtroTodos">Todos</label>
+          
+          <input type="radio" class="btn-check" name="filtroStatus" id="filtroAdequada" value="adequada">
+          <label class="btn btn-outline-success btn-sm" for="filtroAdequada">Adequada</label>
+          
+          <input type="radio" class="btn-check" name="filtroStatus" id="filtroModerada" value="moderada">
+          <label class="btn btn-outline-warning btn-sm" for="filtroModerada">Moderada</label>
+          
+          <input type="radio" class="btn-check" name="filtroStatus" id="filtroMinima" value="minima">
+          <label class="btn btn-outline-danger btn-sm" for="filtroMinima">Mínima</label>
+          
+          <input type="radio" class="btn-check" name="filtroStatus" id="filtroVencido" value="vencido">
+          <label class="btn btn-outline-dark btn-sm" for="filtroVencido">Vencido</label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabela de Estoque -->
+    <div class="table-responsive w-100">
+      <table class="table table-hover table-striped" id="tabelaEstoque">
+        <thead class="table-dark">
           <tr>
-            <th>Nome EPI</th>
-            <th>Quantidade</th>
-            <th>Data Entrega</th>
-            <th>Validade</th>
-            <th>Código Lote</th>
-            <th>Nota Fiscal</th>
-            <th>Fornecedor</th>
-            <th>CA</th>
-            <th>Observações</th>
+            <th scope="col">Status</th>
+            <th scope="col">Nome EPI</th>
+            <th scope="col">Quantidade</th>
+            <th scope="col">Data Entrega</th>
+            <th scope="col">Validade</th>
+            <th scope="col">Código Lote</th>
+            <th scope="col">Nota Fiscal</th>
+            <th scope="col">Fornecedor</th>
+            <th scope="col">CA</th>
+            <th scope="col">Observações</th>
           </tr>
         </thead>
-        <tbody id="tabela-estoque">
-          <!-- Dados carregados aqui -->
+        <tbody id="tabela-estoque-tbody">
+          <!-- Linhas da tabela -->
         </tbody>
       </table>
     </div>
+
+    <!-- Estatísticas -->
+    <div class="row mt-4">
+      <div class="col-md-3">
+        <div class="card bg-success text-white">
+          <div class="card-body text-center">
+            <h5 class="card-title">Adequada</h5>
+            <h3 id="countAdequada">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-warning text-white">
+          <div class="card-body text-center">
+            <h5 class="card-title">Moderada</h5>
+            <h3 id="countModerada">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-danger text-white">
+          <div class="card-body text-center">
+            <h5 class="card-title">Mínima</h5>
+            <h3 id="countMinima">0</h3>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card bg-dark text-white">
+          <div class="card-body text-center">
+            <h5 class="card-title">Vencido</h5>
+            <h3 id="countVencido">0</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Modal Scanner de Código de Barras -->
+  <div class="modal fade" id="barcodeModal" tabindex="-1" aria-labelledby="barcodeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content modal-content-dark">
+        <div class="modal-header">
+          <h5 class="modal-title" id="barcodeModalLabel">
+            <i class="bi bi-upc-scan me-2"></i> Scanner de CA
+          </h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="text-center mb-3">
+            <p class="mb-3">Aponte o leitor para o código de barras do CA ou digite abaixo:</p>
+            <input type="text" id="barcode-input" class="form-control form-control-dark barcode-modal-input"
+              placeholder="Digite ou escaneie o CA..." autofocus>
+
+            <div class="barcode-status mt-3" style="min-height: 30px;"> <!-- Altura mínima para evitar pulos -->
+              <div id="barcode-loading" style="display: none;">
+                <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                <span>Processando...</span>
+              </div>
+              <div id="barcode-success" style="display: none;">
+                <i class="bi bi-check-circle-fill text-success me-2"></i>
+                <span>CA encontrado!</span>
+              </div>
+              <div id="barcode-error" style="display: none;">
+                <i class="bi bi-x-octagon-fill text-danger me-2"></i>
+                <span>CA não encontrado ou inválido.</span>
+              </div>
+            </div>
+            <small class="form-text text-muted mt-2">
+              A busca é automática após digitar ou escanear.
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- BOOTSTRAP JS -->
+  <!-- Bootstrap JS Bundle -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
-  <!-- AXIOS -->
+  <!-- Axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <!-- SCRIPT -->
+  <!-- Script api.js -->
+  <script type="module" src="../services/api.js"></script>
+  <!-- Script consulta-estoque.js -->
   <script type="module" src="../assets/js/consultar-estoque.js"></script>
-
 </body>
 
 </html>
