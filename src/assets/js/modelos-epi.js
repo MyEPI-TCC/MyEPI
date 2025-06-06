@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const barcodeModal = new bootstrap.Modal(barcodeModalElement); // Instancia o modal do Bootstrap
 
     let todosModelos = []; // Armazena todos os modelos carregados da API
+    let modelosCAs = {}; // Armazena os CAs por modelo
     let searchTimeout = null; // Para debounce da pesquisa principal
     let barcodeSearchTimeout = null; // Para debounce da pesquisa no modal
 
@@ -30,6 +31,63 @@ document.addEventListener('DOMContentLoaded', () => {
             // Se não houver nem data nem ID, mantém ordem original
             return 0;
         });
+    }
+
+    // --- Funções para buscar CAs por modelo ---
+    async function buscarCasPorModelo(idModelo) {
+        try {
+            const resultado = await get(`ca/modelo/${idModelo}`);
+            if (resultado && resultado.success && resultado.data && resultado.data.length > 0) {
+                return resultado.data;
+            }
+            return [];
+        } catch (error) {
+            console.error(`Erro ao buscar CAs para o modelo ${idModelo}:`, error);
+            return [];
+        }
+    }
+
+    async function carregarCAsParaModelos(modelos) {
+        const promessas = modelos.map(async (modelo) => {
+            if (!modelosCAs[modelo.id_modelo_epi]) {
+                const cas = await buscarCasPorModelo(modelo.id_modelo_epi);
+                modelosCAs[modelo.id_modelo_epi] = cas;
+            }
+        });
+        
+        await Promise.all(promessas);
+    }
+
+    function formatarCAs(idModelo) {
+        if (!modelosCAs[idModelo] || modelosCAs[idModelo].length === 0) {
+            return 'N/A';
+        }
+        
+        // Ordenar CAs por validade (mais recente primeiro)
+        const casOrdenados = [...modelosCAs[idModelo]].sort((a, b) => {
+            if (a.validade_ca && b.validade_ca) {
+                return new Date(b.validade_ca) - new Date(a.validade_ca);
+            }
+            return 0;
+        });
+        
+        // Pegar o CA mais recente
+        const caMaisRecente = casOrdenados[0];
+        
+        // Formatar a data de validade
+        const dataValidade = caMaisRecente.validade_ca ? 
+            new Date(caMaisRecente.validade_ca).toLocaleDateString('pt-BR') : 
+            'N/A';
+        
+        // Verificar se o CA está ativo
+        const ativo = caMaisRecente.ativo ? 
+            '<span class="badge bg-success">Ativo</span>' : 
+            '<span class="badge bg-danger">Inativo</span>';
+        
+        return `<div>
+            <strong>${caMaisRecente.numero_ca}</strong>
+            <div class="small">Val: ${dataValidade} ${ativo}</div>
+        </div>`;
     }
 
     // --- Funções de Renderização e Carregamento da Tabela --- 
@@ -67,6 +125,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <td>${modelo.nome_epi || 'N/A'}</td>
                     <td>${modelo.nome_marca || 'N/A'}</td>
                     <td>${modelo.nome_categoria || 'N/A'}</td>
+                    <td>${formatarCAs(modelo.id_modelo_epi)}</td>
                     <td>${modelo.quantidade !== null ? modelo.quantidade : 'N/A'}</td>
                     <td class="text-center">${descartavelIcon}</td>
                     <td class="text-center">${rastreavelIcon}</td>
@@ -93,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             adicionarEventListenersBotoesExcluir();
         } else {
-            tbody.innerHTML = '<tr><td colspan="9">Nenhum modelo de EPI encontrado para os critérios informados.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="10">Nenhum modelo de EPI encontrado para os critérios informados.</td></tr>';
         }
     }
 
@@ -102,11 +161,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const modelosCarregados = await get('modelos-epi');
             // Ordena os modelos logo após carregar da API
             todosModelos = ordenarModelosPorMaisRecentes(modelosCarregados);
+            
+            // Buscar CAs para todos os modelos
+            await carregarCAsParaModelos(todosModelos);
+            
             renderizarTabela(todosModelos);
         } catch (error) {
             console.error('Erro ao carregar modelos de EPI:', error);
             const errorMessage = error.response?.data?.error || error.message || 'Erro desconhecido';
-            tbody.innerHTML = `<tr><td colspan="9">Erro ao carregar dados: ${errorMessage}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="10">Erro ao carregar dados: ${errorMessage}</td></tr>`;
         }
     }
 
@@ -263,3 +326,4 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Inicialização --- 
     carregarModelosEpi();
 });
+

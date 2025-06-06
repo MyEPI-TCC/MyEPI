@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const nomeEpiInput = document.getElementById('nomeEpi');
     const marcaSelect = document.getElementById('marcaSelect');
     const categoriaSelect = document.getElementById('categoriaSelect');
+    const caSelect = document.getElementById('caSelect'); // Novo campo CA
     const quantidadeInput = document.getElementById('quantidade');
     const descartavelCheck = document.getElementById('descartavelCheck');
     const rastreavelCheck = document.getElementById('rastreavelCheck');
@@ -54,6 +55,37 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         } catch (error) {
             console.error('Erro ao carregar categorias:', error);
+        }
+    }
+
+    async function carregarCas(idModelo = null) {
+        try {
+            let cas;
+            if (idModelo) {
+                // Busca CAs para um modelo específico
+                const resultado = await get(`ca/modelo/${idModelo}`);
+                cas = resultado.data; // Assumindo que resultado.data é o array de CAs
+            } else {
+                // Busca todos os CAs para criação de novo EPI
+                cas = await get('ca'); // Assumindo que /ca retorna todos os CAs
+            }
+            
+            caSelect.innerHTML = '<option value="" selected disabled>Selecione um CA...</option>'; // Reset
+            if (cas && cas.length > 0) {
+                cas.forEach(ca => {
+                    const option = document.createElement('option');
+                    option.value = ca.id_ca;
+                    option.textContent = ca.numero_ca; // Exibe o número do CA
+                    caSelect.appendChild(option);
+                });
+
+                // Se houver apenas um CA, seleciona-o por padrão
+                if (cas.length === 1) {
+                    caSelect.value = cas[0].id_ca;
+                }
+            }
+        } catch (error) {
+            console.error('Erro ao carregar CAs:', error);
         }
     }
 
@@ -102,9 +134,14 @@ document.addEventListener('DOMContentLoaded', () => {
             descricaoEpiTextarea.value = modelo.descricao_epi || '';
 
             // Aguarda o carregamento dos selects para definir os valores
-            await Promise.all([carregarMarcas(), carregarCategorias()]); 
+            await Promise.all([
+                carregarMarcas(), 
+                carregarCategorias(), 
+                carregarCas(modelo.id_modelo_epi) // Carrega CAs específicos para o modelo
+            ]); 
             marcaSelect.value = modelo.id_marca || '';
             categoriaSelect.value = modelo.id_categoria || '';
+            caSelect.value = modelo.id_ca || ''; // Preenche o CA do modelo
 
             // Preenche a foto se existir
             if (modelo.foto_epi_url) {
@@ -122,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
         } catch (error) {
             console.error(`Erro ao carregar modelo de EPI ${id}:`, error);
             alert('Erro ao carregar dados do modelo para edição. Verifique o console.');
-            window.location.href = 'modelos-epi.html'; // Volta para a lista em caso de erro
+            window.location.href = 'epi.html'; // Volta para a lista em caso de erro
         }
     }
 
@@ -142,6 +179,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('nome_epi', nomeEpiInput.value);
         formData.append('id_marca', marcaSelect.value);
         formData.append('id_categoria', categoriaSelect.value);
+        formData.append('id_ca', caSelect.value); // Adiciona o ID do CA selecionado
         formData.append('quantidade', quantidadeInput.value);
         formData.append('descartavel', descartavelCheck.checked);
         formData.append('rastreavel', rastreavelCheck.checked);
@@ -184,6 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     nome_epi: nomeEpiInput.value,
                     marca: marcaSelect.options[marcaSelect.selectedIndex].text,
                     categoria: categoriaSelect.options[categoriaSelect.selectedIndex].text,
+                    ca: caSelect.options[caSelect.selectedIndex].text, // Adiciona o CA selecionado
                     quantidade: quantidadeInput.value,
                     descartavel: descartavelCheck.checked,
                     rastreavel: rastreavelCheck.checked,
@@ -218,5 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Modo Criação: Apenas carrega os selects
         carregarMarcas();
         carregarCategorias();
+        carregarCas(); // Carrega todos os CAs no modo criação
     }
 });
+

@@ -91,6 +91,15 @@
                             </div>
 
                             <div class="col-md-6 mb-3">
+                                <label for="caSelect" class="form-label">CA <span class="text-danger">*</span></label>
+                                <select class="form-select form-select-dark" id="caSelect" required>
+                                    <option value="" selected disabled>Selecione um CA...</option>
+                                    <!-- Opções carregadas via JS -->
+                                </select>
+                                <div class="invalid-feedback">Selecione o CA.</div>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
                                 <label for="quantidade" class="form-label">Quantidade em Estoque <span class="text-danger">*</span></label>
                                 <input type="number" class="form-control form-control-dark" id="quantidade" min="0" required>
                                 <div class="invalid-feedback">Informe a quantidade inicial (mínimo 0).</div>
@@ -134,3 +143,4 @@
 </body>
 
 </html>
+
