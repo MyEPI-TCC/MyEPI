@@ -2,30 +2,114 @@
 <html lang="pt-br">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My EPI</title>
-    <link rel="stylesheet" href="/src/assets/css/suporte.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My EPI</title>
+  <link rel="stylesheet" href="/src/assets/css/suporte.css" />
+  <link rel="icon" href="/src/assets/images/Logo head.png" type="image/x-icon" />
 </head>
 
 <body>
 
-    <nav class="nav-bar">
-        <div class="logo">
-            <img src="/src/assets/images/3.png" height="100px">
-            <ul class="nav-list">
-                <li><a href="#MyEPI">Início</a></li>
-                <li><a href="#Planos">Planos</a></li>
-                <li><a href="#Suporte">Suporte</a></li>
-                <li class="nav-item"><a href="src/pages/login.html" class="login">Login</a></li>
-                <li class="nav-item"><a href="src/pages/cadastro.html" class="cadastro">Cadastro</a></li>
-            </ul>
-        </div>
-    </nav>
+  <nav class="nav-bar">
+    <div class="logo">
+      <img src="/src/assets/images/3.png" height="100px">
+      <ul class="nav-list">
+        <li><a href="/index.html">Início</a></li>
+        <li><a href="#Planos">Planos</a></li>
+        <li><a href="suporte.html">Suporte</a></li>
+        <li class="nav-item"><a href="/src/pages/login.html" class="login">Login</a></li>
+        <li class="nav-item"><a href="/src/pages/cadastro.html" class="cadastro">Cadastro</a></li>
+      </ul>
+    </div>
+  </nav>
 
-    <div class="caixa-arredondada">
-    <h2>Entre em contato com a gente!</h2>
-    <p>Estamos prontos para tirar suas dúvidas e ouvir suas sugestões.</p>
-</div>
+  <div class="suporte-container">
+    <div class="content">
+      <div class="header-group">
+        <h2 class="title">Precisando de Ajuda?</h2>
+        <p class="description">
+          Caso tenha dúvidas, sugestões ou precise de suporte, entre em contato conosco.
+          Sua mensagem é muito importante para nós.
+        </p>
+      </div>
 
-  
+      <input id="nome" type="text" placeholder="Digite seu nome completo" />
+      <textarea id="mensagem" rows="4" placeholder="Digite sua mensagem aqui..."></textarea>
+      <button class="btn-enviar" onclick="enviarMensagem()">Enviar</button>
+
+      <div id="mensagem-feedback" class="mensagem-feedback"></div>
+    </div>
+
+    <img src="/src/assets/images/Questions-amico.svg" class="image" alt="Engenheiro">
+  </div>
+
+  <!-- Seção de Comentários -->
+  <div class="comentarios" id="comentarios">
+    <h3>Comentários</h3>
+    <div id="lista-comentarios"></div>
+  </div>
+
+  <script>
+    function getIniciais(nome) {
+      const partes = nome.trim().split(' ');
+      if (partes.length === 1) return partes[0][0].toUpperCase();
+      return (partes[0][0] + partes[partes.length - 1][0]).toUpperCase();
+    }
+
+    function salvarComentario(nome, mensagem) {
+      const comentarios = JSON.parse(localStorage.getItem('comentarios') || '[]');
+      comentarios.push({ nome, mensagem });
+      localStorage.setItem('comentarios', JSON.stringify(comentarios));
+    }
+
+    function carregarComentarios() {
+      const container = document.getElementById('lista-comentarios');
+      container.innerHTML = '';
+      const comentarios = JSON.parse(localStorage.getItem('comentarios') || '[]');
+
+      comentarios.forEach(({ nome, mensagem }) => {
+        const div = document.createElement('div');
+        div.className = 'comentario';
+        div.innerHTML = `
+          <div class="avatar">${getIniciais(nome)}</div>
+          <div class="mensagem">
+            <strong>${nome}</strong><br>
+            ${mensagem}
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    function enviarMensagem() {
+      const nome = document.getElementById('nome').value.trim();
+      const texto = document.getElementById('mensagem').value.trim();
+      const feedback = document.getElementById('mensagem-feedback');
+
+      if (nome === '' || texto === '') {
+        feedback.textContent = 'Por favor, preencha o nome e a mensagem.';
+        feedback.className = 'mensagem-feedback erro';
+        feedback.style.display = 'block';
+      } else {
+        salvarComentario(nome, texto);
+        carregarComentarios();
+        feedback.textContent = 'Obrigado pelo feedback!';
+        feedback.className = 'mensagem-feedback sucesso';
+        feedback.style.display = 'block';
+        document.getElementById('nome').value = '';
+        document.getElementById('mensagem').value = '';
+      }
+
+      setTimeout(() => {
+        feedback.style.display = 'none';
+      }, 3000);
+    }
+
+    // Inicializar comentários ao carregar a página
+    carregarComentarios();
+  </script>
+
+</body>
+
+</html>
