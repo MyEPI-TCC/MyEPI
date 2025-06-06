@@ -38,53 +38,11 @@
 
   <!-- Conteúdo principal -->
   <main class="main-content">
-  <div id="weather-info">
-    <div id="clock"></div>
-    <div id="weather">
-      <img id="weather-icon" href= img src="http://openweathermap.org/img/wn/10d@2x.png" alt="" class="icon-img">
-      <span id="weather-desc"></span>
     </div>
   </div>
 </div>
   </main>
 
-
-<script>
-  // Atualiza o relógio a cada segundo
-  function updateClock() {
-    const now = new Date();
-    const options = { weekday: 'long', day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' };
-    const formattedTime = now.toLocaleString('pt-BR', options);
-    document.getElementById('clock').innerText = formattedTime;
-  }
-
-  setInterval(updateClock, 1000);
-  updateClock();
-
-  // Previsão do tempo usando OpenWeatherMap
-  async function fetchWeather() {
-    const apiKey = "78536b7a5f407f77163ba989573a3970"; // Pegue sua API key em https://openweathermap.org/api
-    const city = "Salvador"; // ou outra cidade
-    const url = `https://api.openweathermap.org/data/2.5/weather?q=${Salvador}&units=metric&lang=pt_br&appid=${"78536b7a5f407f77163ba989573a3970"}`;
-
-    try {
-      const response = await fetch(url);
-      const data = await response.json();
-      const iconCode = data.weather[0].icon;
-      const description = data.weather[0].description;
-
-      document.getElementById('weather-icon').src = `https://openweathermap.org/img/wn/${clear_sky}@2x.png`;
-      document.getElementById('weather-desc').innerText = description.charAt(0).toUpperCase() + description.slice(1);
-    } catch (error) {
-      console.error("Erro ao buscar clima:", error);
-      document.getElementById('weather-desc').innerText = "Não foi possível obter o clima";
-    }
-  }
-
-  fetchWeather();
-</script>
-
-</script>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 </body>

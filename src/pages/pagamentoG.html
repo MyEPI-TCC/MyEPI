@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pagamento - Gratuito</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/src/assets/css/planos.css" />
+    <link rel="icon" href="/src/assets/images/Logo head.png" type="image/x-icon">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg px-4 custom-navbar">
+        <a class="navbar-brand" href="#">
+            <img src="../assets/images/logo.png" alt="Logo" width="120" />
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link text-white" href="../../index.html">Início</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="planos.html">Planos</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="../../src/pages/suporte.html">Suporte</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="login.html">Login</a></li>
+                <li class="nav-item"><a class="nav-link text-white" href="cadastro.html">Cadastre-se</a></li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container mt-5 pt-5">
+        <div class="text-center mb-4">
+            <h2>Plano Gratuito</h2>
+            <p class="text-muted">Confirme para começar gratuitamente.</p>
+        </div>
+        <div class="card p-4 shadow-sm mx-auto" style="max-width: 500px;">
+            <form id="paymentForm">
+                <p><strong>Preço:</strong> R$ 0,00/mês</p>
+                <ul>
+                    <li>Acesso limitado</li>
+                    <li>Suporte básico</li>
+                    <li>1 usuário</li>
+                </ul>
+                <button type="submit" class="btn btn-custom w-100 mt-3">Ativar Plano Gratuito</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="customAlert" class="alert-custom"></div>
+
+    <script>
+        const form = document.getElementById("paymentForm");
+        const alertBox = document.getElementById("customAlert");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            showAlert("Plano Gratuito ativado com sucesso!");
+            form.reset();
+        });
+
+        function showAlert(message, isError = false) {
+            alertBox.textContent = message;
+            alertBox.classList.remove("alert-error");
+            if (isError) alertBox.classList.add("alert-error");
+            alertBox.style.display = "block";
+            setTimeout(() => {
+                alertBox.style.display = "none";
+            }, 4000);
+        }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>
