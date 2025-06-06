@@ -8,6 +8,8 @@
   <link rel="icon" href="/src/assets/images/Logo head.png" type="image/x-icon">
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!--CSS puro-->
   <link rel="stylesheet" href="/src/assets/css/myepi.css">
 </head>
 
@@ -17,7 +19,7 @@
     <button class="btn btn-menu d-md-none" onclick="toggleSidebar()"
       style="position: absolute; left: 15px; background: none; border: none; color: white; font-size: 1.2rem;">☰</button>
     <div class="navbar-title">FUSIONSTEC ENGENHARIA</div>
-    <a href="login.html" class="btn btn-sair">Sair</a>
+    <a href="../../index.html" class="btn btn-sair">Sair</a>
   </div>
 
   <!-- SIDEBAR VERTICAL -->
@@ -26,9 +28,9 @@
       <img src="../assets/images/logo.png" alt="Logo" width="120" />
     </div>
     <nav class="nav flex-column">
-      <a class="nav-link" href="./dashboard.html">Início</a>
+      <a class="nav-link" href="./dashboard.html">Dashboard</a>
       <a class="nav-link" href="./estoque.html">Estoque</a>
-      <a class="nav-link active" href="#">EPI</a>
+      <a class="nav-link active" href="epi.html">EPI</a>
       <a class="nav-link" href="funcionario.html">Funcionário</a>
       <a class="nav-link" href="./entregas.html">Entregas de EPI</a>
     </nav>
@@ -37,23 +39,27 @@
   <!-- CONTEÚDO CENTRALIZADO -->
   <div class="main-content">
     <h1 class="mb-4">EPI</h1>
-    <h3>Qual operação você deseja realizar?</h3>
+    <h5 class="mb-5">Qual operação você deseja realizar?</h5>
+
     <div class="options-container">
-      <div class="option" onclick="window.location.href='cadastrar-epi.html'">
+      <!-- Cadastrar EPI -->
+      <div class="icon-option" onclick="window.location.href='cadastrar-epi.html'">
         <div class="icon-circle">
           <span class="icon">+</span>
         </div>
         <div class="option-label"><a href="cadastrar-epi.html">CADASTRAR EPI</a></div>
       </div>
 
-      <div class="option" onclick="window.location.href='pesquisar-epi.html'">
+      <!-- Pesquisar EPI -->
+      <div class="icon-option" onclick="window.location.href='pesquisar-epi.html'">
         <div class="icon-circle">
           <span class="icon">🔍</span>
         </div>
         <div class="option-label"><a href="pesquisar-epi.html">PESQUISAR EPI</a></div>
       </div>
 
-      <div class="option" onclick="window.location.href='modelos-epi.html'">
+      <!-- Modelos de EPI -->
+      <div class="icon-option" onclick="window.location.href='modelos-epi.html'">
         <div class="icon-circle">
           <span class="icon">🧾</span>
         </div>
@@ -62,7 +68,11 @@
     </div>
   </div>
 
+  <!--javascript-->
   <script src="../assets/js/epi.js"></script>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
