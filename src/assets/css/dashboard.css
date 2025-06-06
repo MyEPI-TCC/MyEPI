@@ -1,5 +1,5 @@
 html, body {
-    height: 100%;
+    
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
@@ -26,17 +26,25 @@ html, body {
     color: white;
   }
 
-  .top-navbar button {
-    background-color: #ffffff;
-    color: rgb(160, 56, 0);
-    border: none;
-    font-weight: bold;
-    transition: background 0.3s;
-  }
+  /* Botão "Sair" alinhado à direita */
+/* Botão "Sair" alinhado à direita */
+.btn-sair {
+  position: absolute;
+  right: 20px;
+  background-color: white;
+  color: rgb(160, 56, 0);
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 4px 12px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
 
-  .top-navbar button:hover {
-    background-color: #f0f0f0;
-  }
+.btn-sair button:hover {
+  background-color: #f0f0f0;
+}
 
   /* SIDEBAR */
   .sidebar {
@@ -66,30 +74,41 @@ html, body {
     color: white;
   }
 
-  /* CONTEÚDO PRINCIPAL */
   .main-content {
-    margin-left: 250px;
-    padding: 90px 30px 30px 30px; /* compensando a navbar superior */
-    color: white;
-    min-height: 100vh;
-  }
+  margin-left: 200px;
+  margin-top: 60px;
+  height: calc(100vh - 60px);
+  background: url('/src/assets/images/MYEPI.png') no-repeat center center;
+  background-size: cover;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 40px;
+}
 
-  .card {
-    background-color: #1f2a2d;
-    border: none;
-    color: white;
-  }
+#weather-info {
+  margin-top: 30px;
+  text-align: right;
+  color: white;
+  font-size: 1rem;
+}
 
-  .progress-bar {
-    background-color: #ff6600;
-  }
+#clock {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 
-  .dashboard-circles img {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    border-radius: 50%;
-    background-color: #ffffff;
-    padding: 10px;
-    margin: 0 5px;
-  }
+#weather {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+#weather img {
+  width: 32px;
+  height: 32px;
+}
+

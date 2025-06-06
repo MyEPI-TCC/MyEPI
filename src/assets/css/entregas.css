@@ -32,23 +32,23 @@ html, body {
     }
 
     /* Botão "Sair" alinhado à direita */
-    .btn-sair {
-      position: absolute;
-      right: 20px;
-      background-color: white;
-      color: rgb(160, 56, 0);
-      font-weight: bold;
-      border-radius: 6px;
-      padding: 4px 12px;
-      text-decoration: none;
-      border: none;
-      cursor: pointer;
-      font-size: 0.85rem;
-    }
+.btn-sair {
+  position: absolute;
+  right: 20px;
+  background-color: white;
+  color: rgb(160, 56, 0);
+  font-weight: bold;
+  border-radius: 6px;
+  padding: 4px 12px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
 
-    .btn-sair:hover {
-      background-color: #f0f0f0;
-    }
+.btn-sair button:hover {
+  background-color: #f0f0f0;
+}
 
     /* Sidebar */
     .sidebar {

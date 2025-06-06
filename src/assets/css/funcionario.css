@@ -6,40 +6,47 @@ body {
   font-family: Arial, sans-serif;
   background-color: #12191b;
   color: white;
-  text-align: center;
 }
 
-/* NAVBAR SUPERIOR */
+/* Navbar superior */
 .top-navbar {
   background-color: rgb(160, 56, 0);
   height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .navbar-title {
   font-weight: bold;
   font-size: 1.2rem;
   color: white;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
-
-.top-navbar button {
-  background-color: #ffffff;
+/* Botão "Sair" alinhado à direita */
+.btn-sair {
+  position: absolute;
+  right: 20px;
+  background-color: white;
   color: rgb(160, 56, 0);
-  border: none;
   font-weight: bold;
-  transition: background 0.3s;
-  padding: 5px 12px;
-  border-radius: 5px;
+  border-radius: 6px;
+  padding: 4px 12px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
 }
 
-.top-navbar button:hover {
+.btn-sair button:hover {
   background-color: #f0f0f0;
 }
 
@@ -92,12 +99,7 @@ body {
   justify-content: center;
   margin: 0 auto 10px;
   cursor: pointer;
-  transition: transform 0.3s, background 0.3s, color 0.3s;
-}
-
-.btn-circle:hover {
-  background-color: #f0f0f0;
-  transform: translateY(-5px);
+  transition: background 0.3s;
 }
 
 /* CAIXAS DE OPERAÇÃO */
@@ -107,20 +109,26 @@ body {
   width: 180px;
   padding: 20px;
   border-radius: 10px;
-  text-align: center;
   cursor: pointer;
   font-size: 12px;
   font-weight: bold;
-}
-
-/* ANIMAÇÃO CONJUNTA */
-.icon-option {
-  text-align: center;
   transition: transform 0.3s;
-  cursor: pointer;
 }
 
-.icon-option:hover {
+.operation-box:hover {
+  transform: translateY(-5px);
+}
+
+.operation-box:hover .btn-circle {
+  background-color: #f0f0f0;
+}
+
+/* Animação do texto abaixo do botão */
+.operation-box div:last-child {
+  transition: transform 0.3s;
+}
+
+.operation-box:hover div:last-child {
   transform: translateY(-5px);
 }
 

@@ -50,6 +50,7 @@ html, body {
     color: rgb(180, 60, 0);
 }
 
+/* Sidebar */
 .sidebar {
     position: fixed;
     top: 60px;
