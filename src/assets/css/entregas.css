@@ -1,226 +1,248 @@
 html, body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background-color: #12191b;
-  color: white;
-}
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #12191b;
+      color: white;
+    }
 
-/* Navbar superior */
-.top-navbar {
-  background-color: rgb(160, 56, 0);
-  height: 60px;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1001;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
+    /* Navbar superior */
+    .top-navbar {
+      background-color: rgb(160, 56, 0);
+      height: 60px;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1001;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
 
-.navbar-title {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: white;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
+    .navbar-title {
+      font-weight: bold;
+      font-size: 1.2rem;
+      color: white;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
 
-/* Botão "Sair" alinhado à direita */
-.btn-sair {
-  position: absolute;
-  right: 20px;
-  background-color: white;
-  color: rgb(160, 56, 0);
-  font-weight: bold;
-  border-radius: 6px;
-  padding: 4px 12px;
-  text-decoration: none;
-  border: none;
-  cursor: pointer;
-  font-size: 0.85rem;
-}
+    /* Botão "Sair" alinhado à direita */
+    .btn-sair {
+      position: absolute;
+      right: 20px;
+      background-color: white;
+      color: rgb(160, 56, 0);
+      font-weight: bold;
+      border-radius: 6px;
+      padding: 4px 12px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
 
-.btn-sair:hover {
-  background-color: #f0f0f0;
-}
+    .btn-sair:hover {
+      background-color: #f0f0f0;
+    }
 
-/* Sidebar */
-.sidebar {
-  position: fixed;
-  top: 60px;
-  /* espaço reservado pela navbar */
-  left: 0;
-  width: 200px;
-  height: calc(100vh - 60px);
-  /* altura total da tela menos a navbar */
-  background-color: #121c1e;
-  padding-top: 20px;
-  overflow-y: auto;
-  z-index: 1000;
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 200px;
+      height: calc(100vh - 60px);
+      background-color: #121c1e;
+      padding-top: 20px;
+      overflow-y: auto;
+      z-index: 1000;
+    }
 
-}
+    .sidebar .nav-link {
+      color: white;
+      padding: 15px 20px;
+      transition: all 0.3s;
+    }
 
-.sidebar .nav-link {
-  color: white;
-  padding: 15px 20px;
-  transition: all 0.3s;
-}
+    .sidebar .nav-link:hover {
+      background-color: #1e2d31;
+      border-left: 5px solid rgb(255, 102, 0);
+    }
 
-.sidebar .nav-link:hover {
-  background-color: #1e2d31;
-  border-left: 5px solid rgb(255, 102, 0);
-}
+    .nav-link.active {
+      color: orange !important;
+    }
 
-.nav-link.active {
-  color: orange !important;
-}
+    /* Conteúdo centralizado */
+    .main-content {
+      margin-left: 200px;
+      padding: 100px 40px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: calc(100vh - 60px);
+    }
 
-/* Conteúdo centralizado */
-.main-content {
-  margin-left: 200px;
-  /* mesmo valor da largura da sidebar */
-  padding: 100px 40px 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-height: calc(100vh - 60px);
+    .options-container {
+      display: flex;
+      gap: 50px;
+      margin-top: 40px;
+    }
 
-}
+    .icon-option {
+      text-align: center;
+      transition: transform 0.3s;
+      cursor: pointer;
+    }
 
-.options-container {
-  display: flex;
-  gap: 80px;
-  margin-top: 40px;
-  align-items: flex-start;
-}
+    .icon-option:hover {
+      transform: translateY(-5px);
+    }
 
-.option {
-  text-align: center;
-  cursor: pointer;
-}
+    .icon-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      font-size: 30px;
+      color: #12191b;
+      background-color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+      cursor: pointer;
+      transition: transform 0.3s, background 0.3s, color 0.3s;
+    }
 
-/* Botão circular para registrar entrega */
-.entregas-btn {
-  width: 80px;
-  height: 80px;
-  background-color: #d9d9d9;
-  color: #12191b;
-  font-size: 36px;
-  font-weight: bold;
-  border: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s;
-}
+    .icon-circle:hover {
+      transform: translateY(-5px);
+    }
 
-.entregas-btn:hover {
-  background-color: #bbbbbb;
-}
+    .icon {
+      font-size: 36px;
+      color: #12191b;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
 
-.option-label {
-  font-weight: bold;
-  margin-bottom: 15px;
-  font-size: 0.9rem;
-}
+    .option-label {
+      margin-top: 10px;
+      font-size: 0.85rem;
+      font-weight: bold;
+    }
 
-/* RESPONSIVIDADE PARA CELULAR */
-@media (max-width: 768px) {
-  /* Navbar ajustada para mobile */
-  .navbar-title {
-    font-size: 1rem;
-    left: 20px;
-    transform: none;
-  }
-  
-  .btn-sair {
-    right: 15px;
-    padding: 3px 10px;
-    font-size: 0.8rem;
-  }
+    .option-label a {
+      text-decoration: none;
+      color: white;
+    }
 
-  /* Sidebar vira menu hamburguer ou fica oculta */
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: static;
-    background-color: #162225;
-    padding: 20px 0;
-    display: none;
-  }
+    /* Remove underline do link no ícone + */
+    .icon-option a {
+      text-decoration: none;
+    }
 
-  .sidebar.show {
-    display: block;
-  }
+    /* RESPONSIVIDADE PARA CELULAR */
+    @media (max-width: 768px) {
+      /* Navbar ajustada para mobile */
+      .navbar-title {
+        font-size: 1rem;
+        left: 20px;
+        transform: none;
+      }
+      
+      .btn-sair {
+        right: 15px;
+        padding: 3px 10px;
+        font-size: 0.8rem;
+      }
 
-  /* Conteúdo ocupa toda a largura */
-  .main-content {
-    margin-left: 0;
-    margin-top: 60px;
-    padding: 20px 15px;
-    transform: translateY(-20px);
-  }
+      /* Sidebar vira menu hamburguer ou fica oculta */
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: static;
+        background-color: #162225;
+        padding: 20px 0;
+        display: none;
+      }
 
-  /* Ajusta o título */
-  .main-content h4 {
-    font-size: 1.5rem;
-  }
+      .sidebar.show {
+        display: block;
+      }
 
-  .main-content p {
-    font-size: 1.1rem;
-  }
+      /* Conteúdo ocupa toda a largura */
+      .main-content {
+        margin-left: 0;
+        margin-top: 60px;
+        padding: 20px 15px;
+        transform: translateY(-20px);
+      }
 
-  /* Options em coluna no mobile */
-  .options-container {
-    flex-direction: column;
-    gap: 40px;
-    margin-top: 30px;
-    align-items: center;
-  }
+      /* Ajusta o título */
+      .main-content h4 {
+        font-size: 1.5rem;
+      }
 
-  /* Botão menor no mobile */
-  .entregas-btn {
-    width: 70px;
-    height: 70px;
-    font-size: 32px;
-  }
+      .main-content p {
+        font-size: 1.1rem;
+      }
 
-  .option-label {
-    font-size: 0.85rem;
-  }
-}
+      /* Options em coluna no mobile */
+      .options-container {
+        flex-direction: column;
+        gap: 30px;
+        margin-top: 30px;
+        align-items: center;
+      }
 
-@media (max-width: 480px) {
-  /* Ajustes para telas muito pequenas */
-  .navbar-title {
-    font-size: 0.9rem;
-  }
+      /* Ícones um pouco menores */
+      .icon-circle {
+        width: 70px;
+        height: 70px;
+      }
 
-  .main-content {
-    padding: 15px 10px;
-  }
+      .icon {
+        font-size: 32px;
+      }
 
-  .main-content h4 {
-    font-size: 1.3rem;
-  }
+      .option-label {
+        font-size: 0.9rem;
+      }
+    }
 
-  .main-content p {
-    font-size: 1rem;
-  }
+    @media (max-width: 480px) {
+      /* Ajustes para telas muito pequenas */
+      .navbar-title {
+        font-size: 0.9rem;
+      }
 
-  .options-container {
-    gap: 30px;
-  }
+      .main-content {
+        padding: 15px 10px;
+      }
 
-  .entregas-btn {
-    width: 65px;
-    height: 65px;
-    font-size: 28px;
-  }
-}
+      .main-content h4 {
+        font-size: 1.3rem;
+      }
+
+      .main-content p {
+        font-size: 1rem;
+      }
+
+      .options-container {
+        gap: 25px;
+      }
+
+      .icon-circle {
+        width: 65px;
+        height: 65px;
+      }
+
+      .icon {
+        font-size: 28px;
+      }
+    }

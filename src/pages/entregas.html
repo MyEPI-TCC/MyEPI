@@ -6,6 +6,7 @@
   <title>Entregas</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
   
+  <!--CSS puro-->
   <link rel="stylesheet" href="/src/assets/css/entregas.css">
 </head>
 
@@ -38,19 +39,24 @@
 
     <div class="options-container">
       <!-- ENTREGAS DE EPI -->
-      <div class="option">
-        <div class="option-label">REGISTRAR ENTREGA DE EPI</div>
-        <button class="btn entregas-btn rounded-circle" onclick="window.location.href='registrar-entrega.html'">+</button>
+      <div class="icon-option" onclick="window.location.href='registrar-entrega.html'">
+        <div class="icon-circle">
+          <span class="icon">+</span>
+        </div>
+        <div class="option-label"><a href="registrar-entrega.html">REGISTRAR ENTREGA DE EPI</a></div>
       </div>
 
       <!-- HISTÓRICO DE EPI -->
-      <div class="option">
-        <div class="option-label">HISTÓRICO DE ENTREGAS</div>
-        <button class="btn entregas-btn rounded-circle" onclick="window.location.href='historico-entregas.html'">+</button>
+      <div class="icon-option" onclick="window.location.href='historico-entregas.html'">
+        <div class="icon-circle">
+          <span class="icon">📋</span>
+        </div>
+        <div class="option-label"><a href="historico-entregas.html">HISTÓRICO DE ENTREGAS</a></div>
       </div>
     </div>
   </div>
 
- <script src="../assets/js/entregas.js"></script>
+  <!--javascript-->
+  <link rel="stylesheet" href="../assets/js/entregas.js">
 </body>
 </html>
