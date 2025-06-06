@@ -105,8 +105,9 @@ async function carregarFuncionario(id) {
         const texto = document.getElementById('fotoTexto');
 
         if (funcionarioAtual.foto_perfil_path && preview && texto) {
-            // Usar o caminho correto: http://localhost:3000/uploads/
+
             preview.src = `http://localhost:3000/uploads/${funcionarioAtual.foto_perfil_path}`;
+            // preview.src = `https://myepi.netlify.app/uploads/${funcionarioAtual.foto_perfil_path}`;
             preview.style.display = 'block';
             texto.style.display = 'none';
             
