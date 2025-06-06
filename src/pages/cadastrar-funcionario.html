@@ -5,6 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Cadastrar Funcionário</title>
+  <link rel="icon" href="/src/assets/images/Logo head.png" type="image/x-icon">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/cadastrar-funcionario.css">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -47,7 +48,7 @@
       <form id="formFuncionario">
         <input type="hidden" id="idFuncionario">
         <input type="hidden" id="idEmpresa" value="1">
-        
+
         <div class="form-funcionario">
           <div class="foto-upload-vertical">
             <label for="fotoInput" class="upload-box" id="uploadBox">
@@ -66,7 +67,7 @@
               <select id="cargoSelect" name="id_cargo" required>
                 <option value="">Selecione um cargo</option>
               </select>
-              
+
               <label>CPF</label>
               <input type="text" id="cpfFuncionario" name="cpf" required />
 
@@ -80,7 +81,7 @@
 
               <label>Matrícula</label>
               <input type="text" id="matriculaFuncionario" name="numero_matricula" required />
-              
+
               <label>Tipo Sanguíneo</label>
               <select id="tipoSanguineoSelect" name="tipo_sanguineo" required>
                 <option value="">Selecione o tipo sanguíneo</option>
@@ -93,7 +94,7 @@
                 <option value="O+">O+</option>
                 <option value="O-">O-</option>
               </select>
-              
+
               <label>Data de Admissão</label>
               <input type="date" id="dtAdmissao" name="dt_admissao" required />
             </div>
@@ -111,4 +112,5 @@
   <script type="module" src="../assets/js/cadastrar-funcionario.js"></script>
 
 </body>
+
 </html>
