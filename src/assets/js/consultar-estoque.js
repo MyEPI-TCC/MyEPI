@@ -20,22 +20,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const countAdequada = document.getElementById('countAdequada');
     const countModerada = document.getElementById('countModerada');
     const countMinima = document.getElementById('countMinima');
-    const countVencido = document.getElementById('countVencido');
+    // const countVencido = document.getElementById('countVencido'); // Removido se não houver validade
 
     let todosLotes = []; // Armazena todos os lotes carregados da API
     let searchTimeout = null; // Para debounce da pesquisa principal
     let barcodeSearchTimeout = null; // Para debounce da pesquisa no modal
 
     // --- Função para determinar status do lote ---
+    // Ajustado para usar apenas quantidade, já que validade_lote não está no JSON de exemplo
     function determinarStatusLote(item) {
-        const hoje = new Date();
-        const validade = new Date(item.validade_lote);
-        const quantidade = parseInt(item.quantidade) || 0;
-        
-        // Verifica se está vencido
-        if (validade < hoje) {
-            return 'vencido';
-        }
+        const quantidade = parseInt(item.quantidade_estoque) || 0;
         
         // Critérios baseados na quantidade (você pode ajustar estes valores)
         if (quantidade >= 50) {
@@ -45,18 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
         } else {
             return 'minima';
         }
+        // Se a validade não for um campo retornado, a lógica 'vencido' não se aplica aqui
+        // return 'vencido'; // Removido
     }
 
     // --- Função para ordenar lotes (mais recentes primeiro) ---
+    // Ajustado para não depender de data_entrega, já que não está no JSON de exemplo
     function ordenarLotesPorMaisRecentes(lotes) {
         return lotes.sort((a, b) => {
-            // Primeiro tenta ordenar por data de entrega
-            if (a.data_entrega && b.data_entrega) {
-                return new Date(b.data_entrega) - new Date(a.data_entrega);
-            }
             // Se não houver data de entrega, ordena por ID se existir
-            if (a.id && b.id) {
-                return b.id - a.id;
+            if (a.id_estoque_lote && b.id_estoque_lote) { // Usando id_estoque_lote
+                return b.id_estoque_lote - a.id_estoque_lote;
             }
             // Fallback: ordena por código do lote
             if (a.codigo_lote && b.codigo_lote) {
@@ -84,10 +77,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 indicator.innerHTML = '<span class="status-dot dot-minima"></span>';
                 indicator.title = 'Quantidade Mínima';
                 break;
-            case 'vencido':
-                indicator.innerHTML = '<span class="status-dot dot-vencido"></span>';
-                indicator.title = 'Produto Vencido';
-                break;
+            // case 'vencido': // Removido se não houver validade
+            //     indicator.innerHTML = '<span class="status-dot dot-vencido"></span>';
+            //     indicator.title = 'Produto Vencido';
+            //     break;
             default:
                 indicator.innerHTML = '<span class="status-dot"></span>';
         }
@@ -101,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
             adequada: 0,
             moderada: 0,
             minima: 0,
-            vencido: 0
+            // vencido: 0 // Removido
         };
 
         lotes.forEach(lote => {
@@ -112,16 +105,17 @@ document.addEventListener('DOMContentLoaded', () => {
         countAdequada.textContent = contadores.adequada;
         countModerada.textContent = contadores.moderada;
         countMinima.textContent = contadores.minima;
-        countVencido.textContent = contadores.vencido;
+        // countVencido.textContent = contadores.vencido; // Removido
     }
 
     // --- Função para renderizar tabela ---
+    // Ajustado para as colunas presentes no JSON de exemplo
     function renderizarTabela(lotes) {
         tbody.innerHTML = '';
         
         if (lotes && lotes.length > 0) {
-            // Ordena os lotes antes de renderizar
-            const lotesOrdenados = ordenarLotesPorMaisRecentes([...lotes]);
+            // CORREÇÃO AQUI: Removido o 's' extra do nome da função
+            const lotesOrdenados = ordenarLotesPorMaisRecentes([...lotes]); 
             
             lotesOrdenados.forEach(item => {
                 const tr = document.createElement('tr');
@@ -130,23 +124,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Adiciona classe CSS baseada no status
                 tr.classList.add(`status-${status}`);
                 
-                // Formatar datas
-                const dataEntrega = item.data_entrega ? 
-                    new Date(item.data_entrega).toLocaleDateString('pt-BR') : 'N/A';
-                const validade = item.validade_lote ? 
-                    new Date(item.validade_lote).toLocaleDateString('pt-BR') : 'N/A';
-                
                 tr.innerHTML = `
                     <td class="text-center"></td>
                     <td>${item.nome_epi || 'N/A'}</td>
-                    <td class="text-center">${item.quantidade || 'N/A'}</td>
-                    <td>${dataEntrega}</td>
-                    <td>${validade}</td>
+                    <td class="text-center">${item.quantidade_estoque || '0'}</td>
                     <td>${item.codigo_lote || 'N/A'}</td>
                     <td>${item.nota_fiscal || 'N/A'}</td>
                     <td>${item.nome_fornecedor || 'N/A'}</td>
-                    <td>${item.numero_ca || 'N/A'}</td>
-                    <td>${item.observacoes || ''}</td>
                 `;
                 
                 // Adiciona o indicador de status na primeira célula
@@ -159,7 +143,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Atualiza contadores
             atualizarContadores(lotes);
         } else {
-            tbody.innerHTML = '<tr><td colspan="10">Nenhum lote encontrado para os critérios informados.</td></tr>';
+            tbody.innerHTML = '<tr><td colspan="6">Nenhum lote encontrado para os critérios informados.</td></tr>'; // Colspan ajustado
             atualizarContadores([]);
         }
     }
@@ -167,76 +151,41 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Função para carregar dados da API ---
     async function carregarEstoque() {
         try {
-            const response = await get('remessas');
-            todosLotes = response.data || response; // Flexibilidade na estrutura da resposta
+            const response = await get('estoques');
+            // Assume que a resposta da API é um array de objetos de lote
+            todosLotes = response.data || response; 
             renderizarTabela(todosLotes);
-            console.log('Remessas carregadas:', todosLotes);
+            console.log('Lotes carregados:', todosLotes);
         } catch (error) {
             console.error('Erro ao carregar estoque:', error);
             const errorMessage = error.response?.data?.error || error.message || 'Erro desconhecido';
-            tbody.innerHTML = `<tr><td colspan="10">Erro ao carregar dados: ${errorMessage}</td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6">Erro ao carregar dados: ${errorMessage}</td></tr>`; // Colspan ajustado
             atualizarContadores([]);
         }
     }
 
     // --- Função para filtrar lotes ---
+    // Ajustado para pesquisar apenas pelos campos disponíveis no JSON de exemplo
     async function filtrarLotes() {
         const termoPesquisa = searchInput.value.toLowerCase().trim();
         const filtroStatusSelecionado = document.querySelector('input[name="filtroStatus"]:checked').value;
         
         let lotesFiltrados = [...todosLotes];
         
-        // Filtro por texto (nome EPI, lote, CA, fornecedor)
+        // Filtro por texto (nome EPI, lote, fornecedor, nota fiscal)
         if (termoPesquisa) {
-            // Primeiro filtra por campos diretos
-            const lotesFiltradosPorTexto = lotesFiltrados.filter(lote => {
+            lotesFiltrados = lotesFiltrados.filter(lote => {
                 const nomeEpi = (lote.nome_epi || '').toLowerCase();
                 const codigoLote = (lote.codigo_lote || '').toLowerCase();
-                const numeroCA = (lote.numero_ca || '').toString().toLowerCase();
                 const fornecedor = (lote.nome_fornecedor || '').toLowerCase();
                 const notaFiscal = (lote.nota_fiscal || '').toLowerCase();
                 
                 return nomeEpi.includes(termoPesquisa) ||
                        codigoLote.includes(termoPesquisa) ||
-                       numeroCA.includes(termoPesquisa) ||
                        fornecedor.includes(termoPesquisa) ||
                        notaFiscal.includes(termoPesquisa);
             });
-
-            // Se o termo pode ser um CA, busca também por CA na API
-            let lotesFiltradosPorCA = [];
-            let idsModelosDoCA = new Set();
-            const termoPodeSerCA = termoPesquisa.startsWith('ca') || /^[0-9]+$/.test(termoPesquisa);
-
-            if (termoPodeSerCA) {
-                try {
-                    const numeroCaParaBusca = termoPesquisa.startsWith('ca') ? termoPesquisa.substring(2) : termoPesquisa;
-                    if (/^[0-9]+$/.test(numeroCaParaBusca)) {
-                        const resultadoCA = await get(`ca/numero/${numeroCaParaBusca}`);
-                        if (resultadoCA && resultadoCA.success && resultadoCA.data && resultadoCA.data.id_modelo_epi) {
-                            idsModelosDoCA.add(resultadoCA.data.id_modelo_epi);
-                            // Filtra os lotes que correspondem ao modelo EPI encontrado
-                            lotesFiltradosPorCA = todosLotes.filter(lote => 
-                                lote.id_modelo_epi && idsModelosDoCA.has(lote.id_modelo_epi)
-                            );
-                        }
-                    }
-                } catch (error) {
-                    if (!(error.response && error.response.status === 404)) {
-                        console.error('Erro ao buscar CA na pesquisa principal:', error);
-                    }
-                }
-            }
-
-            // Combina os resultados de ambas as buscas
-            const lotesCombinados = [...lotesFiltradosPorTexto];
-            lotesFiltradosPorCA.forEach(loteCA => {
-                if (!lotesCombinados.some(l => l.id === loteCA.id)) {
-                    lotesCombinados.push(loteCA);
-                }
-            });
-
-            lotesFiltrados = lotesCombinados;
+            // Removida a lógica de busca por CA na API, já que não está na sua resposta de endpoint principal
         }
         
         // Filtro por status
@@ -251,6 +200,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- Lógica do Modal Scanner de CA ---
+    // Mantido o modal, mas a busca por CA será apenas na lista de lotes se o CA não vier no JSON
     function showModalStatus(type, message = '') {
         barcodeLoading.style.display = type === 'loading' ? 'flex' : 'none';
         barcodeSuccess.style.display = type === 'success' ? 'flex' : 'none';
@@ -267,34 +217,44 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         showModalStatus('loading');
-        const termoPodeSerCA = termo.toLowerCase().startsWith('ca') || /^[0-9]+$/.test(termo);
-        let caEncontrado = null;
+        
+        // Como o CA não está sendo retornado no JSON de "estoques",
+        // esta funcionalidade se torna limitada a uma busca que não tem dados para comparar.
+        // Se o CA for um campo da API (ex: um endpoint /ca/numero/{numero}),
+        // você precisaria que esse endpoint retornasse o id_modelo_epi ou algo que ligasse ao lote.
+        // Por enquanto, esta parte não terá um efeito direto na filtragem da tabela
+        // se o CA não for um campo nos seus objetos 'lote'.
 
-        if (termoPodeSerCA) {
-            try {
-                const numeroCaParaBusca = termo.toLowerCase().startsWith('ca') ? termo.substring(2) : termo;
-                if (/^[0-9]+$/.test(numeroCaParaBusca)) {
-                    const resultadoCA = await get(`ca/numero/${numeroCaParaBusca}`);
-                    if (resultadoCA && resultadoCA.success && resultadoCA.data && resultadoCA.data.numero_ca) {
-                        caEncontrado = resultadoCA.data.numero_ca;
-                    }
-                }
-            } catch (error) {
-                if (!(error.response && error.response.status === 404)) {
-                    console.error('Erro ao buscar CA no modal:', error);
-                }
+        // Mantenho a estrutura para que, se você adicionar 'numero_ca' aos seus objetos 'lote'
+        // no futuro, a lógica de preenchimento do searchInput funcione.
+        let caEncontradoNaBusca = false;
+        if (termo) {
+            // Simulando a busca em 'todosLotes' se o 'numero_ca' estivesse presente
+            const loteComCa = todosLotes.find(lote => 
+                (lote.numero_ca && lote.numero_ca.toString().toLowerCase() === termo.toLowerCase()) ||
+                (termo.toLowerCase().startsWith('ca') && lote.numero_ca && lote.numero_ca.toString().toLowerCase() === termo.substring(2).toLowerCase())
+            );
+
+            if (loteComCa) {
+                caEncontradoNaBusca = true;
+                // Exemplo: se encontrasse, preencheria o campo de pesquisa principal
+                searchInput.value = loteComCa.numero_ca || termo; // Prefere o CA do lote, se existir
             }
         }
+        
 
-        if (caEncontrado) {
-            showModalStatus('success', `${caEncontrado} encontrado!`);
-            searchInput.value = caEncontrado; // Preenche a pesquisa principal
-            filtrarLotes(); // Filtra a tabela principal
+        if (caEncontradoNaBusca) {
+            showModalStatus('success', `${termo} encontrado!`);
+            filtrarLotes(); // Filtra a tabela principal com o CA preenchido
             setTimeout(() => {
                 barcodeModal.hide(); // Fecha o modal após sucesso
-            }, 1000); // Fecha após 1 segundo
+            }, 1000);
         } else {
-            showModalStatus('error');
+            showModalStatus('error', `CA "${termo}" não encontrado ou inválido.`);
+            // A busca principal também é atualizada para este CA, mesmo que não tenha encontrado um lote direto
+            // Isso permite que o usuário veja que a pesquisa foi aplicada
+            searchInput.value = termo;
+            filtrarLotes();
         }
     }
 

@@ -1,308 +1,479 @@
 /* consulta-estoque.css */
 
-/* Reset e configurações gerais */
-html,
-body {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background-color: #12191b;
-  color: white;
+/* --- Variáveis CSS --- */
+:root {
+    --primary-color: rgb(160, 56, 0); /* Cor principal da marca */
+    --secondary-color: rgb(255, 102, 0); /* Tom mais claro da cor principal para destaque */
+    --bg-dark: #12191b; /* Fundo principal escuro */
+    --bg-darker: #121c1e; /* Fundo mais escuro para sidebar/elementos */
+    --bg-card: #1a2224; /* Fundo para cards e tabela */
+    --border-dark: #2c3e50; /* Cor da borda para elementos escuros */
+    --text-light: white; /* Cor do texto claro */
+    --text-muted: #adb5bd; /* Cor do texto mais suave */
+    --input-bg-dark: #2c3e50; /* Fundo de inputs escuros */
+    --input-border-dark: #4a4e57; /* Borda de inputs escuros */
+    --focus-border: #61dafb; /* Cor da borda ao focar em inputs */
+
+    /* Cores de status */
+    --status-adequate: #28a745; /* Verde */
+    --status-moderate: #ffc107; /* Amarelo */
+    --status-minimum: #dc3545; /* Vermelho */
+    --status-expired: #6c757d; /* Cinza */
 }
 
-/* Navbar superior */
+/* --- Reset e configurações gerais --- */
+html,
+body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', Arial, sans-serif; /* Fonte um pouco mais moderna */
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    line-height: 1.6; /* Melhorar legibilidade */
+}
+
+/* --- Navbar superior --- */
 .top-navbar {
-  background-color: rgb(160, 56, 0);
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1001;
+    background-color: var(--primary-color);
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1001;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sutil sombra */
 }
 
 .navbar-title {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: white;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: var(--text-light);
+    text-transform: uppercase; /* Dar um toque mais profissional */
+    letter-spacing: 0.5px;
 }
 
 .btn-sair {
-  position: absolute;
-  right: 15px;
-  background-color: white;
-  color: rgb(160, 56, 0);
-  border: none;
-  font-weight: bold;
-  border-radius: 5px;
-  padding: 5px 12px;
-  text-decoration: none;
+    position: absolute;
+    right: 15px;
+    background-color: var(--text-light);
+    color: var(--primary-color);
+    border: none;
+    font-weight: bold;
+    border-radius: 5px;
+    padding: 5px 12px;
+    text-decoration: none;
+    transition: all 0.3s ease; /* Transição suave */
 }
 
 .btn-sair:hover {
-  background-color: #f0f0f0;
-  color: rgb(180, 60, 0);
+    background-color: #f0f0f0;
+    color: rgb(180, 60, 0); /* Tom um pouco diferente no hover */
+    transform: translateY(-1px); /* Pequeno efeito ao passar o mouse */
 }
 
-/* Sidebar */
+/* --- Sidebar --- */
 .sidebar {
-  position: fixed;
-  top: 60px;
-  left: 0;
-  width: 200px;
-  height: calc(100vh - 60px);
-  background-color: #121c1e;
-  padding-top: 20px;
-  overflow-y: auto;
-  z-index: 1000;
+    position: fixed;
+    top: 60px;
+    left: 0;
+    width: 200px;
+    height: calc(100vh - 60px);
+    background-color: var(--bg-darker);
+    padding-top: 20px;
+    overflow-y: auto;
+    z-index: 1000;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.2); /* Sutil sombra */
+    transition: width 0.3s ease, padding 0.3s ease; /* Transição para responsividade */
 }
 
 .sidebar .nav-link {
-  color: white;
-  padding: 15px 20px;
-  transition: all 0.3s;
-  display: block;
-  text-decoration: none;
+    color: var(--text-light);
+    padding: 15px 20px;
+    transition: all 0.3s ease; /* Transição suave */
+    display: block;
+    text-decoration: none;
+    font-size: 1rem;
+    display: flex; /* Para centralizar ícones se forem adicionados */
+    align-items: center;
+    gap: 10px;
 }
 
 .sidebar .nav-link:hover,
 .sidebar .nav-link.active {
-  background-color: #1e2d31;
-  border-left: 5px solid rgb(255, 102, 0);
-  color: rgb(255, 119, 0);
+    background-color: #1e2d31;
+    border-left: 5px solid var(--secondary-color); /* Laranja mais vibrante */
+    color: var(--secondary-color);
 }
 
-/* Conteúdo principal */
+/* --- Conteúdo principal --- */
 .main-content {
-  margin-left: 200px;
-  padding: 80px 20px 40px;
-  min-height: calc(100vh - 60px);
+    margin-left: 200px;
+    padding: 80px 20px 40px;
+    min-height: calc(100vh - 60px);
+    transition: margin-left 0.3s ease, padding 0.3s ease; /* Transição para responsividade */
 }
 
 .main-content h2 {
-  font-size: 28px;
-  margin-bottom: 20px;
-  text-align: center;
-  color: white;
+    font-size: 28px;
+    margin-bottom: 25px; /* Aumentar um pouco o espaçamento */
+    text-align: center;
+    color: var(--text-light);
+    border-bottom: 2px solid var(--border-dark); /* Linha sutil abaixo do título */
+    padding-bottom: 15px;
 }
 
-/* Legenda de Status */
+/* --- Legenda de Status --- */
 .status-legend {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  padding: 15px;
-  background-color: #1a2224;
-  border-radius: 8px;
-  border: 1px solid #2c3e50;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 15px;
+    background-color: var(--bg-card);
+    border-radius: 8px;
+    border: 1px solid var(--border-dark);
+    margin-bottom: 30px; /* Mais espaço abaixo da legenda */
 }
 
 .legend-item {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
-  color: white;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-light);
 }
 
 .status-dot {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: inline-block;
+    flex-shrink: 0; /* Evita que o ponto encolha em telas pequenas */
 }
 
 .dot-adequada {
-  background-color: #28a745;
+    background-color: var(--status-adequate);
 }
 
 .dot-moderada {
-  background-color: #ffc107;
+    background-color: var(--status-moderate);
 }
 
 .dot-minima {
-  background-color: #dc3545;
+    background-color: var(--status-minimum);
 }
 
-.dot-vencido {
-  background-color: #6c757d;
+/* .dot-vencido {
+    background-color: var(--status-expired);
+} */ /* Removido conforme a remoção da funcionalidade de validade/vencido */
+
+/* --- Estilo para o campo de pesquisa e botão scanner --- */
+.input-group {
+    margin-bottom: 20px;
 }
 
-/* Estilo para o campo de pesquisa e botão scanner */
 .form-control-dark {
-    background-color: #2c3e50;
-    color: #ffffff;
-    border: 1px solid #4a4e57;
+    background-color: var(--input-bg-dark);
+    color: var(--text-light);
+    border: 1px solid var(--input-border-dark);
+    transition: all 0.3s ease;
 }
 
 .form-control-dark::placeholder {
-    color: #adb5bd;
+    color: var(--text-muted);
 }
 
 .form-control-dark:focus {
-    background-color: #34495e;
-    color: #ffffff;
-    border-color: #61dafb;
-    box-shadow: none;
+    background-color: #34495e; /* Um pouco mais escuro ao focar */
+    color: var(--text-light);
+    border-color: var(--focus-border);
+    box-shadow: 0 0 0 0.25rem rgba(97, 218, 251, 0.25); /* Sombra suave de foco */
 }
 
 .btn-scanner {
-    border-color: #4a4e57;
-    color: #adb5bd;
+    border-color: var(--input-border-dark);
+    color: var(--text-muted);
+    background-color: var(--input-bg-dark); /* Fundo igual ao input */
+    transition: all 0.3s ease;
 }
 
 .btn-scanner:hover {
     background-color: #34495e;
-    color: #ffffff;
-    border-color: #61dafb;
+    color: var(--text-light);
+    border-color: var(--focus-border);
 }
 
-/* Ajuste para alinhar botão Novo em telas menores */
+/* Ajuste para alinhar botão em telas menores (geral para botões/filtros) */
 @media (max-width: 767.98px) {
-    .main-content .row > div:last-child {
+    .row.align-items-center > div:last-child {
         text-align: left !important;
-        margin-top: 10px;
+        margin-top: 15px;
     }
 }
 
-/* Filtros de Status */
-.btn-group .btn-check:checked + .btn {
-  background-color: var(--bs-btn-active-bg);
-  border-color: var(--bs-btn-active-border-color);
-  color: var(--bs-btn-active-color);
+/* --- Filtros de Status --- */
+.btn-group .btn-check + .btn {
+    border-radius: 0.375rem; /* Padrão do Bootstrap */
+    padding: 0.375rem 0.75rem; /* Padrão do Bootstrap para sm */
+    font-size: 0.875rem; /* Padrão do Bootstrap para sm */
+    transition: all 0.3s ease;
+    background-color: var(--bg-darker); /* Fundo padrão dos botões */
+    border-color: var(--border-dark);
+    color: var(--text-muted);
 }
 
-/* Tabela */
+.btn-group .btn-check:checked + .btn {
+    background-color: var(--bs-btn-active-bg); /* Cores do Bootstrap (verde, amarelo, vermelho) */
+    border-color: var(--bs-btn-active-border-color);
+    color: var(--bs-btn-active-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--bs-btn-active-border-color-rgb), .5); /* Sombra de foco */
+}
+
+.btn-outline-secondary {
+    --bs-btn-color: var(--text-muted);
+    --bs-btn-border-color: var(--border-dark);
+    --bs-btn-hover-color: var(--text-light);
+    --bs-btn-hover-bg: #34495e;
+    --bs-btn-hover-border-color: var(--focus-border);
+    --bs-btn-active-bg: #34495e;
+    --bs-btn-active-border-color: var(--focus-border);
+    --bs-btn-disabled-color: var(--text-muted);
+    --bs-btn-disabled-bg: transparent;
+    --bs-btn-disabled-border-color: var(--border-dark);
+}
+
+/* Cores específicas dos botões de filtro para manter o tema */
+.btn-outline-success {
+    --bs-btn-active-bg: var(--status-adequate);
+    --bs-btn-active-border-color: var(--status-adequate);
+}
+
+.btn-outline-warning {
+    --bs-btn-active-bg: var(--status-moderate);
+    --bs-btn-active-border-color: var(--status-moderate);
+}
+
+.btn-outline-danger {
+    --bs-btn-active-bg: var(--status-minimum);
+    --bs-btn-active-border-color: var(--status-minimum);
+}
+
+/* .btn-outline-dark {
+    --bs-btn-active-bg: var(--status-expired);
+    --bs-btn-active-border-color: var(--status-expired);
+} */ /* Removido */
+
+
+/* --- Tabela --- */
 .table-responsive {
-  background: transparent;
-  border-radius: 0;
-  box-shadow: none;
-  overflow: hidden;
+    background: transparent;
+    border-radius: 8px; /* Cantos arredondados para a tabela */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Sombra para destacar a tabela */
+    overflow: hidden; /* Garante que os cantos arredondados funcionem */
+    border: 1px solid var(--border-dark); /* Borda para a tabela */
 }
 
 .table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  background-color: #1a2224;
-  color: white;
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 0; /* Remove a margem inferior padrão do Bootstrap */
+    background-color: var(--bg-card); /* Fundo da tabela */
+    color: var(--text-light);
 }
 
 .table th, .table td {
-  background-color: #1a2224;
-  color: white;
-  padding: 12px 15px;
-  border-bottom: 1px solid #2c3e50;
-  vertical-align: middle;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+    background-color: var(--bg-card); /* Fundo das células */
+    color: var(--text-light);
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-dark);
+    vertical-align: middle;
+    /* Remover white-space: nowrap e text-overflow para permitir quebras de linha e elipses apenas quando necessário */
+    white-space: normal; /* Permite que o texto quebre */
+    overflow: visible; /* Permite que o conteúdo vaze se precisar (geralmente não) */
+    text-overflow: clip; /* Padrão */
 }
 
 .table th {
-  white-space: normal;
-  font-weight: 600;
+    font-weight: 600;
+    text-align: left;
 }
 
-.table td:last-child { /* Observações */
-  white-space: normal;
-  max-width: 200px;
+/* Ajustes específicos para colunas da tabela que podem precisar de tratamento especial */
+.table td:first-child { /* Status */
+    width: 60px; /* Largura fixa para o status dot */
+    text-align: center;
+    padding-left: 5px; /* Ajuste o padding para centralizar melhor o dot */
+    padding-right: 5px;
 }
+
+.table td:nth-child(2) { /* Nome EPI */
+    min-width: 150px; /* Largura mínima para o nome do EPI */
+}
+
+.table td:nth-child(3) { /* Quantidade */
+    font-weight: 700; /* Mais destaque para a quantidade */
+    text-align: center;
+    width: 100px; /* Largura fixa */
+}
+
+.table td:nth-child(4) { /* Código Lote */
+    min-width: 120px;
+}
+
+.table td:nth-child(5) { /* Nota Fiscal */
+    min-width: 120px;
+}
+
+.table td:nth-child(6) { /* Fornecedor */
+    min-width: 150px;
+}
+
+/* Remover regras de CSS para colunas que foram removidas do HTML */
+/* .table td:last-child {
+    white-space: normal;
+    max-width: 200px;
+} */
 
 .table thead.table-dark th {
-  background-color: #212529;
-  border-color: #32383e;
-  color: white;
+    background-color: #212529; /* Fundo do cabeçalho mais escuro */
+    border-color: #32383e;
+    color: var(--text-light);
+    position: sticky; /* Cabeçalho fixo ao rolar */
+    top: 0;
+    z-index: 2; /* Garante que fique acima do conteúdo da tabela */
 }
 
 .table-hover tbody tr:hover {
-  background-color: #1e2d31 !important;
-  color: white;
+    background-color: #1e2d31 !important; /* Fundo no hover */
+    color: var(--text-light);
+    transform: scale(1.005); /* Leve zoom no hover */
+    transition: all 0.15s ease-in-out;
 }
 
 /* Status das linhas da tabela */
 .status-adequada {
-  border-left: 4px solid #28a745;
+    border-left: 4px solid var(--status-adequate);
 }
 
 .status-moderada {
-  border-left: 4px solid #ffc107;
+    border-left: 4px solid var(--status-moderate);
 }
 
 .status-minima {
-  border-left: 4px solid #dc3545;
+    border-left: 4px solid var(--status-minimum);
 }
 
-.status-vencido {
-  border-left: 4px solid #6c757d;
-  background-color: rgba(108, 117, 125, 0.1) !important;
-}
+/* .status-vencido {
+    border-left: 4px solid var(--status-expired);
+    background-color: rgba(108, 117, 125, 0.1) !important;
+} */ /* Removido */
+
 
 /* Indicador de Status na tabela */
 .status-indicator {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
 }
 
 .status-indicator .status-dot {
-  width: 16px;
-  height: 16px;
-  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+    width: 18px; /* Um pouco maior para visibilidade */
+    height: 18px;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.15); /* Sombra para destacar o dot */
+    border: 1px solid rgba(255, 255, 255, 0.3); /* Borda sutil */
 }
 
-/* Cards de Estatísticas */
+/* --- Cards de Estatísticas --- */
+.row.mt-4 {
+    margin-top: 30px !important; /* Aumentar espaçamento para os cards */
+}
+
 .card {
-  border: none;
-  border-radius: 8px;
-  transition: transform 0.2s;
+    border: none;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Sombra padrão para os cards */
+    min-height: 120px; /* Altura mínima para uniformidade */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: var(--bg-card); /* Garante o fundo certo */
 }
 
 .card:hover {
-  transform: translateY(-2px);
+    transform: translateY(-5px); /* Efeito mais pronunciado */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4); /* Sombra mais forte no hover */
 }
 
 .card-body {
-  padding: 1.5rem;
+    padding: 1.25rem; /* Ajustado */
+    text-align: center;
 }
 
 .card-title {
-  font-size: 0.9rem;
-  font-weight: 600;
-  margin-bottom: 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    opacity: 0.8; /* Levemente mais sutil */
+    text-transform: uppercase;
 }
 
 .card h3 {
-  font-size: 2rem;
-  font-weight: bold;
-  margin: 0;
+    font-size: 2.2rem; /* Um pouco maior */
+    font-weight: bold;
+    margin: 0;
+    line-height: 1; /* Alinhar texto verticalmente */
 }
 
-/* Estilos para o Modal Scanner */
+/* Cores específicas para os cards */
+.card.bg-success { background-color: var(--status-adequate) !important; }
+.card.bg-warning { background-color: var(--status-moderate) !important; }
+.card.bg-danger { background-color: var(--status-minimum) !important; }
+/* .card.bg-dark { background-color: var(--status-expired) !important; } */ /* Removido */
+
+
+/* --- Estilos para o Modal Scanner --- */
 .modal-content-dark {
-    background-color: #1a2224; /* Fundo escuro do modal */
-    color: white;
-    border: 1px solid #2c3e50;
+    background-color: var(--bg-card); /* Fundo escuro do modal */
+    color: var(--text-light);
+    border: 1px solid var(--border-dark);
+    border-radius: 8px;
 }
 
 .modal-content-dark .modal-header {
-    border-bottom: 1px solid #2c3e50;
+    border-bottom: 1px solid var(--border-dark);
+    padding: 1rem 1.5rem;
 }
 
-.modal-content-dark .modal-footer {
-    border-top: 1px solid #2c3e50;
+.modal-content-dark .modal-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+
+.btn-close.btn-close-white {
+    filter: invert(1) grayscale(100%) brightness(200%); /* Torna o X branco */
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.btn-close.btn-close-white:hover {
+    opacity: 1;
+}
+
+.modal-content-dark .modal-body {
+    padding: 1.5rem;
 }
 
 .barcode-modal-input {
-    /* Usa a classe form-control-dark já definida */
     text-align: center;
     font-size: 1.1rem;
+    padding: 0.75rem 1rem;
+    height: auto; /* Deixa o campo mais alto */
 }
 
 .barcode-status {
@@ -310,92 +481,160 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+    margin-top: 15px; /* Espaçamento da mensagem */
+    min-height: 25px; /* Garante que o layout não pule */
 }
 
 .barcode-status .spinner-border-sm {
-    width: 1rem;
-    height: 1rem;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-right: 8px;
+    color: var(--secondary-color); /* Cor do spinner */
 }
 
 .barcode-status i {
-    font-size: 1.1rem; /* Tamanho dos ícones de status */
+    font-size: 1.2rem; /* Tamanho dos ícones de status */
+    margin-right: 8px;
 }
 
-/* Responsividade */
+.barcode-status .text-success { color: var(--status-adequate) !important; }
+.barcode-status .text-danger { color: var(--status-minimum) !important; }
+
+.modal-content-dark .form-text {
+    color: var(--text-muted) !important; /* Garante que o texto de ajuda seja visível */
+    font-size: 0.85rem;
+}
+
+/* --- Responsividade --- */
+
+/* Esconde a sidebar e ajusta o margin-left do conteúdo principal */
 @media (max-width: 992px) {
-  .sidebar {
-    width: 0;
-    padding: 0;
-    overflow: hidden;
-  }
+    .sidebar {
+        width: 0;
+        padding: 0;
+        overflow: hidden;
+        /* Adicione uma propriedade para visualmente "esconder" se houver um overlay ou transição */
+        transform: translateX(-100%);
+    }
 
-  .main-content {
-    margin-left: 0;
-    padding: 80px 10px 20px;
-  }
+    .main-content {
+        margin-left: 0;
+        padding: 80px 15px 30px; /* Mais padding nas laterais em telas menores */
+    }
+
+    .top-navbar .navbar-title {
+        font-size: 1rem;
+    }
 }
 
+/* Ajustes para tablets e telas médias */
 @media (max-width: 768px) {
-  .main-content h2 {
-    font-size: 24px;
-  }
+    .main-content h2 {
+        font-size: 24px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+    }
 
-  .table th, .table td {
-    padding: 8px;
-    font-size: 0.875rem;
-  }
+    .table th, .table td {
+        padding: 10px;
+        font-size: 0.875rem;
+    }
 
-  .status-legend {
-    gap: 10px;
-    padding: 10px;
-  }
+    .status-legend {
+        gap: 15px;
+        padding: 12px;
+    }
 
-  .legend-item {
-    font-size: 0.8rem;
-  }
+    .legend-item {
+        font-size: 0.85rem;
+    }
 
-  .btn-group {
-    flex-direction: column;
-    width: 100%;
-  }
+    /* Agrupar filtros verticalmente */
+    .btn-group {
+        flex-direction: column;
+        width: 100%;
+    }
 
-  .btn-group .btn {
-    margin-bottom: 5px;
-  }
+    .btn-group .btn {
+        margin-bottom: 8px;
+        width: 100%; /* Botões ocupam a largura total */
+    }
+
+    .row.mb-3.align-items-center > .col-md-6 {
+        flex: 0 0 100%; /* Ocupa a largura total */
+        max-width: 100%;
+    }
+
+    .row.mb-3.align-items-center > .col-md-6:last-child {
+        text-align: center !important; /* Centraliza os filtros */
+        margin-top: 15px;
+    }
+
+    .card {
+        margin-bottom: 15px; /* Espaçamento entre cards em colunas */
+    }
 }
 
+/* Ajustes para celulares e telas pequenas */
 @media (max-width: 576px) {
-  .table-responsive {
-    font-size: 0.8rem;
-  }
-  
-  .card-body {
-    padding: 1rem;
-  }
-  
-  .card h3 {
-    font-size: 1.5rem;
-  }
+    .main-content {
+        padding: 70px 10px 20px;
+    }
+
+    .top-navbar {
+        height: 50px; /* Navbar um pouco menor */
+    }
+
+    .navbar-title {
+        font-size: 0.95rem;
+    }
+
+    .sidebar {
+        top: 50px; /* Ajusta a posição da sidebar */
+        height: calc(100vh - 50px);
+    }
+
+    .table-responsive {
+        font-size: 0.8rem;
+    }
+    
+    .table th, .table td {
+        padding: 8px;
+    }
+
+    .card-body {
+        padding: 1rem;
+    }
+    
+    .card h3 {
+        font-size: 1.8rem;
+    }
+
+    .input-group {
+        flex-wrap: wrap; /* Permite que os botões quebrem linha */
+    }
+
+    .input-group .form-control-dark {
+        flex: 1 1 100%; /* Input ocupa largura total */
+        margin-bottom: 10px;
+    }
+
+    .input-group .btn-scanner {
+        flex: 1 1 auto; /* Botões se ajustam */
+        width: auto;
+    }
+
+    .btn-scanner + .btn-scanner {
+        margin-left: 10px; /* Espaço entre os botões de scanner */
+    }
 }
 
-/* Animação suave (opcional) */
+/* --- Animação suave (opcional) --- */
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 .table tbody tr {
-  /* animation: fadeIn 0.5s ease forwards; */
-}
-
-/* Melhorias visuais adicionais */
-.table td:nth-child(3) { /* Quantidade */
-  font-weight: 600;
-  text-align: center;
-}
-
-.table td:nth-child(4), /* Data Entrega */
-.table td:nth-child(5) { /* Validade */
-  font-family: 'Courier New', monospace;
-  font-size: 0.9rem;
+    /* animation: fadeIn 0.5s ease forwards; */ /* Deixe comentado se preferir sem animação por padrão */
 }
