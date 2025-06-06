@@ -5,50 +5,61 @@ body {
   padding: 0;
   font-family: Arial, sans-serif;
   background-color: #12191b;
+  color: white;
 }
 
+/* Navbar superior */
 .top-navbar {
   background-color: rgb(160, 56, 0);
   height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 }
 
 .navbar-title {
   font-weight: bold;
   font-size: 1.2rem;
   color: white;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
-
-.top-navbar button {
-  background-color: #ffffff;
+/* Botão "Sair" alinhado à direita */
+.btn-sair {
+  position: absolute;
+  right: 20px;
+  background-color: white;
   color: rgb(160, 56, 0);
-  border: none;
   font-weight: bold;
-  transition: background 0.3s;
+  border-radius: 6px;
+  padding: 4px 12px;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
 }
 
-.top-navbar button:hover {
+.btn-sair button:hover {
   background-color: #f0f0f0;
 }
 
+/* SIDEBAR */
 .sidebar {
-  height: 100vh;
-  width: 250px;
-  background-color: #162225;
   position: fixed;
-  top: 60px;
+  top: 60px; /* espaço reservado pela navbar */
   left: 0;
-  padding-top: 40px;
-  display: flex;
-  flex-direction: column;
-  color: white;
+  width: 200px;
+  height: calc(100vh - 60px); /* altura total da tela menos a navbar */
+  background-color: #121c1e;
+  padding-top: 20px;
+  overflow-y: auto;
   z-index: 1000;
 }
 
@@ -56,6 +67,7 @@ body {
   color: white;
   padding: 15px 20px;
   transition: all 0.3s;
+  text-align: left;
 }
 
 .sidebar .nav-link:hover {
